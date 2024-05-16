@@ -9,21 +9,15 @@ import Button from "@/components/shared/button";
 
 // validators
 import emailValidator from "@/lib/validator/email";
-import passwordValidator from "@/lib/validator/password";
 
 export default function SignUpScreen() {
-    const [userInput, setUserInput] = useState({
-        email: '',
-        password: '',
-        confirmPassword: ''
-    })
+    const [userEmail, setUserEmail] = useState('')
     const onSignUpFormSubmit = (e) => {
         e.preventDefault()
         try {
-            let validateEmail = emailValidator(userInput.email)
-            let validatePassword = passwordValidator(userInput.password, userInput.confirmPassword)
+            let validateEmail = emailValidator(userEmail)
 
-            if (validateEmail && validatePassword) {
+            if (validateEmail) {
                 console.log('all done.');
             }
         } catch (error) {
@@ -36,40 +30,15 @@ export default function SignUpScreen() {
     return (
         <div className="flex flex-col gap-8">
             <h1 className="text-title-28">Sign Up</h1>
-            <form onSubmit={onSignUpFormSubmit} className="gap-3 flex flex-col">
+            <form onSubmit={onSignUpFormSubmit} className="gap-3 flex flex-col" noValidate>
                 <InputField
                     id="email"
                     width={300}
                     title='Email'
                     placeholder="example@example.com"
                     type="email"
-                    value={userInput.email}
-                    onChange={e => setUserInput({
-                        ...userInput,
-                        email: e.target.value
-                    })} />
-                <InputField
-                    id="password"
-                    width={300}
-                    title='Password'
-                    placeholder="•••••••••"
-                    type="password"
-                    value={userInput.password}
-                    onChange={e => setUserInput({
-                        ...userInput,
-                        password: e.target.value
-                    })} />
-                <InputField
-                    id="confirmPassword"
-                    width={300}
-                    title='Confirm Password'
-                    placeholder="•••••••••"
-                    type="password"
-                    value={userInput.confirmPassword}
-                    onChange={e => setUserInput({
-                        ...userInput,
-                        confirmPassword: e.target.value
-                    })} />
+                    value={userEmail}
+                    onChange={e => setUserEmail(e.target.value)} />
                 <Button width={300} label="Sign Up" />
                 <div className="flex justify-center text-detail-14">
                     <span>Already have an account? <Link href="/auth/login" className="underline">Login</Link></span>
