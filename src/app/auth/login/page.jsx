@@ -40,7 +40,7 @@ export default function LoginScreen() {
             <form onSubmit={onLoginFormSubmit} className="gap-3 flex flex-col" noValidate>
                 <InputField
                     id="email"
-                    width="350px"
+                    width={300}
                     title='Email'
                     placeholder="example@example.com"
                     type="email"
@@ -51,7 +51,7 @@ export default function LoginScreen() {
                     })} />
                 <InputField
                     id="password"
-                    width="350px"
+                    width={300}
                     title='Password'
                     placeholder="•••••••••"
                     type="password"
@@ -63,7 +63,7 @@ export default function LoginScreen() {
                 <p className="flex justify-end text-detail-14">
                     <Link href="/auth/forgot-password" className="text-title-18 underline">Forgot Password?</Link>
                 </p>
-                <Button disabled={false} width="350px" label="Log in" />
+                <Button disabled={false} width={300} label="Log in" />
                 <div className="flex justify-center text-detail-14">
                     <span>Don't have an account? <Link href="/auth/signup" className="underline">Sign Up</Link></span>
                 </div>

@@ -39,7 +39,7 @@ export default function SignUpScreen() {
             <form onSubmit={onSignUpFormSubmit} className="gap-3 flex flex-col">
                 <InputField
                     id="email"
-                    width="350px"
+                    width={300}
                     title='Email'
                     placeholder="example@example.com"
                     type="email"
@@ -50,7 +50,7 @@ export default function SignUpScreen() {
                     })} />
                 <InputField
                     id="password"
-                    width="350px"
+                    width={300}
                     title='Password'
                     placeholder="•••••••••"
                     type="password"
@@ -61,7 +61,7 @@ export default function SignUpScreen() {
                     })} />
                 <InputField
                     id="confirmPassword"
-                    width="350px"
+                    width={300}
                     title='Confirm Password'
                     placeholder="•••••••••"
                     type="password"
@@ -70,7 +70,7 @@ export default function SignUpScreen() {
                         ...userInput,
                         confirmPassword: e.target.value
                     })} />
-                <Button width="350px" label="Sign Up" />
+                <Button width={300} label="Sign Up" />
                 <div className="flex justify-center text-detail-14">
                     <span>Already have an account? <Link href="/auth/login" className="underline">Login</Link></span>
                 </div>

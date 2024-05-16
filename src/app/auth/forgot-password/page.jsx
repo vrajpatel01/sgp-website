@@ -34,7 +34,7 @@ export default function ForgotPasswordScreen() {
             <form onSubmit={onForgotPasswordFormSubmit} className="gap-3 flex flex-col" noValidate>
                 <InputField
                     id="email"
-                    width="350px"
+                    width={300}
                     title='Email'
                     placeholder="example@example.com"
                     type="email"
@@ -43,7 +43,7 @@ export default function ForgotPasswordScreen() {
                 <p className="flex justify-end text-detail-14 underline">
                     <Link href="/auth/login">Back to Login?</Link>
                 </p>
-                <Button disabled={false} label="Send Mail" />
+                <Button disabled={false} width={300} label="Send Mail" />
             </form>
         </div>
     );

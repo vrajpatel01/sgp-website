@@ -1,5 +1,5 @@
 export default function DashboardScreen() {
     return (
-        <div>Dashboard</div>
+        <div className="w-full h-screen bg-secondary-background">Dashboard</div>
     );
 }

@@ -35,7 +35,7 @@ export default function ResetPasswordScreen() {
             <form onSubmit={onResetPasswordFormSubmit} className="gap-3 flex flex-col">
                 <InputField
                     id="password"
-                    width="350px"
+                    width={300}
                     title='Password'
                     placeholder="•••••••••"
                     type="password"
@@ -46,7 +46,7 @@ export default function ResetPasswordScreen() {
                     })} />
                 <InputField
                     id="ConfirmPassword"
-                    width="350px"
+                    width={300}
                     title='Confirm Password'
                     placeholder="•••••••••"
                     value={userInput.confirmPassword}
@@ -55,7 +55,7 @@ export default function ResetPasswordScreen() {
                         ...userInput,
                         confirmPassword: e.target.value
                     })} />
-                <Button width="350px" label="Reset" />
+                <Button width={300} label="Reset" />
             </form>
         </div>
     );
