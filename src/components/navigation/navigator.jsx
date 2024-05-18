@@ -1,5 +1,6 @@
 //components
 import NavigationItem from "./navigationItem";
+import { usePathname } from "next/navigation";
 
 // icons
 // dashboard
@@ -13,27 +14,31 @@ import { IoPeopleOutline } from "react-icons/io5";
 import { IoPeopleSharp } from "react-icons/io5";
 
 export default function Navigator() {
+    const pathname = usePathname();
     return (
         <div>
             <div className="mb-3 text-[#9CA3AF] capitalize text-body-16">section</div>
             <div className="flex flex-col gap-5">
                 <NavigationItem
-                    href="/auth/login"
+                    href="/"
                     title="Dashboard"
                     icon={<TbLayoutDashboard />}
                     activeIcon={<TbLayoutDashboardFilled />}
-                    active />
+                    active={pathname == '/' ? true : false}
+                />
                 <NavigationItem
-                    href="/auth/login"
+                    href="/students"
                     title="Students"
                     icon={<PiStudent />}
                     activeIcon={<PiStudentFill />}
+                    active={pathname == '/students' ? true : false}
                 />
                 <NavigationItem
-                    href="/auth/login"
+                    href="/faculty"
                     title="Faculty"
                     icon={<IoPeopleOutline />}
                     activeIcon={<IoPeopleSharp />}
+                    active={pathname == '/faculty' ? true : false}
                 />
             </div>
         </div>

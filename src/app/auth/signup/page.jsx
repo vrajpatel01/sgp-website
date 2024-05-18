@@ -33,13 +33,16 @@ export default function SignUpScreen() {
             <form onSubmit={onSignUpFormSubmit} className="gap-3 flex flex-col" noValidate>
                 <InputField
                     id="email"
-                    width={300}
+                    className="w-full sm:min-w-[300px]"
                     title='Email'
                     placeholder="example@example.com"
                     type="email"
                     value={userEmail}
                     onChange={e => setUserEmail(e.target.value)} />
-                <Button width={300} label="Sign Up" />
+                <Button disabled={false}
+                    className="w-full sm:min-w-[300px]"
+                    label="Sign Up"
+                    className='bg-primary-text text-white w-full' />
                 <div className="flex justify-center text-detail-14">
                     <span>Already have an account? <Link href="/auth/login" className="underline">Login</Link></span>
                 </div>

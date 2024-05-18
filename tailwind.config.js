@@ -43,6 +43,7 @@ module.exports = {
         "body-16": "16px",
         "detail-14": "14px",
         "small-12": "12px",
+        "extra-small": "10px",
       },
       borderWidth: {
         1: "1px",

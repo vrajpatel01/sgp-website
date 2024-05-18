@@ -28,7 +28,9 @@ export default function DashboardLayout({ children }) {
                 }`}>
                 <Navigator />
             </div>
-            {children}
+            <div className="px-6 py-8 w-full h-screen bg-secondary-background overflow-x-auto">
+                {children}
+            </div>
         </div>
     )
 }
