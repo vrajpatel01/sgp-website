@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 // validators
 import emailValidator from '@/lib/validator/email'
@@ -25,7 +26,18 @@ export default function LoginScreen() {
             let validatePassword = isEmpty(userData.password, false)
 
             if (validateEmail && validatePassword) {
-                console.log('all done');
+                // console.log('all done');
+                const status = await signIn('credentials', {
+                    email: userData.email,
+                    password: userData.password,
+                    redirect: false
+                })
+
+                console.log(status);
+                if (!status.ok && status.error !== null) {
+                    return toast.error(status.error)
+                }
+                return window.location.href = '/'
             }
 
         } catch (error) {
