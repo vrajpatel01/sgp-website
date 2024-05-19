@@ -118,6 +118,7 @@ export default function AddStudentModel({ addStudentModel, setAddStudentModel })
                     </div>
                     <div className="w-full grid grid-cols-2 gap-5">
                         <Button
+                            type="button"
                             label='Cancel'
                             className='min-w-full'
                             onClick={() => setAddStudentModel(false)} />

@@ -18,7 +18,7 @@ export default function LoginScreen() {
         password: ''
     })
 
-    const onLoginFormSubmit = (e) => {
+    const onLoginFormSubmit = async (e) => {
         e.preventDefault()
         try {
             let validateEmail = emailValidator(userData.email)

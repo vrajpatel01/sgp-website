@@ -11,6 +11,7 @@ import SubMenuItem from "@/components/submenu/subMenuItem";
 import AddStudentModel from "@/components/models/student/addStudent";
 
 export default function Students() {
+
     const [addStudentButton, setAddStudentButton] = useState(false)
     const [addStudentModel, setAddStudentModel] = useState(false)
 

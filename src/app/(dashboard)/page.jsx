@@ -1,4 +1,4 @@
-export default function DashboardScreen() {
+export default async function DashboardScreen() {
     return (
         <div>Dashboard</div>
     );

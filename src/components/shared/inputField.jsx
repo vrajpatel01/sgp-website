@@ -12,7 +12,7 @@ export default function InputField({ title, placeholder, className, onChange, ty
             <p className="mb-[2px] text-detail-14">{title} {required && <span className="text-red-500">*</span>}</p>
             <div className="relative">
                 <input
-                    className={`border-border border-2 rounded-md px-4 py-2 focus:bg-primary focus:bg-opacity-5 focus:ring-primary ${className}`}
+                    className={`border-border border-2 rounded-md px-4 py-2 focus:bg-primary focus:bg-opacity-5 focus:ring-primary ${className} peer`}
                     value={value}
                     onChange={(e) => onChange(e)}
                     placeholder={placeholder}
