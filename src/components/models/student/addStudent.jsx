@@ -11,7 +11,7 @@ import isEmpty from "@/lib/validator/isEmpty"
 import emailValidator from "@/lib/validator/email"
 import numberValidator from "@/lib/validator/number"
 
-export default function AddStudentModel({ addStudentModel, setAddStudentModel }) {
+export default function AddStudentModel({ data, setData }) {
     const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: '', department: '', semester: '', division: '' })
 
     const handleStudentAdd = (e) => {
@@ -36,10 +36,10 @@ export default function AddStudentModel({ addStudentModel, setAddStudentModel })
         }
     }
     return (
-        <SideModel toggle={addStudentModel} setToggle={() => setAddStudentModel(!addStudentModel)} >
+        <SideModel toggle={data} setToggle={() => setData(!data)} >
             <div className="flex flex-col h-full">
                 <h1 className="text-title-24 mb-4">Add Student</h1>
-                <form onSubmit={handleStudentAdd} className="flex flex-col justify-between h-full" noValidate>
+                <form onSubmit={handleStudentAdd} className="flex flex-col justify-between gap-5 h-full" noValidate>
                     <div className="flex flex-col gap-5">
                         <InputField onChange={e => setStudent({
                             ...student,
@@ -96,14 +96,14 @@ export default function AddStudentModel({ addStudentModel, setAddStudentModel })
                             className='min-w-full'
                             title='Department' />
 
-                        <div className="flex justify-center items-center gap-5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <InputField onChange={e => setStudent({
                                 ...student,
                                 semester: e.target.value
                             })}
                                 required
                                 value={student.semester}
-                                className='max-w-[150px]'
+                                className='min-w-full sm:max-w-[150px]'
                                 title='Semester' />
 
                             <InputField onChange={e => setStudent({
@@ -112,7 +112,7 @@ export default function AddStudentModel({ addStudentModel, setAddStudentModel })
                             })}
                                 required
                                 value={student.division}
-                                className='max-w-[150px]'
+                                className='min-w-full sm:max-w-[150px]'
                                 title='Division' />
                         </div>
                     </div>
@@ -121,12 +121,13 @@ export default function AddStudentModel({ addStudentModel, setAddStudentModel })
                             type="button"
                             label='Cancel'
                             className='min-w-full'
-                            onClick={() => setAddStudentModel(false)} />
+                            onClick={() => setData(false)} />
 
                         <Button
                             label='Add Student'
                             className='min-w-full bg-primary text-white' />
                     </div>
+                    <span className="sm:hidden">&nbsp;</span>
                 </form>
             </div>
         </SideModel>

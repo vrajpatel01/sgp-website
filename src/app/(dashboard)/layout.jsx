@@ -34,7 +34,7 @@ export default function DashboardLayout({ children }) {
     return (
         <div className="md:flex justify-start items-start">
             {/* sidebar + navbar */}
-            <div className="bg-background border-b-1 md:border-r-1 border-border md:h-screen p-7 flex justify-between items-center md:justify-start md:items-start md:flex-col gap-9 resize-x">
+            <div className="bg-background border-b-1 md:border-r-1 border-border md:h-screen p-7 flex justify-between items-center md:justify-start md:items-start md:flex-col gap-9">
                 <div className="logo text-title-24">
                     Logo
                 </div>
@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }) {
                     <Navigator />
                 </div>
             </div>
-            <div className={`md:hidden p-7 h-full w-full absolute transition-all ease-in-out duration-300 bg-white ${sidebar ? 'left-0' : 'left-full'
+            <div className={`md:hidden p-7 h-full w-full absolute transition-all ease-in-out duration-300 bg-white z-20 ${sidebar ? 'left-0' : 'left-full'
                 }`}>
                 <Navigator />
             </div>

@@ -19,6 +19,7 @@ module.exports = {
         "secondary-background": "#F7F8F9",
         "primary-text": "#101116",
         "secondary-text": "#FFFFFF",
+        "light-text": "#6B6C7E",
         "border": "#D2D2D2"
       },
       fontFamily: {
