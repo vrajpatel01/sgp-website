@@ -40,9 +40,8 @@ export default function SignUpScreen() {
                     value={userEmail}
                     onChange={e => setUserEmail(e.target.value)} />
                 <Button disabled={false}
-                    className="w-full sm:min-w-[300px]"
                     label="Sign Up"
-                    className='bg-primary-text text-white w-full' />
+                    className='bg-primary-text text-white w-full sm:min-w-[300px]' />
                 <div className="flex justify-center text-detail-14">
                     <span>Already have an account? <Link href="/auth/login" className="underline">Login</Link></span>
                 </div>

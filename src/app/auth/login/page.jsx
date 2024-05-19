@@ -33,7 +33,6 @@ export default function LoginScreen() {
                     redirect: false
                 })
 
-                console.log(status);
                 if (!status.ok && status.error !== null) {
                     return toast.error(status.error)
                 }
@@ -80,7 +79,7 @@ export default function LoginScreen() {
                     label="Log in"
                     className='bg-primary-text text-white w-full' />
                 <div className="flex justify-center text-detail-14">
-                    <span>Don't have an account? <Link href="/auth/signup" className="underline">Sign Up</Link></span>
+                    <span>Don&apos;t have an account? <Link href="/auth/signup" className="underline">Sign Up</Link></span>
                 </div>
             </form>
         </div>
