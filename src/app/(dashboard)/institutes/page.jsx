@@ -41,7 +41,7 @@ export default function Institutes() {
                 className="bg-transparent sm:hidden p-2 mt-5"
                 icon={<span className="text-2xl">💡</span>}
                 message='Click on the institute to add departments in the institute.' /> */}
-            <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+            <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
                 <InstitutesItem
                     onInstituteClick={() => setDepartmentsModel(true)}
                     onDepartmentClick={() => setEditInstituteModel(true)}

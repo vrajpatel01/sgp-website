@@ -1,4 +1,5 @@
 import NextAuth from "next-auth/next";
+import axiosInstance from "@/axios.config";
 
 // import Credentials from "next-auth/providers/credentials";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -12,24 +13,59 @@ const handler = await NextAuth({
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
-                let user = null;
                 const { email, password } = credentials;
-                // throw new Error("Error on login");
-                if (email === 'd23dcs157@charusat.edu.in' && password === '123456') {
-                    user = {
-                        token: '1331eadd6ca66097a015b5ec53c5dcd13feb6b86a040721e6b32787658efdb94',
-                        role: 'admin'
-                    }
-                    return user
-                }
+                try {
+                    const { data } = await axiosInstance.post('/admin/auth/login', {
+                        email,
+                        password
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
 
-                throw new Error("Invalid email and password");
+                    if (data.success === false) {
+                        throw new Error(data.message)
+                    }
+
+                    return {
+                        email,
+                        token: data.token
+                    }
+                } catch (error) {
+                    throw new Error(error.response.data.message)
+                }
             }
         })
     ],
+    callbacks: {
+        async jwt({ token, user, account }) {
+            if (user) {
+                return {
+                    ...token,
+                    accessToken: user.token,
+                    email: user.email
+                }
+            }
+            return token
+        },
+        async session({ session, user, token }) {
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    token: token.accessToken,
+                    email: token.email
+                }
+            }
+        }
+    },
+    session: {
+        strategy: 'jwt',
+    },
     pages: {
         signIn: '/auth/login',
-        error: '/auth/error',
+        error: '/auth/login',
         newUser: '/auth/signup'
     }
 })

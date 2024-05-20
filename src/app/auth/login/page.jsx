@@ -3,7 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 // validators
 import emailValidator from '@/lib/validator/email'
@@ -15,7 +14,6 @@ import InputField from "@/components/shared/inputField";
 
 
 export default function LoginScreen() {
-    const redirect = useRouter()
     const [userData, setUserData] = useState({
         email: '',
         password: ''
@@ -28,18 +26,17 @@ export default function LoginScreen() {
             let validatePassword = isEmpty(userData.password, false)
 
             if (validateEmail && validatePassword) {
-                // console.log('all done');
                 const status = await signIn('credentials', {
                     email: userData.email,
                     password: userData.password,
                     redirect: false
                 })
 
+
                 if (!status.ok && status.error !== null) {
                     return toast.error(status.error)
                 }
-                // return window.location.href = '/'
-                redirect.push('/')
+                window.location.href = "/";
             }
 
         } catch (error) {

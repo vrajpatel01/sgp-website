@@ -3,7 +3,7 @@ import { useState, useId } from "react";
 import { PiEyeClosed } from "react-icons/pi";
 import { PiEye } from "react-icons/pi";
 
-export default function InputField({ title, placeholder, className, onChange, type, id, value, required = false }) {
+export default function InputField({ title, placeholder, className, onChange, type, id, value, required = false, maxLength }) {
     const [showPassword, setShowPassword] = useState(false)
     const fieldId = useId()
 
@@ -12,6 +12,7 @@ export default function InputField({ title, placeholder, className, onChange, ty
             <p className="mb-[2px] text-detail-14">{title} {required && <span className="text-red-500">*</span>}</p>
             <div className="relative">
                 <input
+                    maxLength={maxLength}
                     className={`border-border border-2 rounded-md px-4 py-2 focus:bg-primary focus:bg-opacity-5 focus:ring-primary ${className} peer`}
                     value={value}
                     onChange={(e) => onChange(e)}
