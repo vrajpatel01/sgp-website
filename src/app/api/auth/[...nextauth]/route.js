@@ -34,4 +34,5 @@ const handler = await NextAuth({
     }
 })
 
+
 export { handler as GET, handler as POST }
