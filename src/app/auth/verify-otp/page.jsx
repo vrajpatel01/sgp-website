@@ -47,7 +47,7 @@ export default function VerifyOtpScreen() {
         }
     }
     return (
-        <Suspense>
+        <Suspense fallback={<VerifyOtpScreen />}>
             <div className="flex flex-col gap-8">
                 <h1 className="text-title-28">Enter OTP</h1>
                 <form onSubmit={onResetPasswordFormSubmit} className="gap-3 flex flex-col">
