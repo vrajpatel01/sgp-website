@@ -12,7 +12,7 @@ export default function AddStudentByExcel({ data, setData }) {
 
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)}>
-            <div className="flex flex-col h-full justify-between">
+            <div className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col">
                 <h1 className="text-title-24 mb-4">Upload Excel</h1>
                 {/* <p>Upload Excel file to add multiple students at a time.</p> */}
                 <div className="flex flex-col gap-5">

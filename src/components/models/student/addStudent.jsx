@@ -37,9 +37,9 @@ export default function AddStudentModel({ data, setData }) {
     }
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <div className="flex flex-col h-full">
-                <h1 className="text-title-24 mb-4">Add Student</h1>
-                <form onSubmit={handleStudentAdd} className="flex flex-col justify-between gap-5 h-full" noValidate>
+            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
+                <div>
+                    <h1 className="text-title-24 mb-4">Add Student</h1>
                     <div className="flex flex-col gap-5">
                         <InputField onChange={e => setStudent({
                             ...student,
@@ -116,20 +116,19 @@ export default function AddStudentModel({ data, setData }) {
                                 title='Division' />
                         </div>
                     </div>
-                    <div className="w-full grid grid-cols-2 gap-5">
-                        <Button
-                            type="button"
-                            label='Cancel'
-                            className='min-w-full'
-                            onClick={() => setData(false)} />
+                </div>
+                <div className="w-full grid grid-cols-2 gap-5 mt-5">
+                    <Button
+                        type="button"
+                        label='Cancel'
+                        className='min-w-full'
+                        onClick={() => setData(false)} />
 
-                        <Button
-                            label='Add Student'
-                            className='min-w-full bg-primary text-white' />
-                    </div>
-                    <span className="sm:hidden">&nbsp;</span>
-                </form>
-            </div>
-        </SideModel>
+                    <Button
+                        label='Add Student'
+                        className='min-w-full bg-primary text-white' />
+                </div>
+            </form>
+        </SideModel >
     )
 }

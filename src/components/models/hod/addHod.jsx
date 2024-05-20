@@ -27,9 +27,7 @@ export default function AddHodModel({ data, setData }) {
     const handleStudentAdd = (e) => {
         e.preventDefault()
         try {
-
             const { name, employeeNumber, email, phoneNumber, designation, institute, department, subjectCode, subjectName } = hod
-
             const nameCheck = isEmpty(name)
             const employeeNumberCheck = isEmpty(employeeNumber)
             const emailCheck = emailValidator(email)
@@ -54,10 +52,10 @@ export default function AddHodModel({ data, setData }) {
     }
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <div className="flex flex-col h-full">
-                <h1 className="text-title-24 mb-4">Add Hod</h1>
-                <form onSubmit={handleStudentAdd} className="flex flex-col justify-between gap-5 h-full" noValidate>
-                    <div className="flex flex-col gap-5">
+            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
+                <div>
+                    <h1 className="text-title-24 mb-4">Add Hod</h1>
+                    <div className="flex flex-col gap-3">
                         <InputField onChange={e => setHod({
                             ...hod,
                             name: e.target.value
@@ -140,20 +138,19 @@ export default function AddHodModel({ data, setData }) {
                             className='min-w-full'
                             title='Subject Name' />
                     </div>
-                    <div className="w-full grid grid-cols-2 gap-5">
-                        <Button
-                            type="button"
-                            label='Cancel'
-                            className='min-w-full'
-                            onClick={() => setData(false)} />
+                </div>
+                <div className="w-full grid grid-cols-2 gap-5 mt-5">
+                    <Button
+                        type="button"
+                        label='Cancel'
+                        className='min-w-full'
+                        onClick={() => setData(false)} />
 
-                        <Button
-                            label='Add Hod'
-                            className='min-w-full bg-primary text-white' />
-                    </div>
-                    <span>&nbsp;</span>
-                </form>
-            </div>
+                    <Button
+                        label='Add Hod'
+                        className='min-w-full bg-primary text-white' />
+                </div>
+            </form>
         </SideModel>
     )
 }
