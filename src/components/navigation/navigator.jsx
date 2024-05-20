@@ -15,6 +15,9 @@ import { IoPeopleSharp } from "react-icons/io5";
 // hod
 import { TbUser } from "react-icons/tb";
 import { TbUserFilled } from "react-icons/tb";
+// institute
+import { RiSchoolLine } from "react-icons/ri";
+import { RiSchoolFill } from "react-icons/ri";
 
 
 export default function Navigator() {
@@ -56,6 +59,18 @@ export default function Navigator() {
                         icon={<PiStudent />}
                         activeIcon={<PiStudentFill />}
                         active={pathname == '/students' ? true : false}
+                    />
+                </div>
+            </div>
+            <div>
+                <div className="mb-3 text-light-text capitalize text-body-16">Section</div>
+                <div className="flex flex-col gap-5">
+                    <NavigationItem
+                        href="/institutes"
+                        title="Institutes"
+                        icon={<RiSchoolLine />}
+                        activeIcon={<RiSchoolFill />}
+                        active={pathname == '/institutes' ? true : false}
                     />
                 </div>
             </div>

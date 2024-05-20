@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // validators
 import emailValidator from '@/lib/validator/email'
@@ -14,6 +15,7 @@ import InputField from "@/components/shared/inputField";
 
 
 export default function LoginScreen() {
+    const redirect = useRouter()
     const [userData, setUserData] = useState({
         email: '',
         password: ''
@@ -36,7 +38,8 @@ export default function LoginScreen() {
                 if (!status.ok && status.error !== null) {
                     return toast.error(status.error)
                 }
-                return window.location.href = '/'
+                // return window.location.href = '/'
+                redirect.push('/')
             }
 
         } catch (error) {
