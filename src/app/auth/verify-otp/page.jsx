@@ -4,6 +4,7 @@ import toast from "react-hot-toast"
 import { useRouter } from "next/navigation";
 import { useSearchParams } from 'next/navigation'
 import axiosInstance, { AxiosError } from "@/axios.config";
+import { Suspense } from 'react'
 
 // components
 import Button from "@/components/shared/button"
@@ -46,26 +47,28 @@ export default function VerifyOtpScreen() {
         }
     }
     return (
-        <div className="flex flex-col gap-8">
-            <h1 className="text-title-28">Enter OTP</h1>
-            <form onSubmit={onResetPasswordFormSubmit} className="gap-3 flex flex-col">
-                <div className="flex justify-center items-center gap-3">
-                    <OtpInput
-                        value={otp}
-                        onChange={setOtp}
-                        numInputs={6}
-                        inputStyle="!w-12 !h-12 p-2 text-2xl rounded-md border border-gray-300 text-center mx-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                        inputType="number"
-                        renderInput={(props) => <input {...props} />}
+        <Suspense>
+            <div className="flex flex-col gap-8">
+                <h1 className="text-title-28">Enter OTP</h1>
+                <form onSubmit={onResetPasswordFormSubmit} className="gap-3 flex flex-col">
+                    <div className="flex justify-center items-center gap-3">
+                        <OtpInput
+                            value={otp}
+                            onChange={setOtp}
+                            numInputs={6}
+                            inputStyle="!w-12 !h-12 p-2 text-2xl rounded-md border border-gray-300 text-center mx-1 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            inputType="number"
+                            renderInput={(props) => <input {...props} />}
+                        />
+                    </div>
+                    <Button
+                        disabled={false}
+                        width={300}
+                        label="Reset"
+                        className="bg-primary-text text-white w-full sm:min-w-[300px]"
                     />
-                </div>
-                <Button
-                    disabled={false}
-                    width={300}
-                    label="Reset"
-                    className="bg-primary-text text-white w-full sm:min-w-[300px]"
-                />
-            </form>
-        </div>
+                </form>
+            </div>
+        </Suspense>
     );
 }
