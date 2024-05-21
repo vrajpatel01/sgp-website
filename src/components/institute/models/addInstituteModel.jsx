@@ -4,12 +4,12 @@ import toast from "react-hot-toast"
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
-import PopUpModel from "../popUpModel"
+import PopUpModel from "@/components/models/popUpModel"
 
 // validator
 import isEmpty from "@/lib/validator/isEmpty"
 
-export default function AddInstitute({ data, setData }) {
+export default function AddInstituteModel({ data, setData }) {
     const [institute, setInstitute] = useState('')
 
     const handleStudentAdd = (e) => {
@@ -23,7 +23,7 @@ export default function AddInstitute({ data, setData }) {
 
         } catch (error) {
             if (error.code == 'EMPTY')
-                return toast.error('All fields are required.')
+                return toast.error('Institute name is required')
             toast.error(error.message)
         }
     }

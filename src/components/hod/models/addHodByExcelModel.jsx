@@ -1,4 +1,4 @@
-import SideModel from "../sideModel";
+import SideModel from "../../models/sideModel";
 
 // icons
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -8,7 +8,7 @@ import { MdSimCardDownload } from "react-icons/md";
 import Button from "../../shared/button";
 
 
-export default function AddHodByExcel({ data, setData }) {
+export default function AddHodByExcelModel({ data, setData }) {
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)}>
             <div className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col">

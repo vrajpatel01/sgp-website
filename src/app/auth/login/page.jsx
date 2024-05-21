@@ -14,6 +14,7 @@ import InputField from "@/components/shared/inputField";
 
 
 export default function LoginScreen() {
+    const [isLoading, setIsLoading] = useState(false)
     const [userData, setUserData] = useState({
         email: '',
         password: ''
@@ -26,12 +27,13 @@ export default function LoginScreen() {
             let validatePassword = isEmpty(userData.password, false)
 
             if (validateEmail && validatePassword) {
+                setIsLoading(true)
                 const status = await signIn('credentials', {
                     email: userData.email,
                     password: userData.password,
                     redirect: false
                 })
-
+                setIsLoading(false)
 
                 if (!status.ok && status.error !== null) {
                     return toast.error(status.error)
@@ -50,6 +52,7 @@ export default function LoginScreen() {
             <h1 className="text-title-28">Login</h1>
             <form onSubmit={onLoginFormSubmit} className="gap-3 flex flex-col" noValidate>
                 <InputField
+                    disabled={isLoading}
                     id="email"
                     className="w-full sm:min-w-[300px]"
                     title='Email'
@@ -61,6 +64,7 @@ export default function LoginScreen() {
                         email: e.target.value
                     })} />
                 <InputField
+                    disabled={isLoading}
                     id="password"
                     className="w-full sm:min-w-[300px]"
                     title='Password'
@@ -74,10 +78,12 @@ export default function LoginScreen() {
                 <p className="flex justify-end text-detail-14">
                     <Link href="/auth/forgot-password" className="text-title-18 underline">Forgot Password?</Link>
                 </p>
-                <Button disabled={false}
+                <Button
+                    disabled={isLoading}
+                    isLoading={isLoading}
                     width={300}
                     label="Log in"
-                    className='bg-primary-text text-white w-full' />
+                    className='bg-primary-text text-white w-full disabled:bg-opacity-75' />
                 <div className="flex justify-center text-detail-14">
                     <span>Don&apos;t have an account? <Link href="/auth/signup" className="underline">Sign Up</Link></span>
                 </div>

@@ -8,8 +8,8 @@ import { SiMicrosoftexcel } from "react-icons/si";
 // components
 import Button from "@/components/shared/button";
 import SubMenuItem from "@/components/submenu/subMenuItem";
-import AddFacultyModel from "@/components/models/faculty/addFaculty";
-import AddFacultyByExcel from "@/components/models/faculty/addFacultyByExcel";
+import AddFacultyModel from "@/components/faculty/models/addFacultyModel";
+import AddFacultyByExcelModel from "@/components/faculty/models/addFacultyByExcelModel";
 
 export default function Faculty() {
     const [addFacultyButton, setAddFacultyButton] = useState(false)
@@ -49,7 +49,7 @@ export default function Faculty() {
                 </div>
             </div>
             <AddFacultyModel data={addFacultyModel} setData={setAddFacultyModel} />
-            <AddFacultyByExcel data={addFacultyByExcelModel} setData={setAddFacultyByExcelModel} />
+            <AddFacultyByExcelModel data={addFacultyByExcelModel} setData={setAddFacultyByExcelModel} />
         </div>
     )
 }

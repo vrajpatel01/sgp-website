@@ -9,9 +9,8 @@ import SideModel from "@/components/models/sideModel"
 import phoneValidator from "@/lib/validator/phone"
 import isEmpty from "@/lib/validator/isEmpty"
 import emailValidator from "@/lib/validator/email"
-import numberValidator from "@/lib/validator/number"
 
-export default function AddStudentModel({ data, setData }) {
+export default function AddFacultyModel({ data, setData }) {
     const [faculty, setFaculty] = useState({
         name: '',
         employeeNumber: '',
@@ -24,7 +23,7 @@ export default function AddStudentModel({ data, setData }) {
         subjectName: ''
     })
 
-    const handleStudentAdd = (e) => {
+    const handleFacultyAdd = (e) => {
         e.preventDefault()
         try {
 
@@ -54,7 +53,7 @@ export default function AddStudentModel({ data, setData }) {
     }
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
+            <form onSubmit={handleFacultyAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
                 <div>
                     <h1 className="text-title-24 mb-4">Add Faculty</h1>
                     <div className="flex flex-col gap-5">

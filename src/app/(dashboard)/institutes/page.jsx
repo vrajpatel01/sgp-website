@@ -6,11 +6,10 @@ import { RiSchoolLine } from "react-icons/ri";
 
 // components
 import Button from "@/components/shared/button";
-import AddInstitute from "@/components/models/institutes/addInstitute";
+import AddInstituteModel from "@/components/institute/models/addInstituteModel";
 import InstitutesItem from "@/components/institute/instituteItem";
-import CallOut from "@/components/shared/callOut";
-import ManageDepartment from "@/components/models/institutes/manageDepartment";
-import EditInstitute from "@/components/models/institutes/editInstitute";
+import ManageDepartmentModel from "@/components/institute/models/manageDepartmentModel";
+import EditInstituteModel from "@/components/institute/models/editInstituteModel";
 
 export default function Institutes() {
     const [addInstituteModel, setAddInstituteModel] = useState(false)
@@ -48,9 +47,9 @@ export default function Institutes() {
                     title="Devang Patel Institute of advance science & technology" />
                 {/* <InstitutesItem onClick={() => setDepartmentsModel(true)} title="Devang Patel Institute of advance science & technology" /> */}
             </div>
-            <AddInstitute data={addInstituteModel} setData={setAddInstituteModel} />
-            <ManageDepartment data={departmentsModel} setData={setDepartmentsModel} />
-            <EditInstitute data={editInstituteModel} setData={setEditInstituteModel} />
+            <AddInstituteModel data={addInstituteModel} setData={setAddInstituteModel} />
+            <ManageDepartmentModel data={departmentsModel} setData={setDepartmentsModel} />
+            <EditInstituteModel data={editInstituteModel} setData={setEditInstituteModel} />
         </div>
     )
 }

@@ -1,13 +1,13 @@
 import Button from "@/components/shared/button";
-import SideModel from "../sideModel";
-import DepartmentItem from "./departmentItem";
+import SideModel from "../../models/sideModel";
+import DepartmentItem from "../departmentItem";
 import { useState } from "react";
 
 // icons
 import { IoMdAdd } from "react-icons/io";
 
 
-export default function ManageDepartment({ data, setData }) {
+export default function ManageDepartmentModel({ data, setData }) {
     const [department, setDepartment] = useState(['computer science'])
 
     const handleDepartmentAdd = () => {

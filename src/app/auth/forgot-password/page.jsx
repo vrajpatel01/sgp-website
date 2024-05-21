@@ -2,8 +2,7 @@
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useState } from "react";
-import axiosInstance from "@/axios.config";
-import { AxiosError } from "axios";
+import axiosInstance, { AxiosError } from "@/axios.config";
 import { useRouter } from 'next/navigation'
 
 // components
@@ -12,35 +11,43 @@ import Button from "@/components/shared/button";
 
 // validator
 import emailValidator from "@/lib/validator/email";
+import { useMutation } from "@tanstack/react-query";
+
 
 
 export default function ForgotPasswordScreen() {
     const router = useRouter()
     const [email, setEmail] = useState('');
-    const onForgotPasswordFormSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            let validateEmail = emailValidator(email)
-            if (validateEmail) {
-                const response = axiosInstance.patch('/admin/auth/forgot-password', { email })
-                    .then(res => {
-                        if (res.data.success === true)
-                            router.push(`/auth/verify-otp?email=${email}`)
-                    })
 
-                toast.promise(response, {
-                    loading: 'Sending OTP...',
-                    success: 'OTP sent successfully. Check your email.',
-                    error: 'Failed to send OTP. Please try again.'
-                })
+    const forgotPassword = async (email) => {
+        const response = await axiosInstance.patch('/admin/auth/forgot-password', { email });
+        return response.data;
+    }
 
-            }
-        } catch (error) {
+    const mutation = useMutation({
+        mutationFn: forgotPassword,
+        onSuccess: () => {
+            toast.success('OTP sent successfully. Check your email.');
+            router.push(`/auth/verify-otp?email=${email}`);
+        },
+        onError: (error) => {
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
-            if (error.code === 'EMPTY')
-                return toast.error('Email fields are required.')
+            toast.error('Failed to send OTP. Please try again.');
+        }
+    });
+
+    const onForgotPasswordFormSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            let validateEmail = emailValidator(email);
+            if (validateEmail) {
+                mutation.mutate(email);
+            }
+        } catch (error) {
+            if (error.code === "EMPTY")
+                return toast.error('Please Enter Your Email Address.');
             return toast.error(error.message)
         }
     }
@@ -50,6 +57,7 @@ export default function ForgotPasswordScreen() {
             <h1 className="text-title-28">Forgot Password</h1>
             <form onSubmit={onForgotPasswordFormSubmit} className="gap-3 flex flex-col" noValidate>
                 <InputField
+                    disabled={mutation.isPending}
                     id="email"
                     className="w-full sm:min-w-[300px]"
                     title='Email'
@@ -60,10 +68,11 @@ export default function ForgotPasswordScreen() {
                 <p className="flex justify-end text-detail-14 underline">
                     <Link href="/auth/login">Back to Login?</Link>
                 </p>
-                <Button disabled={false}
+                <Button disabled={mutation.isPending}
                     width={300}
+                    isLoading={mutation.isPending}
                     label="Send OTP"
-                    className='bg-primary-text text-white w-full' />
+                    className='bg-primary-text text-white w-full disabled:bg-opacity-75' />
             </form>
         </div>
     );

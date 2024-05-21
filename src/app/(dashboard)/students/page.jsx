@@ -8,8 +8,8 @@ import { SiMicrosoftexcel } from "react-icons/si";
 // components
 import Button from "@/components/shared/button";
 import SubMenuItem from "@/components/submenu/subMenuItem";
-import AddStudentModel from "@/components/models/student/addStudent";
-import AddStudentByExcel from "@/components/models/student/addStudentByExcel";
+import AddStudentModel from "@/components/students/models/addStudentModel";
+import AddStudentByExcelModel from "@/components/students/models/addStudentByExcelModel";
 
 export default function Students() {
 
@@ -50,7 +50,7 @@ export default function Students() {
                 </div>
             </div>
             <AddStudentModel data={addStudentModel} setData={setAddStudentModel} />
-            <AddStudentByExcel data={addStudentByExcelModel} setData={setAddStudentByExcelModel} />
+            <AddStudentByExcelModel data={addStudentByExcelModel} setData={setAddStudentByExcelModel} />
         </div>
     )
 }

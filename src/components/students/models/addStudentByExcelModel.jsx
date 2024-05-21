@@ -1,4 +1,4 @@
-import SideModel from "../sideModel";
+import SideModel from "../../models/sideModel";
 
 // icons
 import { IoAddCircleOutline } from "react-icons/io5";
@@ -8,7 +8,7 @@ import { MdSimCardDownload } from "react-icons/md";
 import Button from "../../shared/button";
 
 
-export default function AddStudentByExcel({ data, setData }) {
+export default function AddStudentByExcelModel({ data, setData }) {
 
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)}>

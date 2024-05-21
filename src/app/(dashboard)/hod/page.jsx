@@ -8,14 +8,13 @@ import { SiMicrosoftexcel } from "react-icons/si";
 // components
 import Button from "@/components/shared/button";
 import SubMenuItem from "@/components/submenu/subMenuItem";
-import AddHodModel from "@/components/models/hod/addHod";
-import AddHodByExcel from "@/components/models/hod/addHodByExcel";
+import AddHodByExcelModel from "@/components/hod/models/addHodByExcelModel";
+import AddHodModel from "@/components/hod/models/addHodModel";
 
 export default function Hod() {
     const [addHodButton, setAddHodButton] = useState(false)
     const [addHodModel, setAddHodModel] = useState(false)
     const [addHodByExcelModel, setAddHodByExcelModel] = useState(false)
-    const [toggle, setToggle] = useState(false)
 
     return (
         <div>
@@ -50,7 +49,7 @@ export default function Hod() {
                 </div>
             </div>
             <AddHodModel data={addHodModel} setData={setAddHodModel} />
-            <AddHodByExcel data={addHodByExcelModel} setData={setAddHodByExcelModel} />
+            <AddHodByExcelModel data={addHodByExcelModel} setData={setAddHodByExcelModel} />
         </div>
     )
 }

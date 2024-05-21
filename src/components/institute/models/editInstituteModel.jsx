@@ -1,13 +1,14 @@
 import { useState } from "react";
-
+import toast from "react-hot-toast";
 
 // components
-import SideModel from "../sideModel";
+import SideModel from "../../models/sideModel";
 import InputField from "@/components/shared/inputField";
 import Button from "@/components/shared/button";
 
 // icons
 import { MdDelete } from "react-icons/md";
+import isEmpty from "@/lib/validator/isEmpty";
 
 
 export default function EditInstitute({ data, setData }) {
@@ -15,6 +16,16 @@ export default function EditInstitute({ data, setData }) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault()
+        try {
+            const instituteNameValidator = isEmpty(institute)
+            if (instituteNameValidator) {
+                console.log('done.');
+            }
+        } catch (error) {
+            if (error.code == 'EMPTY')
+                return toast.error('Institute name is required')
+            toast.error(error.message)
+        }
     }
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)}>
