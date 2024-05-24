@@ -2,6 +2,7 @@ import AuthProvider from "../components/authProvider";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "../components/queryProvider";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const metadata = {
   title: "SGP",

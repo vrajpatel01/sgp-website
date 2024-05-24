@@ -9,9 +9,10 @@ import { MdOutlineDone } from "react-icons/md";
 // validators
 import isEmpty from "@/lib/validator/isEmpty";
 import CustomError from "@/lib/handler/customError";
+import { useDeleteDepartment } from "@/services/network/mutation";
 
 
-export default function DepartmentItem({ onClick, title, isNew = false }) {
+export default function DepartmentItem({ onClick, title, isNew = false, instituteId, departmentData }) {
     const [isEditable, setIsEditable] = useState(!isNew && title === '')
     const [departmentTitle, setDepartmentTitle] = useState(title)
     const departmentItemId = useId()
@@ -20,6 +21,8 @@ export default function DepartmentItem({ onClick, title, isNew = false }) {
     useEffect(() => {
         inputRef.current.focus()
     }, [isEditable])
+
+    const deleteDepartment = useDeleteDepartment()
 
     const handleSubmitByEnter = (e) => {
         if (e.key === 'Enter') {
@@ -54,7 +57,10 @@ export default function DepartmentItem({ onClick, title, isNew = false }) {
                     {isEditable ? <MdOutlineDone onClick={handleDepartmentSubmit} /> :
                         <MdModeEditOutline onClick={() => setIsEditable(true)} />}
                 </div>
-                <MdDelete className="text-lg text-red-500 cursor-pointer" />
+                <MdDelete onClick={() => deleteDepartment.mutate({
+                    departmentId: departmentData._id,
+                    instituteId
+                })} className="text-lg text-red-500 cursor-pointer" />
             </div>
         </div>
     )

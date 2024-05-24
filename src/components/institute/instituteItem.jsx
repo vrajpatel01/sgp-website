@@ -11,8 +11,8 @@ export default function InstituteItem({ title, onInstituteClick, onDepartmentCli
             </div>
             <h1 className="text-body-18 text-center sm:text-center">{title}</h1>
             <div className="flex gap-2 flex-wrap justify-center items-center">
-                <Button onClick={onDepartmentClick} className='w-full md:w-auto bg-secondary-background whitespace-nowrap' label='Edit Institute' />
-                <Button onClick={onInstituteClick} className='w-full md:w-auto bg-secondary-background whitespace-nowrap' label='Manage Departments' />
+                <Button onClick={onInstituteClick} className='w-full md:w-auto bg-secondary-background whitespace-nowrap' label='Edit Institute' />
+                <Button onClick={onDepartmentClick} className='w-full md:w-auto bg-secondary-background whitespace-nowrap' label='Manage Departments' />
             </div>
         </div>
     )

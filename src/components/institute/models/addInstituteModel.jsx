@@ -1,16 +1,32 @@
-import { useState } from "react"
+"use client";
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react";
 import toast from "react-hot-toast"
 
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
+
+// models
 import PopUpModel from "@/components/models/popUpModel"
 
 // validator
 import isEmpty from "@/lib/validator/isEmpty"
+import { useAddInstitute } from "@/services/network/mutation";
 
 export default function AddInstituteModel({ data, setData }) {
     const [institute, setInstitute] = useState('')
+    const { data: session, loading } = useSession()
+
+    const addInstitute = useAddInstitute()
+
+    useEffect(() => {
+        if (addInstitute.isSuccess) {
+            setData(false);
+            setInstitute('');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [addInstitute.isSuccess]);
 
     const handleStudentAdd = (e) => {
         e.preventDefault()
@@ -18,15 +34,17 @@ export default function AddInstituteModel({ data, setData }) {
             const instituteCheck = isEmpty(institute)
 
             if (instituteCheck) {
-                console.log('done');
+                addInstitute.mutate(institute)
             }
-
         } catch (error) {
             if (error.code == 'EMPTY')
                 return toast.error('Institute name is required')
             toast.error(error.message)
         }
     }
+
+    if (loading) return null
+
     return (
         <PopUpModel toggle={data} setToggle={() => setData(!data)}>
             <form onSubmit={handleStudentAdd} className="flex flex-col gap-4" noValidate>
@@ -35,6 +53,7 @@ export default function AddInstituteModel({ data, setData }) {
                     value={institute}
                     onChange={e => setInstitute(e.target.value)}
                     label='Name'
+                    disabled={addInstitute.isPending}
                     placeholder='Institute Name'
                     className='min-w-full sm:min-w-[300px]'
                 />
@@ -45,13 +64,15 @@ export default function AddInstituteModel({ data, setData }) {
                             setInstitute('')
                             setData(false)
                         }}
+                        disabled={addInstitute.isPending}
                         type="button"
-                        className='!rounded-full'
+                        className='!rounded-full w-full sm:min-w-[130px]'
                     />
                     <Button
                         label='Add Institute'
-                        onClick={() => { }}
-                        className='bg-primary text-white !rounded-full whitespace-nowrap'
+                        disabled={addInstitute.isPending}
+                        isLoading={addInstitute.isPending}
+                        className='bg-primary text-white !rounded-full whitespace-nowrap w-full sm:min-w-[130px] disabled:bg-opacity-90'
                     />
                 </div>
             </form>

@@ -19,15 +19,13 @@ export default function AddHodModel({ data, setData }) {
         phoneNumber: '',
         designation: '',
         institute: '',
-        department: '',
-        subjectCode: '',
-        subjectName: ''
+        department: ''
     })
 
     const handleStudentAdd = (e) => {
         e.preventDefault()
         try {
-            const { name, employeeNumber, email, phoneNumber, designation, institute, department, subjectCode, subjectName } = hod
+            const { name, employeeNumber, email, phoneNumber, designation, institute, department } = hod
             const nameCheck = isEmpty(name)
             const employeeNumberCheck = isEmpty(employeeNumber)
             const emailCheck = emailValidator(email)
@@ -35,11 +33,9 @@ export default function AddHodModel({ data, setData }) {
             const designationCheck = isEmpty(designation)
             const instituteCheck = isEmpty(institute)
             const departmentCheck = isEmpty(department)
-            const subjectCodeCheck = isEmpty(subjectCode)
-            const subjectNameCheck = isEmpty(subjectName)
 
 
-            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
+            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
                 console.log('all done');
             }
 
@@ -119,24 +115,6 @@ export default function AddHodModel({ data, setData }) {
                             value={hod.department}
                             className='min-w-full'
                             title='Department' />
-
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            subjectCode: e.target.value
-                        })}
-                            required
-                            value={hod.semester}
-                            className='min-w-full'
-                            title='Subject Code' />
-
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            subjectName: e.target.value
-                        })}
-                            required
-                            value={hod.division}
-                            className='min-w-full'
-                            title='Subject Name' />
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-2 gap-5 mt-5">
