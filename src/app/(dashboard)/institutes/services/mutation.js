@@ -1,40 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { addInstitute, deleteInstitute, addDepartment, deleteDepartment, forgotPassword, otpValidation } from "./api";
+import { addInstitute, deleteInstitute, addDepartment, deleteDepartment, updateInstitute } from "./api";
 import { signOut } from "next-auth/react";
 import toast from "react-hot-toast";
 import { AxiosError } from "@/axios.config";
-
-
-export const useForgotPassword = () => {
-    return useMutation({
-        mutationFn: (email) => forgotPassword(email),
-        onSuccess: () => {
-            toast.success('OTP sent successfully. Check your email.');
-        },
-        onError: (error) => {
-            if (error instanceof AxiosError) {
-                return toast.error(error.response.data?.message)
-            }
-            toast.error('Failed to send OTP. Please try again.');
-        }
-    })
-}
-
-export const useOtpValidation = () => {
-    return useMutation({
-        mutationFn: (data) => otpValidation(data.email, data.otp),
-        onSuccess: (e) => {
-            return toast.success('Password is Send to your email. Please check your email.')
-        },
-        onError: (error) => {
-            if (error instanceof AxiosError) {
-                return toast.error(error.response.data?.message)
-            }
-            toast.error('Failed to verify OTP. Please try again.');
-        }
-    })
-}
 
 export const useAddInstitute = () => {
     const { data: session } = useSession()
@@ -88,21 +57,27 @@ export const useAddDepartment = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: (data) => addDepartment(data.department, data.instituteId, session?.user?.token),
+        mutationFn: (data) => addDepartment([data.department], data.instituteId, session?.user?.token),
         onError: (error) => {
-            console.log(error);
             if (error.message.includes('token')) {
                 toast.error('Session expired, please login again')
-                signOut()
+                return signOut()
             }
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
             return toast.error(error.message)
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['institutes'] })
-            return toast.success('Department added successfully')
+        onSettled: (data, error, variables) => {
+            if (data.success === false) {
+                return toast.error(data.message)
+            }
+
+            if (data.success == true) {
+                const instituteId = variables.instituteId
+                queryClient.invalidateQueries({ queryKey: ['departments', { instituteId }] })
+                return toast.success('Department added successfully')
+            }
         }
     })
 }
@@ -119,9 +94,36 @@ export const useDeleteDepartment = () => {
             }
             return toast.error(error.response?.data?.message || error.message)
         },
-        onSuccess: async () => {
-            queryClient.invalidateQueries({ queryKey: ['institutes'] })
-            return toast.success('Department deleted successfully')
+        onSettled: (data, error, variables) => {
+            if (data.success == true) {
+                const instituteId = variables.instituteId
+                queryClient.invalidateQueries({ queryKey: ['departments', { instituteId }] })
+                return toast.success('Department deleted successfully')
+            }
+        }
+    })
+}
+
+export const useUpdateInstitute = () => {
+    const queryClient = useQueryClient()
+    const { data: session } = useSession()
+    return useMutation({
+        mutationFn: (data) => updateInstitute(data.instituteId, data.name, session?.user?.token),
+        onError: (error) => {
+            if (error.message.includes('token')) {
+                toast.error('Session expired, please login again')
+                signOut()
+            }
+            return toast.error(error.response?.data?.message || error.message)
+        },
+        onSettled: (data, error, variables) => {
+            if (data.success === false) {
+                return toast.error(data.message)
+            }
+            if (data.success == true) {
+                queryClient.invalidateQueries({ queryKey: ['institutes'] })
+                return toast.success('Institute updated successfully')
+            }
         }
     })
 }

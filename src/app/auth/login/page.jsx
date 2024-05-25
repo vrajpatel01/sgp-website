@@ -5,8 +5,8 @@ import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 
 // validators
-import emailValidator from '@/lib/validator/email'
-import isEmpty from "@/lib/validator/isEmpty";
+import emailValidator from "@/services/validator/email";
+import isEmpty from "@/services/validator/isEmpty";
 
 // components
 import Button from "@/components/shared/button";
@@ -33,12 +33,13 @@ export default function LoginScreen() {
                     password: userData.password,
                     redirect: false
                 })
-                setIsLoading(false)
 
                 if (!status.ok && status.error !== null) {
+                    setIsLoading(false)
                     return toast.error(status.error)
                 }
                 window.location.href = "/";
+                setIsLoading(false)
             }
 
         } catch (error) {

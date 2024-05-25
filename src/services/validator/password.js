@@ -1,4 +1,4 @@
-import CustomError from "../handler/customError"
+import CustomError from "../customError"
 import isEmpty from "./isEmpty"
 
 const passwordValidator = (password, confirmPassword = null) => {

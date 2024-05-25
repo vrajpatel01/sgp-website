@@ -10,7 +10,9 @@ import { MdDelete } from "react-icons/md";
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
-import { useDeleteInstitute } from "@/services/network/mutation"
+
+// network
+import { useDeleteInstitute } from "../../services/mutation";
 
 export default function InstituteDeleteConfirmationModel({ data, setData, refetch, instituteData }) {
     const [institute, setInstitute] = useState('')

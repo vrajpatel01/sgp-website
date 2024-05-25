@@ -7,9 +7,10 @@ import { MdModeEditOutline } from "react-icons/md";
 import { MdOutlineDone } from "react-icons/md";
 
 // validators
-import isEmpty from "@/lib/validator/isEmpty";
-import CustomError from "@/lib/handler/customError";
-import { useDeleteDepartment } from "@/services/network/mutation";
+import isEmpty from "@/services/validator/isEmpty";
+
+// network
+import { useDeleteDepartment } from "../services/mutation";
 
 
 export default function DepartmentItem({ onClick, title, isNew = false, instituteId, departmentData }) {

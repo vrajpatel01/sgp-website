@@ -8,7 +8,7 @@ import InputField from "@/components/shared/inputField";
 import Button from "@/components/shared/button";
 
 // validators
-import emailValidator from "@/lib/validator/email";
+import emailValidator from "@/services/validator/email";
 
 export default function SignUpScreen() {
     const [userEmail, setUserEmail] = useState('')

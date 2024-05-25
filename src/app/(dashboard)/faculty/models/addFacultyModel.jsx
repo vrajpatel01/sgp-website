@@ -6,26 +6,31 @@ import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 import SideModel from "@/components/models/sideModel"
 
-import phoneValidator from "@/lib/validator/phone"
-import isEmpty from "@/lib/validator/isEmpty"
-import emailValidator from "@/lib/validator/email"
-import numberValidator from "@/lib/validator/number"
 
-export default function AddHodModel({ data, setData }) {
-    const [hod, setHod] = useState({
+// validator
+import phoneValidator from "@/services/validator/phone"
+import isEmpty from "@/services/validator/isEmpty"
+import emailValidator from "@/services/validator/email"
+
+export default function AddFacultyModel({ data, setData }) {
+    const [faculty, setFaculty] = useState({
         name: '',
         employeeNumber: '',
         email: '',
         phoneNumber: '',
         designation: '',
         institute: '',
-        department: ''
+        department: '',
+        subjectCode: '',
+        subjectName: ''
     })
 
-    const handleStudentAdd = (e) => {
+    const handleFacultyAdd = (e) => {
         e.preventDefault()
         try {
-            const { name, employeeNumber, email, phoneNumber, designation, institute, department } = hod
+
+            const { name, employeeNumber, email, phoneNumber, designation, institute, department, subjectCode, subjectName } = faculty
+
             const nameCheck = isEmpty(name)
             const employeeNumberCheck = isEmpty(employeeNumber)
             const emailCheck = emailValidator(email)
@@ -33,9 +38,11 @@ export default function AddHodModel({ data, setData }) {
             const designationCheck = isEmpty(designation)
             const instituteCheck = isEmpty(institute)
             const departmentCheck = isEmpty(department)
+            const subjectCodeCheck = isEmpty(subjectCode)
+            const subjectNameCheck = isEmpty(subjectName)
 
 
-            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
+            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
                 console.log('all done');
             }
 
@@ -48,73 +55,91 @@ export default function AddHodModel({ data, setData }) {
     }
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
+            <form onSubmit={handleFacultyAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
                 <div>
-                    <h1 className="text-title-24 mb-4">Add Hod</h1>
-                    <div className="flex flex-col gap-3">
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                    <h1 className="text-title-24 mb-4">Add Faculty</h1>
+                    <div className="flex flex-col gap-5">
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             name: e.target.value
                         })}
                             required
-                            value={hod.name}
+                            value={faculty.name}
                             className='min-w-full sm:min-w-[300px]'
                             title='Name' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             employeeNumber: e.target.value
                         })}
                             required
-                            value={hod.employeeNumber}
+                            value={faculty.employeeNumber}
                             className='min-w-full'
                             title='Employee Number' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             email: e.target.value
                         })}
                             required
-                            value={hod.email}
+                            value={faculty.email}
                             className='min-w-full'
                             title='Email' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             phoneNumber: e.target.value
                         })}
                             required
-                            value={hod.phoneNumber}
+                            value={faculty.phoneNumber}
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             designation: e.target.value
                         })}
                             required
-                            value={hod.designation}
+                            value={faculty.designation}
                             className='min-w-full'
                             title='Designation' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             institute: e.target.value
                         })}
                             required
-                            value={hod.institute}
+                            value={faculty.institute}
                             className='min-w-full'
                             title='Institute' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             department: e.target.value
                         })}
                             required
-                            value={hod.department}
+                            value={faculty.department}
                             className='min-w-full'
                             title='Department' />
+
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
+                            subjectCode: e.target.value
+                        })}
+                            required
+                            value={faculty.semester}
+                            className='min-w-full'
+                            title='Subject Code' />
+
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
+                            subjectName: e.target.value
+                        })}
+                            required
+                            value={faculty.division}
+                            className='min-w-full'
+                            title='Subject Name' />
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-2 gap-5 mt-5">
@@ -125,7 +150,7 @@ export default function AddHodModel({ data, setData }) {
                         onClick={() => setData(false)} />
 
                     <Button
-                        label='Add Hod'
+                        label='Add Faculty'
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>

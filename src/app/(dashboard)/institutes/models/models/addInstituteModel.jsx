@@ -11,8 +11,10 @@ import Button from "@/components/shared/button"
 import PopUpModel from "@/components/models/popUpModel"
 
 // validator
-import isEmpty from "@/lib/validator/isEmpty"
-import { useAddInstitute } from "@/services/network/mutation";
+import isEmpty from "@/services/validator/isEmpty";
+
+// network
+import { useAddInstitute } from "../../services/mutation";
 
 export default function AddInstituteModel({ data, setData }) {
     const [institute, setInstitute] = useState('')

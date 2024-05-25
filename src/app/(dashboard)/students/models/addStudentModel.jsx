@@ -6,10 +6,11 @@ import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 import SideModel from "@/components/models/sideModel"
 
-import phoneValidator from "@/lib/validator/phone"
-import isEmpty from "@/lib/validator/isEmpty"
-import emailValidator from "@/lib/validator/email"
-import numberValidator from "@/lib/validator/number"
+// validator
+import phoneValidator from "@/services/validator/phone"
+import isEmpty from "@/services/validator/isEmpty"
+import emailValidator from "@/services/validator/email"
+import numberValidator from "@/services/validator/number"
 
 export default function AddStudentModel({ data, setData }) {
     const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: '', department: '', semester: '', division: '' })

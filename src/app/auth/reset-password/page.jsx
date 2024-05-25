@@ -7,7 +7,7 @@ import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 
 // validator
-import passwordValidator from "@/lib/validator/password";
+import passwordValidator from "@/services/validator/password";
 
 export default function ResetPasswordScreen() {
     const [userInput, setUserInput] = useState({

@@ -1,5 +1,5 @@
 import { IoSchool } from "react-icons/io5";
-import Button from "../shared/button";
+import Button from "@/components/shared/button";
 
 
 export default function InstituteItem({ title, onInstituteClick, onDepartmentClick }) {

@@ -1,4 +1,4 @@
-const { default: CustomError } = require("../handler/customError")
+import CustomError from "../customError"
 
 const isEmpty = (text) => {
     if (text === undefined || text.length == 0 || text == '') {

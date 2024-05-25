@@ -1,21 +1,24 @@
 'use client';
 import { useState } from "react";
-import axiosInstance from "@/axios.config";
-import { useQuery } from '@tanstack/react-query'
 
 // icons
 import { RiSchoolLine } from "react-icons/ri";
 
 // components
 import Button from "@/components/shared/button";
-import AddInstituteModel from "@/components/institute/models/addInstituteModel";
-import InstitutesItem from "@/components/institute/instituteItem";
-import ManageDepartmentModel from "@/components/institute/models/manageDepartmentModel";
-import EditInstituteModel from "@/components/institute/models/editInstituteModel";
-import InstituteDeleteConfirmationModel from "@/components/institute/models/instituteDeleteConfirmationModel";
-import { useGetAllInstitutes } from "@/services/network/query";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
+// models
+import AddInstituteModel from "./models/models/addInstituteModel";
+import InstitutesItem from "./models/instituteItem";
+import ManageDepartmentModel from "./models/models/manageDepartmentModel";
+import EditInstituteModel from "./models/models/editInstituteModel";
+import InstituteDeleteConfirmationModel from "./models/models/instituteDeleteConfirmationModel";
 import InstituteCardSkeleton from "@/components/skeletons/instituteCardSkeleton";
+
+// network
+import { useGetAllInstitutes } from "./services/query";
+
+import Error from "@/components/shared/error";
 
 export default function Institutes() {
     const [addInstituteModel, setAddInstituteModel] = useState(false)
@@ -27,24 +30,15 @@ export default function Institutes() {
 
     const [institute, setInstitute] = useState({
         name: '',
-        id: '',
-        department: []
+        id: ''
     })
-
-    const currentInstitute = (e) => {
-        setInstitute({
-            name: e.name,
-            id: e._id,
-            department: e.departments
-        });
-    }
 
     if (institutes.isPending) {
         return <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
             <InstituteCardSkeleton itemCount={8} />
         </div>
     }
-    if (institutes.isError) return <div>Error: {institutes.error.message}</div>
+    if (institutes.isError) return <Error message="Having some problem to fetch data." />
 
     return (
         <div>
@@ -66,11 +60,17 @@ export default function Institutes() {
                     <InstitutesItem
                         key={e._id}
                         onInstituteClick={() => {
-                            currentInstitute(e)
+                            setInstitute({
+                                name: e.name,
+                                id: e._id
+                            });
                             setEditInstituteModel(true)
                         }}
                         onDepartmentClick={() => {
-                            currentInstitute(e)
+                            setInstitute({
+                                name: e.name,
+                                id: e._id
+                            });
                             setDepartmentsModel(true)
                         }}
                         title={e.name} />

@@ -2,16 +2,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation";
-import axiosInstance, { AxiosError } from "@/axios.config";
-import { useMutation } from "@tanstack/react-query";
 
 // components
 import Button from "@/components/shared/button"
 
 // validator
 import OtpInput from "react-otp-input";
-import numberValidator from "@/lib/validator/number";
-import { useOtpValidation } from "@/services/network/mutation";
+import numberValidator from "@/services/validator/number";
+import { useOtpValidation } from "../services/mutation";
 
 export default function VerifyOtpScreen(props) {
     const router = useRouter()

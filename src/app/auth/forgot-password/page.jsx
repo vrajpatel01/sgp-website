@@ -9,8 +9,10 @@ import InputField from "@/components/shared/inputField";
 import Button from "@/components/shared/button";
 
 // validator
-import emailValidator from "@/lib/validator/email";
-import { useForgotPassword } from "@/services/network/mutation";
+import emailValidator from "@/services/validator/email";
+
+// network
+import { useForgotPassword } from "../services/mutation";
 
 
 

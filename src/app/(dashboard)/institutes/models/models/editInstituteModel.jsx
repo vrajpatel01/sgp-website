@@ -6,16 +6,31 @@ import InputField from "@/components/shared/inputField";
 import Button from "@/components/shared/button";
 
 // models
-import SideModel from "../../models/sideModel";
+import SideModel from "@/components/models/sideModel";
 
 // icons
-import { MdDelete } from "react-icons/md";
-import isEmpty from "@/lib/validator/isEmpty";
+// import { MdDelete } from "react-icons/md";
+
+// validator
+import isEmpty from "@/services/validator/isEmpty";
+
+// network
+import { useUpdateInstitute } from "../../services/mutation";
 
 
 export default function EditInstitute({ data, setData, instituteData, refetch, setInstituteDeleteConfirmationModel }) {
     const [institute, setInstitute] = useState('')
     useEffect(() => { setInstitute(instituteData.name) }, [instituteData])
+
+    const updateInstitute = useUpdateInstitute()
+
+    useEffect(() => {
+        if (updateInstitute.isSuccess) {
+            setInstitute('')
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [updateInstitute.isSuccess])
 
 
     const handleFormSubmit = (e) => {
@@ -23,7 +38,7 @@ export default function EditInstitute({ data, setData, instituteData, refetch, s
         try {
             const instituteNameValidator = isEmpty(institute)
             if (instituteNameValidator) {
-                console.log('all done');
+                updateInstitute.mutate({ instituteId: instituteData.id, name: institute })
             }
         } catch (error) {
             if (error.code == 'EMPTY')

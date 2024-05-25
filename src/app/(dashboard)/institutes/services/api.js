@@ -1,13 +1,5 @@
 import axiosInstance from "@/axios.config";
 
-export const forgotPassword = async (email) => {
-    return (await axiosInstance.patch('/admin/auth/forgot-password', { email })).data
-}
-
-export const otpValidation = async (email, otp) => {
-    return (await axiosInstance.post('/admin/auth/forgot-password/verify', { email, otp })).data
-}
-
 export const getAllInstitutes = async () => {
     return (await axiosInstance.get('/public/institutes')).data
 }
@@ -32,9 +24,24 @@ export const deleteInstitute = async (id, token) => {
     })).data
 }
 
+export const getDepartment = async (instituteId, token) => {
+    return (await axiosInstance.get(`/public/departments/${instituteId}`)).data
+}
+
 export const addDepartment = async (departments, instituteId, token) => {
     return (await axiosInstance.patch(`/admin/add-departments/${instituteId}`, {
-        departments: [departments]
+        departments: [departments.toString()]
+    }, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        }
+    })).data
+}
+
+export const updateInstitute = async (instituteId, name, token) => {
+    return (await axiosInstance.patch(`/admin/update-institute/${instituteId}`, {
+        name
     }, {
         headers: {
             "Content-Type": "application/json",

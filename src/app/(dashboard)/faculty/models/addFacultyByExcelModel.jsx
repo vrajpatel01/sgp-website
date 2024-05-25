@@ -1,11 +1,11 @@
-import SideModel from "../../models/sideModel";
+import SideModel from "@/components/models/sideModel";
 
 // icons
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdSimCardDownload } from "react-icons/md";
 
 // components
-import Button from "../../shared/button";
+import Button from "@/components/shared/button";
 
 
 export default function addFacultyByExcelModel({ data, setData }) {

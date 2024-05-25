@@ -1,4 +1,4 @@
-import CustomError from "../handler/customError"
+import CustomError from "../customError.js"
 import isEmpty from "./isEmpty"
 
 const emailValidator = (email, throwError) => {
