@@ -4,12 +4,14 @@ import { useState } from "react";
 // icons
 import { PiStudent } from "react-icons/pi";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { MdDelete } from "react-icons/md";
 
 // components
 import Button from "@/components/shared/button";
 import SubMenuItem from "@/components/submenu/subMenuItem";
 import AddStudentModel from "@/app/(dashboard)/students/models/addStudentModel";
 import AddStudentByExcelModel from "@/app/(dashboard)/students/models/addStudentByExcelModel";
+import StudentData from "./components/studentData";
 
 export default function Students() {
 
@@ -49,6 +51,7 @@ export default function Students() {
                     </div>
                 </div>
             </div>
+            <StudentData />
             <AddStudentModel data={addStudentModel} setData={setAddStudentModel} />
             <AddStudentByExcelModel data={addStudentByExcelModel} setData={setAddStudentByExcelModel} />
         </div>

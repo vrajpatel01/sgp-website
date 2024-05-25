@@ -1,5 +1,6 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
+import CustomError from "@/services/customError"
 
 // components
 import InputField from "@/components/shared/inputField"
@@ -11,6 +12,9 @@ import SideModel from "@/components/models/sideModel"
 import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
+import SelectInput from "@/components/shared/selectInput"
+import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
+import { useAddFaulty } from "../services/mutation"
 
 export default function AddFacultyModel({ data, setData }) {
     const [faculty, setFaculty] = useState({
@@ -19,11 +23,15 @@ export default function AddFacultyModel({ data, setData }) {
         email: '',
         phoneNumber: '',
         designation: '',
-        institute: '',
-        department: '',
+        institute: 'Select Institute',
+        department: 'Select Department',
         subjectCode: '',
         subjectName: ''
     })
+
+    const institutes = useGetAllInstitutes()
+    const departments = useGetDepartments(faculty.institute, faculty.institute !== '' && faculty.institute !== 'Select Institute' ? true : false)
+    const addFaulty = useAddFaulty()
 
     const handleFacultyAdd = (e) => {
         e.preventDefault()
@@ -41,9 +49,24 @@ export default function AddFacultyModel({ data, setData }) {
             const subjectCodeCheck = isEmpty(subjectCode)
             const subjectNameCheck = isEmpty(subjectName)
 
+            if (faculty.institute === 'Select Institute' ||
+                faculty.department === 'Select Department') {
+                throw new CustomError('All fields are required.', 'EMPTY')
+            }
+
 
             if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
-                console.log('all done');
+                const data = {
+                    ...faculty,
+                    name: faculty.name.toLowerCase().trim(),
+                    employeeCode: faculty.employeeNumber.toLowerCase().trim(),
+                    email: faculty.email.toLowerCase().trim(),
+                    mobileNumber: faculty.phoneNumber.toLowerCase().trim(),
+                    designation: faculty.designation.toLowerCase().trim(),
+                    subjectCode: faculty.subjectCode.toLowerCase().trim(),
+                    subjectName: faculty.subjectName.toLowerCase().trim()
+                }
+                addFaulty.mutate(data)
             }
 
 
@@ -65,7 +88,7 @@ export default function AddFacultyModel({ data, setData }) {
                         })}
                             required
                             value={faculty.name}
-                            className='min-w-full sm:min-w-[300px]'
+                            className='min-w-full'
                             title='Name' />
 
                         <InputField onChange={e => setFaculty({
@@ -105,23 +128,24 @@ export default function AddFacultyModel({ data, setData }) {
                             className='min-w-full'
                             title='Designation' />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            institute: e.target.value
-                        })}
+                        <SelectInput
                             required
-                            value={faculty.institute}
-                            className='min-w-full'
-                            title='Institute' />
+                            title='Institute'
+                            onChange={e => setFaculty({ ...faculty, institute: e.target.value })}
+                            className="w-full sm:max-w-[330px] truncate">
+                            <option value={null} default>Select Institute</option>
+                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
+                        </SelectInput>
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            department: e.target.value
-                        })}
+                        <SelectInput
                             required
-                            value={faculty.department}
-                            className='min-w-full'
-                            title='Department' />
+                            disabled={faculty.institute === ''}
+                            title='Department'
+                            onChange={e => setFaculty({ ...faculty, department: e.target.value })}
+                            className="w-full sm:max-w-[330px] truncate">
+                            <option value={null} default>Select Department</option>
+                            {faculty.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
+                        </SelectInput>
 
                         <InputField onChange={e => setFaculty({
                             ...faculty,

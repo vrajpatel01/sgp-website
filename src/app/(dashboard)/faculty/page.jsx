@@ -10,6 +10,7 @@ import Button from "@/components/shared/button";
 import SubMenuItem from "@/components/submenu/subMenuItem";
 import AddFacultyModel from "@/app/(dashboard)/faculty/models/addFacultyModel";
 import AddFacultyByExcelModel from "@/app/(dashboard)/faculty/models/addFacultyByExcelModel";
+import FacultyData from "./components/facultyData";
 
 export default function Faculty() {
     const [addFacultyButton, setAddFacultyButton] = useState(false)
@@ -48,6 +49,7 @@ export default function Faculty() {
                     </div>
                 </div>
             </div>
+            <FacultyData />
             <AddFacultyModel data={addFacultyModel} setData={setAddFacultyModel} />
             <AddFacultyByExcelModel data={addFacultyByExcelModel} setData={setAddFacultyByExcelModel} />
         </div>

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
+import CustomError from "@/services/customError"
 
 // components
 import InputField from "@/components/shared/inputField"
@@ -12,6 +13,9 @@ import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
 import numberValidator from "@/services/validator/number"
+import SelectInput from "@/components/shared/selectInput"
+import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
+import { useAddHod } from "../services/mutation"
 
 export default function AddHodModel({ data, setData }) {
     const [hod, setHod] = useState({
@@ -23,6 +27,10 @@ export default function AddHodModel({ data, setData }) {
         institute: '',
         department: ''
     })
+
+    const institutes = useGetAllInstitutes()
+    const departments = useGetDepartments(hod.institute, hod.institute !== '' && hod.institute !== 'Select Institute' ? true : false)
+    const addHod = useAddHod()
 
     const handleStudentAdd = (e) => {
         e.preventDefault()
@@ -36,9 +44,26 @@ export default function AddHodModel({ data, setData }) {
             const instituteCheck = isEmpty(institute)
             const departmentCheck = isEmpty(department)
 
+            if (hod.institute === 'Select Institute' ||
+                hod.department === 'Select Department') {
+                throw new CustomError('All fields are required.', 'EMPTY')
+            }
+
 
             if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
-                console.log('all done');
+                const data = {
+                    ...hod,
+                    name: hod.name.toLowerCase().trim(),
+                    employeeCode: hod.employeeNumber.toLowerCase().trim(),
+                    mobileNumber: hod.phoneNumber.toLowerCase().trim(),
+                    designation: hod.designation.toLowerCase().trim(),
+                    institute,
+                    department,
+                    subjectCode: 'ddfdsf',
+                    subjectName: 'dfdf'
+                }
+
+                addHod.mutate(data)
             }
 
 
@@ -60,7 +85,7 @@ export default function AddHodModel({ data, setData }) {
                         })}
                             required
                             value={hod.name}
-                            className='min-w-full sm:min-w-[300px]'
+                            className='min-w-full'
                             title='Name' />
 
                         <InputField onChange={e => setHod({
@@ -100,23 +125,24 @@ export default function AddHodModel({ data, setData }) {
                             className='min-w-full'
                             title='Designation' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            institute: e.target.value
-                        })}
+                        <SelectInput
                             required
-                            value={hod.institute}
-                            className='min-w-full'
-                            title='Institute' />
+                            title='Institute'
+                            onChange={e => setHod({ ...hod, institute: e.target.value })}
+                            className="w-full sm:max-w-[330px] truncate">
+                            <option value={null} default>Select Institute</option>
+                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
+                        </SelectInput>
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            department: e.target.value
-                        })}
+                        <SelectInput
                             required
-                            value={hod.department}
-                            className='min-w-full'
-                            title='Department' />
+                            disabled={hod.institute === ''}
+                            title='Department'
+                            onChange={e => setHod({ ...hod, department: e.target.value })}
+                            className="w-full sm:max-w-[330px] truncate">
+                            <option value={null} default>Select Department</option>
+                            {hod.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
+                        </SelectInput>
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-2 gap-5 mt-5">

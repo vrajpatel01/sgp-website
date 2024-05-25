@@ -12,6 +12,7 @@ import SubMenuItem from "@/components/submenu/subMenuItem";
 // models
 import AddHodModel from "@/app/(dashboard)/hod/models/addHodModel";
 import AddHodByExcelModel from "@/app/(dashboard)/hod/models/addHodByExcelModel";
+import HodData from "./components/hodData";
 
 export default function Hod() {
     const [addHodButton, setAddHodButton] = useState(false)
@@ -50,6 +51,7 @@ export default function Hod() {
                     </div>
                 </div>
             </div>
+            <HodData />
             <AddHodModel data={addHodModel} setData={setAddHodModel} />
             <AddHodByExcelModel data={addHodByExcelModel} setData={setAddHodByExcelModel} />
         </div>

@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
                     <Navigator />
                 </div>
             </div>
-            <div className="px-6 py-8 sm:ml-[17.4rem] mt-[5.3rem] sm:mt-0 w-full h-screen bg-secondary-background overflow-x-auto">
+            <div className="px-6 py-8 sm:ml-[17.4rem] mt-[5.3rem] pb-[5.3rem] sm:mb-0 sm:mt-0 w-full h-screen bg-secondary-background overflow-x-auto">
                 {children}
             </div>
         </div>

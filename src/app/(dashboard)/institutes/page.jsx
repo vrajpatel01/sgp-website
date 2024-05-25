@@ -13,7 +13,7 @@ import InstitutesItem from "./models/instituteItem";
 import ManageDepartmentModel from "./models/models/manageDepartmentModel";
 import EditInstituteModel from "./models/models/editInstituteModel";
 import InstituteDeleteConfirmationModel from "./models/models/instituteDeleteConfirmationModel";
-import InstituteCardSkeleton from "@/components/skeletons/instituteCardSkeleton";
+import InstituteCardSkeleton from "./components/instituteCardSkeleton";
 
 // network
 import { useGetAllInstitutes } from "./services/query";
