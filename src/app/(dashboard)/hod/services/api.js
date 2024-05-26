@@ -17,3 +17,12 @@ export const getHod = async (token) => {
         }
     })).data
 }
+
+export const getHodWithPagination = async (page, row, token) => {
+    return (await axiosInstance.get(`/admin/hods-page/${page}/${row}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })).data
+}

@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }) {
     return (
         <div className="md:flex justify-start items-start">
             {/* sidebar + navbar */}
-            <div className="absolute top-0 left-0 w-full bg-white p-6 flex justify-between items-center sm:hidden border-b-1 border-border">
+            <div className="absolute z-20 top-0 left-0 w-full bg-white p-6 flex justify-between items-center sm:hidden border-b-1 border-border">
                 <Logo />
                 <div className="cursor-pointer" onClick={() => setSidebar(!sidebar)}>
                     {sidebar ? <RxCross2 className="text-2xl" /> : <LuMenu className="text-2xl" />}
@@ -28,7 +28,7 @@ export default function DashboardLayout({ children }) {
                     <Navigator />
                 </div>
             </div>
-            <div className="px-6 py-8 sm:ml-[17.4rem] mt-[5.3rem] pb-[5.3rem] sm:mb-0 sm:mt-0 w-full h-screen bg-secondary-background overflow-x-auto">
+            <div className="px-6 py-8 sm:ml-[17.4rem] pt-28 sm:mb-0 sm:py-8 w-full h-screen bg-secondary-background overflow-x-auto">
                 {children}
             </div>
         </div>

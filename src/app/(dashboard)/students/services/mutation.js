@@ -17,7 +17,7 @@ export const useAddStudent = () => {
             if (error.message.includes('token')) {
                 toast.error('Session expired, please login again')
                 signOut()
-                return router.push('/auth/login')
+                return router.replace('/auth/login')
             }
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)

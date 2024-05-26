@@ -17,3 +17,12 @@ export const getAllFaculty = async (token) => {
         }
     })).data
 }
+
+export const getAllFacultyWithPagination = async (page, row, token) => {
+    return (await axiosInstance.get(`/admin/faculties-page/${page}/${row}`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    })).data
+}
