@@ -1,6 +1,5 @@
 import { useState } from "react"
 import Skeleton from "react-loading-skeleton"
-
 // components
 import Pagination from "@/components/shared/pagination"
 import TableCell from "@/components/shared/table/tableCell"
@@ -16,6 +15,7 @@ export default function StudentData() {
     const [selectedItem, setSelectedItem] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const students = useGetStudentWithPagination(currentPage, 15)
+
     return (
         <>
             <div className="table-container mb-6 overflow-x-auto no-scroll  bg-white rounded-md w-full h-full my-5 border-border border-[.5px]">

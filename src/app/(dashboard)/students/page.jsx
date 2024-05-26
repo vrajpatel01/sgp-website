@@ -4,7 +4,6 @@ import { useState } from "react";
 // icons
 import { PiStudent } from "react-icons/pi";
 import { SiMicrosoftexcel } from "react-icons/si";
-import { MdDelete } from "react-icons/md";
 
 // components
 import Button from "@/components/shared/button";

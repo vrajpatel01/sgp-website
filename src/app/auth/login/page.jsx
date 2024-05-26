@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // validators
 import emailValidator from "@/services/validator/email";
@@ -14,6 +15,7 @@ import InputField from "@/components/shared/inputField";
 
 
 export default function LoginScreen() {
+    const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const [userData, setUserData] = useState({
         email: '',
@@ -31,14 +33,17 @@ export default function LoginScreen() {
                 const status = await signIn('credentials', {
                     email: userData.email,
                     password: userData.password,
-                    redirect: false
+                    redirect: false,
+                    callbackUrl: '/'
                 })
 
                 if (!status.ok && status.error !== null) {
                     setIsLoading(false)
                     return toast.error(status.error)
                 }
-                window.location.href = "/";
+                // window.location.href = "/";
+                router.replace(status.url)
+                toast.success('Logged in successfully, redirecting...')
                 setIsLoading(false)
             }
 

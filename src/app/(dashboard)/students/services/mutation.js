@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { addStudents } from "./api";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -8,11 +8,10 @@ import toast from "react-hot-toast";
 
 export const useAddStudent = () => {
     const queryClient = useQueryClient()
-    const { data: session } = useSession()
     const router = useRouter()
 
     return useMutation({
-        mutationFn: (data) => addStudents(data, session?.user?.token),
+        mutationFn: (data) => addStudents(data),
         onError: (error) => {
             if (error.message.includes('token')) {
                 toast.error('Session expired, please login again')
