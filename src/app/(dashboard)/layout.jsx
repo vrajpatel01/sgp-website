@@ -15,13 +15,13 @@ export default function DashboardLayout({ children }) {
     return (
         <div className="md:flex justify-start items-start">
             {/* sidebar + navbar */}
-            <div className="absolute z-50 top-0 left-0 w-full bg-white p-6 flex justify-between items-center sm:hidden border-b-1 border-border">
+            <div className="absolute z-50 sm:z-20 top-0 left-0 w-full bg-white p-6 flex justify-between items-center sm:hidden border-b-1 border-border">
                 <Logo />
                 <div className="cursor-pointer" onClick={() => setSidebar(!sidebar)}>
                     {sidebar ? <RxCross2 className="text-2xl" /> : <LuMenu className="text-2xl" />}
                 </div>
             </div>
-            <div className={`z-30 fixed flex flex-col gap-5 justify-start items-start left-0 top-[5.3rem] sm:top-0 w-full h-auto sm:h-full sm:w-auto bg-white p-6 border-r-1 border-border transition-all duration-150 ease-in-out ${sidebar ? 'left-0' : 'left-full'} sm:left-0`}>
+            <div className={`sm:z-20 z-30 fixed flex flex-col gap-5 justify-start items-start left-0 top-[5.3rem] sm:top-0 w-full h-auto sm:h-full sm:w-auto bg-white p-6 border-r-1 border-border transition-all duration-150 ease-in-out ${sidebar ? 'left-0' : 'left-full'} sm:left-0`}>
                 <Logo className='hidden sm:block' />
                 <div className="left-full bg-white w-full sm:w-auto">
                     <Navigator />

@@ -22,15 +22,14 @@ const queryClient = new QueryClient({
         }
     }),
     mutationCache: new MutationCache({
-        onError: async (error) => {
+        onError: (error) => {
             const err = error.response
-            toast.error('Session expired, please login again')
             if (err.status == 401) {
-                const status = await signOut({
+                toast.error('Session expired, please login again')
+                signOut({
                     redirect: true,
                     callbackUrl: '/auth/login'
                 })
-                console.log(status);
             }
         }
     })
