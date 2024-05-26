@@ -19,7 +19,7 @@ export default function Students() {
     const [addStudentByExcelModel, setAddStudentByExcelModel] = useState(false)
 
     return (
-        <div>
+        <div className="h-full">
             <div className="header flex justify-between items-center">
                 <h1 className="text-title-28">Students</h1>
                 <div className="relative">

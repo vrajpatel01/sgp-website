@@ -18,7 +18,7 @@ export default function Faculty() {
     const [addFacultyByExcelModel, setAddFacultyByExcelModel] = useState(false)
 
     return (
-        <div>
+        <div className="h-full">
             <div className="header flex justify-between items-center">
                 <h1 className="text-title-28">Faculty</h1>
                 <div className="relative">
@@ -29,7 +29,7 @@ export default function Faculty() {
                         label='Add Faculty'
                         className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />
 
-                    <div className={`bg-white rounded-md shadow-sm top-full mt-2 right-0 sm:w-[400px] ${addFacultyButton ? 'absolute' : 'hidden'}`}>
+                    <div className={`bg-white rounded-md shadow-sm top-full mt-2 right-0 sm:w-[400px] z-20 ${addFacultyButton ? 'absolute' : 'hidden'}`}>
                         <SubMenuItem
                             onClick={() => {
                                 setAddFacultyModel(true)

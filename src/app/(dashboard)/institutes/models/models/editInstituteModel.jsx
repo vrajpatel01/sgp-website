@@ -24,14 +24,6 @@ export default function EditInstitute({ data, setData, instituteData, refetch, s
 
     const updateInstitute = useUpdateInstitute()
 
-    useEffect(() => {
-        if (updateInstitute.isSuccess) {
-            setInstitute('')
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [updateInstitute.isSuccess])
-
 
     const handleFormSubmit = (e) => {
         e.preventDefault()
@@ -64,6 +56,7 @@ export default function EditInstitute({ data, setData, instituteData, refetch, s
 
                         <Button
                             label='Edit'
+                            isLoading={updateInstitute.isPending}
                             className='min-w-full bg-primary text-white' />
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import CustomError from "@/services/customError"
 
@@ -73,6 +73,13 @@ export default function AddHodModel({ data, setData }) {
             toast.error(error.message)
         }
     }
+
+    useEffect(() => {
+        if (addHod.isSuccess) {
+            setHod({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: '', department: '' })
+            setData(false)
+        }
+    }, [addHod.isSuccess, setData])
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)} >
             <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>

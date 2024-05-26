@@ -10,7 +10,7 @@ export const useGetAllInstitutes = () => {
 
 export const useGetDepartments = (instituteId, fetch) => {
     return useQuery({
-        queryKey: ['departments', { instituteId }],
+        queryKey: ['departments', instituteId],
         queryFn: () => getDepartment(instituteId),
         enabled: fetch
     })

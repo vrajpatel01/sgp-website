@@ -63,6 +63,7 @@ export default function AddStudentModel({ data, setData }) {
     useEffect(() => {
         if (addStudent.isSuccess) {
             setStudent({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: '', department: '', semester: '', division: '' })
+            setData(false)
         }
     }, [addStudent.isSuccess, setData]);
     return (

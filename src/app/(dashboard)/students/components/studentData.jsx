@@ -10,16 +10,19 @@ import { useGetStudentWithPagination } from "../services/query"
 
 // icons
 import { MdDelete } from "react-icons/md"
+import Error from "@/components/shared/error"
 
 export default function StudentData() {
     const [selectedItem, setSelectedItem] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const students = useGetStudentWithPagination(currentPage, 15)
 
+    if (students.isError) return <Error message="Having some problem to fetch data." />
+
     return (
         <>
-            <div className="table-container mb-6 overflow-x-auto no-scroll  bg-white rounded-md w-full h-full my-5 border-border border-[.5px]">
-                <table className="w-full h-full table-auto">
+            <div className="table-container mb-6 overflow-x-auto no-scroll  bg-white rounded-md w-full my-5 border-border border-[.5px]">
+                <table className="w-full table-auto">
                     <thead className="border-b-1 border-border">
                         <TableRow header>
                             {students.isSuccess && <TableCell content="" />}
