@@ -7,17 +7,15 @@ import { usePathname } from "next/navigation";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 // student
-import { PiStudent } from "react-icons/pi";
-import { PiStudentFill } from "react-icons/pi";
+import { PiStudent, PiStudentFill } from "react-icons/pi";
 // faculty 
-import { IoPeopleOutline } from "react-icons/io5";
-import { IoPeopleSharp } from "react-icons/io5";
+import { IoPeopleOutline, IoPeopleSharp } from "react-icons/io5";
 // hod
-import { TbUser } from "react-icons/tb";
-import { TbUserFilled } from "react-icons/tb";
+import { TbUser, TbUserFilled } from "react-icons/tb";
 // institute
-import { RiSchoolLine } from "react-icons/ri";
-import { RiSchoolFill } from "react-icons/ri";
+import { RiSchoolLine, RiSchoolFill } from "react-icons/ri";
+// settings
+import { TbSettings, TbSettingsFilled } from "react-icons/tb";
 
 
 export default function Navigator() {
@@ -71,6 +69,18 @@ export default function Navigator() {
                         icon={<RiSchoolLine />}
                         activeIcon={<RiSchoolFill />}
                         active={pathname == '/institutes' ? true : false}
+                    />
+                </div>
+            </div>
+            <div>
+                <div className="mb-3 text-light-text capitalize text-body-16 border-border border-b-1"></div>
+                <div className="flex flex-col gap-5">
+                    <NavigationItem
+                        href="/settings"
+                        title="Settings"
+                        icon={<TbSettings />}
+                        activeIcon={<TbSettingsFilled />}
+                        active={pathname == '/settings' ? true : false}
                     />
                 </div>
             </div>

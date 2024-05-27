@@ -21,14 +21,16 @@ export default function DashboardLayout({ children }) {
                     {sidebar ? <RxCross2 className="text-2xl" /> : <LuMenu className="text-2xl" />}
                 </div>
             </div>
-            <div className={`sm:z-20 z-30 fixed flex flex-col gap-5 justify-start items-start left-0 top-[5.3rem] sm:top-0 w-full h-auto sm:h-full sm:w-auto bg-white p-6 border-r-1 border-border transition-all duration-150 ease-in-out ${sidebar ? 'left-0' : 'left-full'} sm:left-0`}>
+            <div className={`sm:z-20 z-30 fixed flex flex-col gap-5 justify-start items-start left-0 pt-[5.3rem] sm:pt-6 w-full h-screen overflow-y-scroll scroll-none sm:h-full sm:w-auto bg-white p-6 border-r-1 border-border transition-all duration-150 ease-in-out ${sidebar ? 'left-0' : 'left-full'} sm:left-0`}>
                 <Logo className='hidden sm:block' />
-                <div className="left-full bg-white w-full sm:w-auto">
+                <div className="left-full bg-white w-full sm:w-auto pt-3">
                     <Navigator />
                 </div>
             </div>
-            <div className="px-6 py-8 sm:ml-[17.4rem] pt-28 sm:mb-0 sm:py-8 w-full h-screen bg-secondary-background overflow-x-auto">
-                {children}
+            <div className="px-6 py-8 sm:ml-[17.4rem] pt-28 sm:mb-0 sm:py-8 w-full h-screen bg-secondary-background overflow-y-scroll">
+                <div>
+                    {children}
+                </div>
             </div>
         </div>
     )

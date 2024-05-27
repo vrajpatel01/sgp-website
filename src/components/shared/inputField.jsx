@@ -15,7 +15,7 @@ export default function InputField({ title, placeholder, className, onChange, ty
                 <input
                     disabled={disabled}
                     maxLength={maxLength}
-                    className={`border-border border-2 rounded-md px-4 py-2 focus:bg-primary focus:bg-opacity-5 focus:ring-primary ${className} peer`}
+                    className={`border-border border-1 rounded-md px-4 py-2 focus:bg-primary focus:bg-opacity-5 focus:ring-primary ${className} peer`}
                     value={value}
                     onChange={(e) => onChange(e)}
                     placeholder={placeholder}

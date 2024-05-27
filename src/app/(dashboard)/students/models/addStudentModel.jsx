@@ -106,6 +106,7 @@ export default function AddStudentModel({ data, setData }) {
                             required
                             value={student.phoneNumber}
                             className='min-w-full'
+                            type='number'
                             prefix={'+91'}
                             title='Phone Number' />
 
@@ -150,6 +151,7 @@ export default function AddStudentModel({ data, setData }) {
                                 division: e.target.value
                             })}
                                 required
+                                maxLength={1}
                                 value={student.division}
                                 className='min-w-full sm:max-w-[150px]'
                                 title='Division' />

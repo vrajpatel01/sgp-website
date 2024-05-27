@@ -122,6 +122,7 @@ export default function AddFacultyModel({ data, setData }) {
                         })}
                             required
                             value={faculty.phoneNumber}
+                            type='number'
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />

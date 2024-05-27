@@ -119,6 +119,7 @@ export default function AddHodModel({ data, setData }) {
                         })}
                             required
                             value={hod.phoneNumber}
+                            type='number'
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />
