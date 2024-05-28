@@ -11,10 +11,15 @@ import { useGetStudentWithPagination } from "../services/query"
 // icons
 import { MdDelete } from "react-icons/md"
 import Error from "@/components/shared/error"
+import StudentDeleteConfirmationModel from "../models/studentDeleteConfirmationModel"
+import EditStudentModel from "../models/editStudentModel"
 
-export default function StudentData() {
-    const [selectedItem, setSelectedItem] = useState([])
+export default function StudentData({ selectedItem, setSelectedItem }) {
+    // const [selectedItem, setSelectedItem] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
+    const [studentDeleteModel, setStudentDeleteModel] = useState(false)
+    const [selectedStudent, setSelectedStudent] = useState({})
+    const [editStudentModel, setEditStudentModel] = useState(false)
     const students = useGetStudentWithPagination(currentPage, 15)
 
     if (students.isError) return <Error message="Having some problem to fetch data." />
@@ -33,7 +38,6 @@ export default function StudentData() {
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
                             <TableCell content="Division" />
-                            {students.isSuccess && <TableCell content="" />}
                         </TableRow>
                     </thead>
                     <tbody className="divide-y">
@@ -50,6 +54,10 @@ export default function StudentData() {
                         ))}
                         {students.isSuccess && students.isSuccess && students?.data?.students?.map((student) => (
                             <TableRow
+                                onClick={() => {
+                                    setEditStudentModel(true)
+                                    setSelectedStudent(student)
+                                }}
                                 checkBox
                                 onChange={(id, checked) => {
                                     if (checked) {
@@ -67,7 +75,6 @@ export default function StudentData() {
                                 <TableCell content={student.institute.name} />
                                 <TableCell content={student.department.name} />
                                 <TableCell content={student.division} />
-                                <td className="p-3 whitespace-nowrap px-3 text-2xl !text-red-500"><MdDelete /></td>
                             </TableRow>
                         ))}
                     </tbody>
@@ -77,6 +84,8 @@ export default function StudentData() {
                 totalPages={students?.data?.totalPages}
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
+            <StudentDeleteConfirmationModel data={studentDeleteModel} setData={setStudentDeleteModel} id={selectedStudent._id} deleteMode='single' />
+            <EditStudentModel data={editStudentModel} setData={setEditStudentModel} currentUserData={selectedStudent} setStudentDeleteModel={setStudentDeleteModel} />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addStudents } from "./api";
+import { addStudents, deleteMultipleStudentsAccount, deleteStudentAccount, editStudentAccount } from "./api";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
@@ -25,3 +25,69 @@ export const useAddStudent = () => {
         }
     })
 }
+
+
+export const useDeleteStudentAccount = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (id) => deleteStudentAccount(id),
+        onError: (error) => {
+            console.log('error: ', error);
+            if (error instanceof AxiosError) {
+                return toast.error(error.response.data?.message)
+            }
+            return toast.error(error.message)
+        },
+        onSettled: async (data, error, variables) => {
+            toast.success(data.message)
+            if (data.success === true) {
+                await queryClient.invalidateQueries({ queryKey: ['students'] })
+            }
+        }
+    })
+}
+
+
+export const useDeleteMultipleStudentsAccount = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (ids) => deleteMultipleStudentsAccount(ids),
+        onError: (error) => {
+            console.log('error: ', error.response);
+            if (error instanceof AxiosError) {
+                return toast.error(error.response.data?.message)
+            }
+            return toast.error(error.message)
+        },
+        onSettled: async (data, error, variables) => {
+            toast.success(data.message)
+            if (data.success === true) {
+                await queryClient.invalidateQueries({ queryKey: ['students'] })
+            }
+        }
+    })
+}
+
+export const useEditStudentAccount = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (data) => editStudentAccount(data),
+        onError: (error) => {
+            console.log('error: ', error.response);
+            if (error instanceof AxiosError) {
+                return toast.error(error.response.data?.message)
+            }
+            return toast.error(error.message)
+        },
+        onSettled: async (data, error, variables) => {
+            toast.success(data.message)
+            if (data.success === true) {
+                await queryClient.invalidateQueries({ queryKey: ['students'] })
+            }
+        }
+    })
+}
+

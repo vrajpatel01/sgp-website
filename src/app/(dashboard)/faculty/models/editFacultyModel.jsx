@@ -124,7 +124,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             name: e.target.value
                         })}
-                            required
                             value={faculty.name}
                             className='min-w-full'
                             title='Name' />
@@ -133,7 +132,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             employeeNumber: e.target.value
                         })}
-                            required
                             value={faculty.employeeNumber}
                             className='min-w-full'
                             title='Employee Number' />
@@ -142,7 +140,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             email: e.target.value
                         })}
-                            required
                             value={faculty.email}
                             className='min-w-full'
                             title='Email' />
@@ -151,7 +148,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             phoneNumber: e.target.value
                         })}
-                            required
                             value={faculty.phoneNumber}
                             type='tel'
                             className='min-w-full'
@@ -162,13 +158,11 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             designation: e.target.value
                         })}
-                            required
                             value={faculty.designation}
                             className='min-w-full'
                             title='Designation' />
 
                         <SelectInput
-                            required
                             title='Institute'
                             value={faculty.institute}
                             onChange={e => setFaculty({ ...faculty, institute: e.target.value })}
@@ -178,7 +172,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                         </SelectInput>
 
                         <SelectInput
-                            required
                             disabled={faculty.institute === ''}
                             title='Department'
                             value={faculty.department}
@@ -192,7 +185,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             subjectCode: e.target.value
                         })}
-                            required
                             value={faculty.subjectCode}
                             className='min-w-full'
                             title='Subject Code' />
@@ -201,7 +193,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                             ...faculty,
                             subjectName: e.target.value
                         })}
-                            required
                             value={faculty.subjectName}
                             className='min-w-full'
                             title='Subject Name' />

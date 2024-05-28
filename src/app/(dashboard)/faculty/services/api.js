@@ -65,7 +65,9 @@ export const editFacultyAccount = async (data) => {
         mobileNumber: data.mobileNumber,
         designation: data.designation,
         institute: data.institute,
-        department: data.department
+        department: data.department,
+        subjectCode: data.subjectCode,
+        subjectName: data.subjectName
     }, {
         headers: {
             'Content-Type': 'application/json',

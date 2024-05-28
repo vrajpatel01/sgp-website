@@ -30,3 +30,47 @@ export const getStudentsWithPagination = async (page, row) => {
         }
     })).data
 }
+
+
+export const deleteStudentAccount = async (id) => {
+    const session = await getSession()
+    return (await axiosInstance.delete(`/admin/delete-student/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.user?.token}`
+        }
+    })).data
+}
+
+export const deleteMultipleStudentsAccount = async (ids) => {
+    const session = await getSession()
+    return (await axiosInstance.delete('/admin/delete-students', {
+        data: {
+            ids
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.user?.token}`
+        }
+    })).data
+}
+
+export const editStudentAccount = async (data) => {
+    const session = await getSession()
+
+    return (await axiosInstance.patch(`/admin/edit-student/${data.id}`, {
+        name: data.name,
+        employeeCode: data.employeeCode,
+        email: data.email,
+        mobileNumber: data.mobileNumber,
+        designation: data.designation,
+        institute: data.institute,
+        department: data.department,
+        semester: data.semester
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.user?.token}`
+        }
+    })).data
+}

@@ -11,24 +11,35 @@ import SubMenuItem from "@/components/submenu/subMenuItem";
 import AddStudentModel from "@/app/(dashboard)/students/models/addStudentModel";
 import AddStudentByExcelModel from "@/app/(dashboard)/students/models/addStudentByExcelModel";
 import StudentData from "./components/studentData";
+import StudentDeleteConfirmationModel from "./models/studentDeleteConfirmationModel";
+import { MdDelete } from "react-icons/md";
 
 export default function Students() {
 
     const [addStudentButton, setAddStudentButton] = useState(false)
     const [addStudentModel, setAddStudentModel] = useState(false)
     const [addStudentByExcelModel, setAddStudentByExcelModel] = useState(false)
+    const [selectedItem, setSelectedItem] = useState([])
+    const [deleteStudentModel, setDeleteStudentModel] = useState(false)
 
     return (
         <div className="h-full">
             <div className="header flex justify-between items-center">
                 <h1 className="text-title-28">Students</h1>
                 <div className="relative">
-                    <Button
-                        onClick={() => setAddStudentButton(!addStudentButton)}
-                        icon={<PiStudent className="text-xl" />}
-                        width={null}
-                        label='Add Student'
-                        className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />
+                    {selectedItem.length > 0 ?
+                        <Button
+                            onClick={() => setDeleteStudentModel(true)}
+                            icon={<MdDelete className="text-xl" />}
+                            width={null}
+                            label='Delete Accounts'
+                            className="bg-secondary bg-opacity-10 text-secondary px-4 py-2 rounded-md hover:border-1 hover:border-secondary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" /> :
+                        <Button
+                            onClick={() => setAddStudentButton(!addStudentButton)}
+                            icon={<PiStudent className="text-xl" />}
+                            width={null}
+                            label='Add Student'
+                            className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />}
 
                     <div className={`bg-white rounded-md shadow-sm top-full mt-2 right-0 sm:w-[400px] ${addStudentButton ? 'absolute' : 'hidden'}`}>
                         <SubMenuItem
@@ -50,9 +61,10 @@ export default function Students() {
                     </div>
                 </div>
             </div>
-            <StudentData />
+            <StudentData selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
             <AddStudentModel data={addStudentModel} setData={setAddStudentModel} />
             <AddStudentByExcelModel data={addStudentByExcelModel} setData={setAddStudentByExcelModel} />
+            <StudentDeleteConfirmationModel data={deleteStudentModel} setData={setDeleteStudentModel} deleteMode='multiple' id={selectedItem} setSelectedItem={setSelectedItem} />
         </div>
     )
 }
