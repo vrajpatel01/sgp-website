@@ -1,19 +1,25 @@
-import { MdDelete } from "react-icons/md"
-import { useGetFaultyWithPagination } from "../services/query"
-import TableCell from "@/components/shared/table/tableCell"
-import TableRow from "@/components/shared/table/tableRow"
 import { useState } from "react"
 import Skeleton from "react-loading-skeleton"
+
+// components
+import TableCell from "@/components/shared/table/tableCell"
+import TableRow from "@/components/shared/table/tableRow"
 import Pagination from "@/components/shared/pagination"
 import Error from "@/components/shared/error"
 
+// models
+import FacultyDeleteConfirmationModel from "../models/facultyDeleteConfirmationModel"
+import EditFacultyModel from "../models/editFacultyModel"
 
-export default function FacultyData() {
-    const [selectedItem, setSelectedItem] = useState([])
+// network
+import { useGetFaultyWithPagination } from "../services/query"
+
+export default function FacultyData({ selectedItem, setSelectedItem }) {
     const [currentPage, setCurrentPage] = useState(1)
-
+    const [facultyDeleteModel, setFacultyDeleteModel] = useState(false)
+    const [selectedFaculty, setSelectedFaculty] = useState({})
+    const [editFacultyModel, setEditFacultyModel] = useState(false)
     const faculties = useGetFaultyWithPagination(currentPage, 15)
-
 
     if (faculties.isError) return <Error message="Having some problem to fetch data." />
 
@@ -32,7 +38,6 @@ export default function FacultyData() {
                             <TableCell content="Department" />
                             <TableCell content="Subject Name" />
                             <TableCell content="Subject Code" />
-                            {faculties.isSuccess && <TableCell content="" />}
                         </TableRow>
                     </thead>
                     <tbody className="divide-y">
@@ -50,6 +55,10 @@ export default function FacultyData() {
                         ))}
                         {faculties.isSuccess && faculties.isSuccess && faculties?.data?.faculties?.map((faculty) => (
                             <TableRow
+                                onClick={() => {
+                                    setEditFacultyModel(true)
+                                    setSelectedFaculty(faculty)
+                                }}
                                 checkBox
                                 onChange={(id, checked) => {
                                     if (checked) {
@@ -68,7 +77,6 @@ export default function FacultyData() {
                                 <TableCell content={faculty.department.name} />
                                 <TableCell content={faculty.subjectName} />
                                 <TableCell content={faculty.subjectCode} />
-                                <td className="p-3 whitespace-nowrap px-3 text-2xl !text-red-500"><MdDelete /></td>
                             </TableRow>
                         ))}
                     </tbody>
@@ -78,6 +86,8 @@ export default function FacultyData() {
                 totalPages={faculties?.data?.totalPages}
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
+            <FacultyDeleteConfirmationModel data={facultyDeleteModel} setData={setFacultyDeleteModel} id={selectedFaculty._id} deleteMode="single" />
+            <EditFacultyModel data={editFacultyModel} setData={setEditFacultyModel} currentUserData={selectedFaculty} setFacultyDeleteModel={setFacultyDeleteModel} />
         </>
     )
 }

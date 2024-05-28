@@ -37,7 +37,6 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                             <TableCell content="Phone Number" />
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
-                            {hods.isSuccess && <TableCell content="" />}
                         </TableRow>
                     </thead>
                     <tbody className="divide-y">
@@ -73,11 +72,6 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                                 <TableCell content={hod.mobileNumber} />
                                 <TableCell content={hod.institute.name} />
                                 <TableCell content={hod.department.name} />
-                                <TableCell onClick={(e) => {
-                                    e.stopPropagation()
-                                    setSelectedHod(hod)
-                                    setHodDeleteModel(true)
-                                }} className="p-3 whitespace-nowrap px-3 text-2xl !text-primary-text transition-all duration-150 hover:!text-red-500" content={<MdDelete />} />
                             </TableRow>
                         ))}
                     </tbody>
@@ -88,7 +82,7 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
             <HodDeleteConfirmationModel data={hodDeleteModel} setData={setHodDeleteModel} id={selectedHod._id} deleteMode='single' />
-            <EditHodModel data={editHodModel} setData={setEditHodModel} currentUserData={selectedHod} />
+            <EditHodModel data={editHodModel} setData={setEditHodModel} currentUserData={selectedHod} setHodDeleteModel={setHodDeleteModel} />
         </>
     )
 }

@@ -122,7 +122,7 @@ export default function AddFacultyModel({ data, setData }) {
                         })}
                             required
                             value={faculty.phoneNumber}
-                            type='number'
+                            type='tel'
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />
@@ -162,7 +162,7 @@ export default function AddFacultyModel({ data, setData }) {
                             subjectCode: e.target.value
                         })}
                             required
-                            value={faculty.semester}
+                            value={faculty.subjectCode}
                             className='min-w-full'
                             title='Subject Code' />
 
@@ -171,7 +171,7 @@ export default function AddFacultyModel({ data, setData }) {
                             subjectName: e.target.value
                         })}
                             required
-                            value={faculty.division}
+                            value={faculty.subjectName}
                             className='min-w-full'
                             title='Subject Name' />
                     </div>
@@ -185,6 +185,8 @@ export default function AddFacultyModel({ data, setData }) {
 
                     <Button
                         label='Add Faculty'
+                        disabled={addFaulty.isPending}
+                        isLoading={addFaulty.isPending}
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>

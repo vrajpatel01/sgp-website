@@ -13,58 +13,64 @@ import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
 import SelectInput from "@/components/shared/selectInput"
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
-import { useEditHodAccount } from "../services/mutation"
+import { useEditFacultyAccount } from "../services/mutation"
 import { MdDelete } from "react-icons/md"
 
-export default function EditHodModel({ data, setData, currentUserData, setHodDeleteModel }) {
+export default function EditFacultyModel({ data, setData, currentUserData, setFacultyDeleteModel }) {
     const [isChanged, setIsChanged] = useState(false)
-    const [hod, setHod] = useState({
+    const [faculty, setFaculty] = useState({
         name: '',
         employeeNumber: '',
         email: '',
         phoneNumber: '',
         designation: '',
         institute: 'Select Institute',
-        department: 'Select Department'
+        department: 'Select Department',
+        subjectCode: '',
+        subjectName: ''
     })
 
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(hod.institute, hod.institute !== undefined && hod.institute !== 'Select Institute' ? true : false)
-    const editHodAccount = useEditHodAccount()
+    const departments = useGetDepartments(faculty.institute, faculty.institute !== undefined && faculty.institute !== 'Select Institute' ? true : false)
+    const editAccount = useEditFacultyAccount()
 
     useEffect(() => {
-        setHod({
+        setFaculty({
             name: currentUserData?.name,
             employeeNumber: currentUserData?.employeeCode,
             email: currentUserData?.email,
             phoneNumber: currentUserData?.mobileNumber,
             designation: currentUserData?.designation,
             institute: currentUserData?.institute?._id,
-            department: currentUserData?.department?._id
+            department: currentUserData?.department?._id,
+            subjectCode: currentUserData?.subjectCode,
+            subjectName: currentUserData?.subjectName
         })
     }, [currentUserData])
 
     useEffect(() => {
-        if (hod.name != currentUserData?.name ||
-            hod.employeeNumber != currentUserData?.employeeCode ||
-            hod.email != currentUserData?.email ||
-            hod.phoneNumber != currentUserData?.mobileNumber ||
-            hod.designation != currentUserData?.designation ||
-            hod.institute != currentUserData?.institute?._id ||
-            hod.department != currentUserData?.department?._id) {
+        if (faculty.name !== currentUserData?.name ||
+            faculty.employeeNumber !== currentUserData?.employeeCode ||
+            faculty.email !== currentUserData?.email ||
+            faculty.phoneNumber !== currentUserData?.mobileNumber ||
+            faculty.designation !== currentUserData?.designation ||
+            faculty.institute !== currentUserData?.institute?._id ||
+            faculty.department !== currentUserData?.department?._id ||
+            faculty.subjectCode !== currentUserData?.subjectCode ||
+            faculty.subjectName !== currentUserData?.subjectName) {
             setIsChanged(true)
         } else {
             setIsChanged(false)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [hod])
+    }, [faculty])
 
 
     const handleFormSubmit = e => {
         e.preventDefault()
 
         try {
-            const { name, employeeNumber, email, phoneNumber, designation, institute, department } = hod
+            const { name, employeeNumber, email, phoneNumber, designation, institute, department, subjectCode, subjectName } = faculty
             const nameCheck = isEmpty(name)
             const employeeNumberCheck = isEmpty(employeeNumber)
             const emailCheck = emailValidator(email)
@@ -72,8 +78,10 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
             const designationCheck = isEmpty(designation)
             const instituteCheck = isEmpty(institute)
             const departmentCheck = isEmpty(department)
+            const subjectCodeCheck = isEmpty(subjectCode)
+            const subjectNameCheck = isEmpty(subjectName)
 
-            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
+            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
                 const data = {
                     name: name.trim(),
                     employeeCode: employeeNumber.trim(),
@@ -84,7 +92,7 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
                     department,
                     id: currentUserData._id
                 }
-                editHodAccount.mutate(data, {
+                editAccount.mutate(data, {
                     onSuccess: () => {
                         setData(false)
                     }
@@ -103,75 +111,100 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
             <form onSubmit={handleFormSubmit} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
                 <div>
                     <div className="flex justify-between items-center">
-                        <h1 className="text-title-24 mb-4">Edit Hod</h1>
+                        <h1 className="text-title-24 mb-4">Edit Faculty</h1>
                         <div onClick={() => {
                             setData(false)
-                            setHodDeleteModel(true)
+                            setFacultyDeleteModel(true)
                         }} className="p-2 cursor-pointer hover:bg-opacity-10 hover:bg-secondary rounded-md transition-all duration-150">
                             <MdDelete className="text-2xl !text-secondary" />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-3">
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                    <div className="flex flex-col gap-5">
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             name: e.target.value
                         })}
-                            value={hod.name}
+                            required
+                            value={faculty.name}
                             className='min-w-full'
                             title='Name' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             employeeNumber: e.target.value
                         })}
-                            value={hod.employeeNumber}
+                            required
+                            value={faculty.employeeNumber}
                             className='min-w-full'
                             title='Employee Number' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             email: e.target.value
                         })}
-                            value={hod.email}
+                            required
+                            value={faculty.email}
                             className='min-w-full'
                             title='Email' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             phoneNumber: e.target.value
                         })}
-                            value={hod.phoneNumber}
+                            required
+                            value={faculty.phoneNumber}
                             type='tel'
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
                             designation: e.target.value
                         })}
-                            value={hod.designation}
+                            required
+                            value={faculty.designation}
                             className='min-w-full'
                             title='Designation' />
 
                         <SelectInput
+                            required
                             title='Institute'
-                            value={hod.institute}
-                            onChange={e => setHod({ ...hod, institute: e.target.value })}
+                            value={faculty.institute}
+                            onChange={e => setFaculty({ ...faculty, institute: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Institute</option>
                             {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
                         </SelectInput>
 
                         <SelectInput
-                            disabled={hod.institute === ''}
+                            required
+                            disabled={faculty.institute === ''}
                             title='Department'
-                            value={hod.department}
-                            onChange={e => setHod({ ...hod, department: e.target.value })}
+                            value={faculty.department}
+                            onChange={e => setFaculty({ ...faculty, department: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Department</option>
-                            {hod.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
+                            {faculty.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
                         </SelectInput>
+
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
+                            subjectCode: e.target.value
+                        })}
+                            required
+                            value={faculty.subjectCode}
+                            className='min-w-full'
+                            title='Subject Code' />
+
+                        <InputField onChange={e => setFaculty({
+                            ...faculty,
+                            subjectName: e.target.value
+                        })}
+                            required
+                            value={faculty.subjectName}
+                            className='min-w-full'
+                            title='Subject Name' />
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-2 gap-5 mt-5">
@@ -183,8 +216,8 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
 
                     <Button
                         label='Edit'
-                        disabled={!isChanged}
-                        isLoading={editHodAccount.isPending}
+                        disabled={editAccount.isPending || !isChanged}
+                        isLoading={editAccount.isPending}
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>

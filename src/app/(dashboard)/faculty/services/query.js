@@ -3,14 +3,14 @@ import { getAllFaculty, getAllFacultyWithPagination } from "./api";
 
 export const useGetFaulty = () => {
     return useQuery({
-        queryKey: ['faulty'],
+        queryKey: ['faculty'],
         queryFn: () => getAllFaculty()
     })
 }
 
 export const useGetFaultyWithPagination = (page, row) => {
     return useQuery({
-        queryKey: ['faulty', page],
+        queryKey: ['faculty', page],
         queryFn: () => getAllFacultyWithPagination(page, row),
         keepPreviousData: true,
         staleTime: 5000,
