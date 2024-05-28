@@ -6,33 +6,42 @@ import { useState } from "react"
 import Skeleton from "react-loading-skeleton"
 import Pagination from "@/components/shared/pagination"
 import Error from "@/components/shared/error"
+import HodDeleteConfirmationModel from "../models/hodDeleteConfirmationModel"
+import EditHodModel from "../models/editHodModel"
 
 
-export default function HodData() {
-    const [selectedItem, setSelectedItem] = useState([])
+export default function HodData({ selectedItem, setSelectedItem }) {
+    // const [selectedItem, setSelectedItem] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
-    const hod = useGetHodWithPagination(currentPage, 15)
+    const [hodDeleteModel, setHodDeleteModel] = useState(false)
+    const [selectedHod, setSelectedHod] = useState({})
+    const [editHodModel, setEditHodModel] = useState(false)
+    const hods = useGetHodWithPagination(currentPage, 15)
 
-    if (hod.isError) return <Error message="Having some problem to fetch data." />
+    // console.log(selectedHod);
+
+    if (hods.isError) return <Error message="Having some problem to fetch data." />
+
+    if (hods.isSuccess && hods?.data?.success === false) return <Error message="Currently not exists any account." />
 
     return (
         <>
-            <div className="table-container mb-6 overflow-x-auto no-scroll  bg-white rounded-md w-full my-5 border-border border-[.5px]">
+            <div className="table-container mb-6 overflow-x-auto no-scroll bg-white rounded-md w-full my-5 border-border border-[.5px]">
                 <table className="w-full table-auto">
                     <thead className="border-b-1 border-border">
                         <TableRow header>
-                            {hod.isSuccess && <TableCell content="" />}
+                            {hods.isSuccess && <TableCell content="" />}
                             <TableCell content="Name" />
                             <TableCell content="Enrollment Number" />
                             <TableCell content="Email" />
                             <TableCell content="Phone Number" />
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
-                            {hod.isSuccess && <TableCell content="" />}
+                            {hods.isSuccess && <TableCell content="" />}
                         </TableRow>
                     </thead>
                     <tbody className="divide-y">
-                        {hod.isLoading && Array(15).fill(0).map((_, index) => (
+                        {hods.isLoading && Array(15).fill(0).map((_, index) => (
                             <TableRow key={index}>
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
@@ -42,8 +51,12 @@ export default function HodData() {
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                             </TableRow>
                         ))}
-                        {hod.isSuccess && hod.isSuccess && hod?.data?.hods?.map((hods) => (
+                        {hods.isSuccess && hods.isSuccess && hods?.data?.hods?.map((hod) => (
                             <TableRow
+                                onClick={() => {
+                                    setSelectedHod(hod)
+                                    setEditHodModel(true)
+                                }}
                                 checkBox
                                 onChange={(id, checked) => {
                                     if (checked) {
@@ -52,24 +65,30 @@ export default function HodData() {
                                         setSelectedItem(selectedItem.filter(item => item !== id))
                                     }
                                 }}
-                                id={hods._id}
-                                key={hods._id}>
-                                <TableCell content={hods.name} />
-                                <TableCell content={hods.employeeCode} />
-                                <TableCell content={hods.email} />
-                                <TableCell content={hods.mobileNumber} />
-                                <TableCell content={hods.institute.name} />
-                                <TableCell content={hods.department.name} />
-                                <td className="p-3 whitespace-nowrap px-3 text-2xl !text-red-500"><MdDelete /></td>
+                                id={hod._id}
+                                key={hod._id}>
+                                <TableCell content={hod.name} />
+                                <TableCell content={hod.employeeCode} />
+                                <TableCell content={hod.email} />
+                                <TableCell content={hod.mobileNumber} />
+                                <TableCell content={hod.institute.name} />
+                                <TableCell content={hod.department.name} />
+                                <TableCell onClick={(e) => {
+                                    e.stopPropagation()
+                                    setSelectedHod(hod)
+                                    setHodDeleteModel(true)
+                                }} className="p-3 whitespace-nowrap px-3 text-2xl !text-primary-text transition-all duration-150 hover:!text-red-500" content={<MdDelete />} />
                             </TableRow>
                         ))}
                     </tbody>
                 </table>
             </div >
-            {hod.isSuccess && <Pagination
-                totalPages={hod?.data?.totalPages}
+            {hods.isSuccess && <Pagination
+                totalPages={hods?.data?.totalPages}
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
+            <HodDeleteConfirmationModel data={hodDeleteModel} setData={setHodDeleteModel} id={selectedHod._id} deleteMode='single' />
+            <EditHodModel data={editHodModel} setData={setEditHodModel} currentUserData={selectedHod} />
         </>
     )
 }

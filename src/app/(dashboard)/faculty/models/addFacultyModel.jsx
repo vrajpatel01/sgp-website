@@ -139,6 +139,7 @@ export default function AddFacultyModel({ data, setData }) {
                         <SelectInput
                             required
                             title='Institute'
+                            value={faculty.institute}
                             onChange={e => setFaculty({ ...faculty, institute: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Institute</option>
@@ -149,6 +150,7 @@ export default function AddFacultyModel({ data, setData }) {
                             required
                             disabled={faculty.institute === ''}
                             title='Department'
+                            value={faculty.department}
                             onChange={e => setFaculty({ ...faculty, department: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Department</option>

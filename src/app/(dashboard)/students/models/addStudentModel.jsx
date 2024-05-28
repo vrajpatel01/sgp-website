@@ -113,6 +113,7 @@ export default function AddStudentModel({ data, setData }) {
                         <SelectInput
                             required
                             title='Institute'
+                            value={student.institute}
                             onChange={e => setStudent({ ...student, institute: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Institute</option>
@@ -123,6 +124,7 @@ export default function AddStudentModel({ data, setData }) {
                             required
                             disabled={student.institute === ''}
                             title='Department'
+                            value={student.department}
                             onChange={e => setStudent({ ...student, department: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Department</option>
@@ -133,6 +135,7 @@ export default function AddStudentModel({ data, setData }) {
                             <SelectInput
                                 required
                                 title='Semester'
+                                value={student.semester}
                                 onChange={e => setStudent({ ...student, semester: e.target.value })}
                                 className="truncate min-w-full sm:max-w-[150px]">
                                 <option value={undefined} default>Select Semester</option>

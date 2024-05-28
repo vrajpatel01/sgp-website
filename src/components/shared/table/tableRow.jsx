@@ -1,12 +1,13 @@
 import TableCell from "./tableCell"
 import { useState } from "react"
 
-export default function TableRow({ children, className = '', checkBox = false, id, onChange, header }) {
+export default function TableRow({ children, className = '', checkBox = false, id, onChange, header, onClick }) {
     const [select, setSelect] = useState(false)
     return (
-        <tr className={`cursor-pointer bg-opacity-10 text-light-text ${select && 'bg-primary text-primary'} ${className} ${header && 'font-medium text-primary-text'}`}>
-            {checkBox && <TableCell content={<input
+        <tr onClick={onClick} className={`cursor-pointer bg-opacity-10 text-light-text ${!header && 'hover:bg-opacity-10 hover:bg-primary hover:text-primary'}  ${select && 'bg-primary text-primary'} ${className} ${header && 'font-medium text-primary-text'}`}>
+            {checkBox && <TableCell onClick={e => e.stopPropagation()} content={<input
                 onChange={(e) => {
+                    e.stopPropagation()
                     setSelect(e.target.checked)
                     onChange(id, e.target.checked)
                 }}

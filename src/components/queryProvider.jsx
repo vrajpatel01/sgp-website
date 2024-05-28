@@ -26,10 +26,10 @@ const queryClient = new QueryClient({
             const err = error.response
             if (err.status == 401) {
                 toast.error('Session expired, please login again')
-                signOut({
-                    redirect: true,
-                    callbackUrl: '/auth/login'
-                })
+                // signOut({
+                //     redirect: true,
+                //     callbackUrl: '/auth/login'
+                // })
             }
         }
     })

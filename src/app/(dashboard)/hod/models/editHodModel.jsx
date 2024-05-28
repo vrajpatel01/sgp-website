@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import CustomError from "@/services/customError"
 
 // components
 import InputField from "@/components/shared/inputField"
@@ -12,28 +11,57 @@ import SideModel from "@/components/models/sideModel"
 import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
-import numberValidator from "@/services/validator/number"
 import SelectInput from "@/components/shared/selectInput"
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
-import { useAddHod } from "../services/mutation"
+import { useEditHodAccount } from "../services/mutation"
 
-export default function AddHodModel({ data, setData }) {
+export default function EditHodModel({ data, setData, currentUserData }) {
+    const [isChanged, setIsChanged] = useState(false)
     const [hod, setHod] = useState({
         name: '',
         employeeNumber: '',
         email: '',
         phoneNumber: '',
         designation: '',
-        institute: '',
-        department: ''
+        institute: 'Select Institute',
+        department: 'Select Department'
     })
 
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(hod.institute, hod.institute !== '' && hod.institute !== 'Select Institute' ? true : false)
-    const addHod = useAddHod()
+    const departments = useGetDepartments(hod.institute, hod.institute !== undefined && hod.institute !== 'Select Institute' ? true : false)
+    const editHodAccount = useEditHodAccount()
 
-    const handleStudentAdd = (e) => {
+    useEffect(() => {
+        setHod({
+            name: currentUserData?.name,
+            employeeNumber: currentUserData?.employeeCode,
+            email: currentUserData?.email,
+            phoneNumber: currentUserData?.mobileNumber,
+            designation: currentUserData?.designation,
+            institute: currentUserData?.institute?._id,
+            department: currentUserData?.department?._id
+        })
+    }, [currentUserData])
+
+    useEffect(() => {
+        if (hod.name != currentUserData?.name ||
+            hod.employeeNumber != currentUserData?.employeeCode ||
+            hod.email != currentUserData?.email ||
+            hod.phoneNumber != currentUserData?.mobileNumber ||
+            hod.designation != currentUserData?.designation ||
+            hod.institute != currentUserData?.institute?._id ||
+            hod.department != currentUserData?.department?._id) {
+            setIsChanged(true)
+        } else {
+            setIsChanged(false)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [hod])
+
+
+    const handleFormSubmit = e => {
         e.preventDefault()
+
         try {
             const { name, employeeNumber, email, phoneNumber, designation, institute, department } = hod
             const nameCheck = isEmpty(name)
@@ -44,53 +72,41 @@ export default function AddHodModel({ data, setData }) {
             const instituteCheck = isEmpty(institute)
             const departmentCheck = isEmpty(department)
 
-            if (hod.institute === 'Select Institute' ||
-                hod.department === 'Select Department') {
-                throw new CustomError('All fields are required.', 'EMPTY')
-            }
-
-
             if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
                 const data = {
-                    ...hod,
-                    name: hod.name.toLowerCase().trim(),
-                    employeeCode: hod.employeeNumber.toLowerCase().trim(),
-                    mobileNumber: hod.phoneNumber.toLowerCase().trim(),
-                    designation: hod.designation.toLowerCase().trim(),
+                    name: name.trim(),
+                    employeeCode: employeeNumber.trim(),
+                    email,
+                    mobileNumber: phoneNumber,
+                    designation: designation.trim(),
                     institute,
                     department,
-                    subjectCode: 'ddfdsf',
-                    subjectName: 'dfdf'
+                    id: currentUserData._id
                 }
-
-                addHod.mutate(data)
+                editHodAccount.mutate(data, {
+                    onSuccess: () => {
+                        setData(false)
+                    }
+                })
             }
 
-
         } catch (error) {
-            if (error.code == 'EMPTY')
-                return toast.error('All fields are required.')
-            toast.error(error.message)
+            if (error.code === 'EMPTY')
+                return toast.error('All fields are required')
+            return toast.error(error.message)
         }
     }
 
-    useEffect(() => {
-        if (addHod.isSuccess) {
-            setHod({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: '', department: '' })
-            setData(false)
-        }
-    }, [addHod.isSuccess, setData])
     return (
         <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
+            <form onSubmit={handleFormSubmit} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
                 <div>
-                    <h1 className="text-title-24 mb-4">Add Hod</h1>
+                    <h1 className="text-title-24 mb-4">Edit Hod</h1>
                     <div className="flex flex-col gap-3">
                         <InputField onChange={e => setHod({
                             ...hod,
                             name: e.target.value
                         })}
-                            required
                             value={hod.name}
                             className='min-w-full'
                             title='Name' />
@@ -99,7 +115,6 @@ export default function AddHodModel({ data, setData }) {
                             ...hod,
                             employeeNumber: e.target.value
                         })}
-                            required
                             value={hod.employeeNumber}
                             className='min-w-full'
                             title='Employee Number' />
@@ -108,7 +123,6 @@ export default function AddHodModel({ data, setData }) {
                             ...hod,
                             email: e.target.value
                         })}
-                            required
                             value={hod.email}
                             className='min-w-full'
                             title='Email' />
@@ -117,7 +131,6 @@ export default function AddHodModel({ data, setData }) {
                             ...hod,
                             phoneNumber: e.target.value
                         })}
-                            required
                             value={hod.phoneNumber}
                             type='number'
                             className='min-w-full'
@@ -128,27 +141,24 @@ export default function AddHodModel({ data, setData }) {
                             ...hod,
                             designation: e.target.value
                         })}
-                            required
                             value={hod.designation}
                             className='min-w-full'
                             title='Designation' />
 
                         <SelectInput
-                            required
                             title='Institute'
-                            onChange={e => setHod({ ...hod, institute: e.target.value })}
                             value={hod.institute}
+                            onChange={e => setHod({ ...hod, institute: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Institute</option>
                             {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
                         </SelectInput>
 
                         <SelectInput
-                            required
                             disabled={hod.institute === ''}
                             title='Department'
-                            onChange={e => setHod({ ...hod, department: e.target.value })}
                             value={hod.department}
+                            onChange={e => setHod({ ...hod, department: e.target.value })}
                             className="w-full sm:max-w-[330px] truncate">
                             <option value={null} default>Select Department</option>
                             {hod.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
@@ -163,7 +173,8 @@ export default function AddHodModel({ data, setData }) {
                         onClick={() => setData(false)} />
 
                     <Button
-                        label='Add Hod'
+                        label='Edit'
+                        disabled={!isChanged}
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>
