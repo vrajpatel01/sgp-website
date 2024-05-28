@@ -132,7 +132,7 @@ export default function EditHodModel({ data, setData, currentUserData }) {
                             phoneNumber: e.target.value
                         })}
                             value={hod.phoneNumber}
-                            type='number'
+                            type='tel'
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />
@@ -175,6 +175,7 @@ export default function EditHodModel({ data, setData, currentUserData }) {
                     <Button
                         label='Edit'
                         disabled={!isChanged}
+                        isLoading={editHodAccount.isPending}
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>

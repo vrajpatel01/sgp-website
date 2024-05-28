@@ -119,7 +119,7 @@ export default function AddHodModel({ data, setData }) {
                         })}
                             required
                             value={hod.phoneNumber}
-                            type='number'
+                            type='tel'
                             className='min-w-full'
                             prefix={'+91'}
                             title='Phone Number' />
@@ -164,6 +164,8 @@ export default function AddHodModel({ data, setData }) {
 
                     <Button
                         label='Add Hod'
+                        disabled={addHod.isPending}
+                        isLoading={addHod.isPending}
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>

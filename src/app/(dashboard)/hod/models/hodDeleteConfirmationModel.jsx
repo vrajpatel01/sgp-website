@@ -46,6 +46,8 @@ export default function HodDeleteConfirmationModel({ data, setData, id, deleteMo
                         <Button
                             label='Delete'
                             icon={<MdDelete />}
+                            isLoading={deleteAccount.isPending || deleteMultipleAccounts.isPending}
+                            disabled={deleteAccount.isPending || deleteMultipleAccounts.isPending}
                             className='bg-primary text-white !rounded-full whitespace-nowrap w-full sm:min-w-[130px] disabled:bg-opacity-90 hover:bg-secondary transition-colors duration-200 ease-in-out'
                         />
                     </div>
