@@ -183,7 +183,7 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
 
                     <Button
                         label='Edit'
-                        disabled={!isChanged}
+                        disabled={!isChanged || editHodAccount.isPending}
                         isLoading={editHodAccount.isPending}
                         className='min-w-full bg-primary text-white' />
                 </div>

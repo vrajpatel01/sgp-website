@@ -206,6 +206,8 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
 
                     <Button
                         label='Add Student'
+                        disabled={!isChanged || editAccount.isPending}
+                        isLoading={editAccount.isPending}
                         className='min-w-full bg-primary text-white' />
                 </div>
             </form>
