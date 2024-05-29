@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
+// icons
+import { MdDelete } from "react-icons/md"
+
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 import SideModel from "@/components/models/sideModel"
+import SelectInput from "@/components/shared/selectInput"
 
 
 // validator
 import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
-import SelectInput from "@/components/shared/selectInput"
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
-import { useEditFacultyAccount, useEditStudentAccount } from "../services/mutation"
-import { MdDelete } from "react-icons/md"
+
+// network
+import { useEditStudentAccount } from "../services/mutation"
 
 export default function EditStudentModel({ data, setData, currentUserData, setStudentDeleteModel }) {
     const [isChanged, setIsChanged] = useState(false)
-    const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: '', department: '', semester: '', division: '' })
-
+    const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: 'Select Institute', department: 'Select Department', semester: '', division: '' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(student.institute, student.institute !== undefined && student.institute !== 'Select Institute' ? true : false)
     const editAccount = useEditStudentAccount()
@@ -70,14 +73,16 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
 
             if (nameCheck && rollNumberCheck && emailCheck && phoneCheck && instituteCheck && departmentCheck && divisionCheck && semesterCheck) {
                 const data = {
-                    name: name.trim(),
-                    rollNumber: rollNumber.trim(),
-                    email,
-                    phoneNumber: phoneNumber,
-                    institute,
-                    department,
-                    semester,
-                    division,
+                    payload: {
+                        ...(currentUserData.name !== name && { name: name.trim() }),
+                        ...(currentUserData.rollNumber !== rollNumber && { rollNumber: rollNumber.trim() }),
+                        ...(currentUserData.email !== email && { email }),
+                        ...(currentUserData.phoneNumber !== phoneNumber && { phoneNumber }),
+                        ...(currentUserData.institute._id !== institute && { institute }),
+                        ...(currentUserData.department._id !== department && { department }),
+                        ...(currentUserData.semester !== semester && { semester }),
+                        ...(currentUserData.division !== division && { division }),
+                    },
                     id: currentUserData._id
                 }
                 editAccount.mutate(data, {

@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 
+// services
+import CustomError from "@/services/customError"
+
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 import SideModel from "@/components/models/sideModel"
+import SelectInput from "@/components/shared/selectInput"
 
 
 // validator
@@ -12,14 +16,13 @@ import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
 import numberValidator from "@/services/validator/number"
-import SelectInput from "@/components/shared/selectInput"
+
+// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
-import CustomError from "@/services/customError"
 import { useAddStudent } from "../services/mutation"
 
 export default function AddStudentModel({ data, setData }) {
     const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: '', department: '', semester: '', division: '' })
-
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(student.institute, student.institute !== '' && student.institute !== 'Select Institute' ? true : false)
     const addStudent = useAddStudent()

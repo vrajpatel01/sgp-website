@@ -1,35 +1,28 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
+// icons
+import { MdDelete } from "react-icons/md"
+
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 import SideModel from "@/components/models/sideModel"
+import SelectInput from "@/components/shared/selectInput"
 
 
 // validator
 import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
-import SelectInput from "@/components/shared/selectInput"
-import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
+
+// network
 import { useEditFacultyAccount } from "../services/mutation"
-import { MdDelete } from "react-icons/md"
+import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 
 export default function EditFacultyModel({ data, setData, currentUserData, setFacultyDeleteModel }) {
     const [isChanged, setIsChanged] = useState(false)
-    const [faculty, setFaculty] = useState({
-        name: '',
-        employeeNumber: '',
-        email: '',
-        phoneNumber: '',
-        designation: '',
-        institute: 'Select Institute',
-        department: 'Select Department',
-        subjectCode: '',
-        subjectName: ''
-    })
-
+    const [faculty, setFaculty] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department', subjectCode: '', subjectName: '' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(faculty.institute, faculty.institute !== undefined && faculty.institute !== 'Select Institute' ? true : false)
     const editAccount = useEditFacultyAccount()
@@ -83,13 +76,17 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
 
             if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
                 const data = {
-                    name: name.trim(),
-                    employeeCode: employeeNumber.trim(),
-                    email,
-                    mobileNumber: phoneNumber,
-                    designation: designation.trim(),
-                    institute,
-                    department,
+                    payload: {
+                        ...(currentUserData.name !== name && { name: name.trim() }),
+                        ...(currentUserData.employeeCode !== employeeNumber && { employeeCode: employeeNumber.trim() }),
+                        ...(currentUserData.email !== email && { email }),
+                        ...(currentUserData.mobileNumber !== phoneNumber && { mobileNumber: phoneNumber }),
+                        ...(currentUserData.designation !== designation && { designation: designation.trim() }),
+                        ...(currentUserData.institute._id !== institute && { institute }),
+                        ...(currentUserData.department._id !== department) && { department },
+                        ...(currentUserData.subjectCode !== subjectCode && { subjectCode: subjectCode.trim() }),
+                        ...(currentUserData.subjectName !== subjectName && { subjectName: subjectName.trim() })
+                    },
                     id: currentUserData._id
                 }
                 editAccount.mutate(data, {

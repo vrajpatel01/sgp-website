@@ -33,6 +33,7 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                             {hods.isSuccess && <TableCell content="" />}
                             <TableCell content="Name" />
                             <TableCell content="Enrollment Number" />
+                            <TableCell content="Designation" />
                             <TableCell content="Email" />
                             <TableCell content="Phone Number" />
                             <TableCell content="Institute" />
@@ -42,6 +43,7 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                     <tbody className="divide-y">
                         {hods.isLoading && Array(15).fill(0).map((_, index) => (
                             <TableRow key={index}>
+                                <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
@@ -68,6 +70,7 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                                 key={hod._id}>
                                 <TableCell content={hod.name} />
                                 <TableCell content={hod.employeeCode} />
+                                <TableCell content={hod.designation} />
                                 <TableCell content={hod.email} />
                                 <TableCell content={hod.mobileNumber} />
                                 <TableCell content={hod.institute.name} />

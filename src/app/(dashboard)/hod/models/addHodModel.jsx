@@ -12,22 +12,14 @@ import SideModel from "@/components/models/sideModel"
 import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
-import numberValidator from "@/services/validator/number"
 import SelectInput from "@/components/shared/selectInput"
+
+// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 import { useAddHod } from "../services/mutation"
 
 export default function AddHodModel({ data, setData }) {
-    const [hod, setHod] = useState({
-        name: '',
-        employeeNumber: '',
-        email: '',
-        phoneNumber: '',
-        designation: '',
-        institute: '',
-        department: ''
-    })
-
+    const [hod, setHod] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: 'Select Department', institute: 'Select Institute', department: '' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(hod.institute, hod.institute !== '' && hod.institute !== 'Select Institute' ? true : false)
     const addHod = useAddHod()

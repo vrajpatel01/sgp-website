@@ -56,16 +56,7 @@ export const deleteMultipleHodsAccount = async (ids) => {
 
 export const editHodAccount = async (data) => {
     const session = await getSession()
-
-    return (await axiosInstance.patch(`/admin/edit-hod/${data.id}`, {
-        name: data.name,
-        employeeCode: data.employeeCode,
-        email: data.email,
-        mobileNumber: data.mobileNumber,
-        designation: data.designation,
-        institute: data.institute,
-        department: data.department
-    }, {
+    return (await axiosInstance.patch(`/admin/edit-hod/${data.id}`, data.payload, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session?.user?.token}`

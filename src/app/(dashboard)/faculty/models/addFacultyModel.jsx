@@ -13,21 +13,13 @@ import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
 import SelectInput from "@/components/shared/selectInput"
+
+// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 import { useAddFaulty } from "../services/mutation"
 
 export default function AddFacultyModel({ data, setData }) {
-    const [faculty, setFaculty] = useState({
-        name: '',
-        employeeNumber: '',
-        email: '',
-        phoneNumber: '',
-        designation: '',
-        institute: 'Select Institute',
-        department: 'Select Department',
-        subjectCode: '',
-        subjectName: ''
-    })
+    const [faculty, setFaculty] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department', subjectCode: '', subjectName: '' })
 
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(faculty.institute, faculty.institute !== '' && faculty.institute !== 'Select Institute' ? true : false)

@@ -58,17 +58,7 @@ export const deleteMultipleFacultiesAccount = async (ids) => {
 export const editFacultyAccount = async (data) => {
     const session = await getSession()
 
-    return (await axiosInstance.patch(`/admin/edit-faculty/${data.id}`, {
-        name: data.name,
-        employeeCode: data.employeeCode,
-        email: data.email,
-        mobileNumber: data.mobileNumber,
-        designation: data.designation,
-        institute: data.institute,
-        department: data.department,
-        subjectCode: data.subjectCode,
-        subjectName: data.subjectName
-    }, {
+    return (await axiosInstance.patch(`/admin/edit-faculty/${data.id}`, data.payload, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${session?.user?.token}`

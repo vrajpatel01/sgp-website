@@ -9,13 +9,11 @@ import TableRow from "@/components/shared/table/tableRow"
 import { useGetStudentWithPagination } from "../services/query"
 
 // icons
-import { MdDelete } from "react-icons/md"
 import Error from "@/components/shared/error"
 import StudentDeleteConfirmationModel from "../models/studentDeleteConfirmationModel"
 import EditStudentModel from "../models/editStudentModel"
 
 export default function StudentData({ selectedItem, setSelectedItem }) {
-    // const [selectedItem, setSelectedItem] = useState([])
     const [currentPage, setCurrentPage] = useState(1)
     const [studentDeleteModel, setStudentDeleteModel] = useState(false)
     const [selectedStudent, setSelectedStudent] = useState({})
@@ -37,12 +35,14 @@ export default function StudentData({ selectedItem, setSelectedItem }) {
                             <TableCell content="Phone Number" />
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
+                            <TableCell content="Semester" />
                             <TableCell content="Division" />
                         </TableRow>
                     </thead>
                     <tbody className="divide-y">
                         {students.isLoading && Array(15).fill(0).map((_, index) => (
                             <TableRow key={index}>
+                                <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
@@ -74,6 +74,7 @@ export default function StudentData({ selectedItem, setSelectedItem }) {
                                 <TableCell content={student.phoneNumber} />
                                 <TableCell content={student.institute.name} />
                                 <TableCell content={student.department.name} />
+                                <TableCell content={student.semester} />
                                 <TableCell content={student.division} />
                             </TableRow>
                         ))}

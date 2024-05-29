@@ -34,6 +34,7 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                             <TableCell content="Employee Number" />
                             <TableCell content="Email" />
                             <TableCell content="Phone Number" />
+                            <TableCell content="Designation" />
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
                             <TableCell content="Subject Name" />
@@ -43,6 +44,7 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                     <tbody className="divide-y">
                         {faculties.isLoading && Array(15).fill(0).map((_, index) => (
                             <TableRow key={index}>
+                                <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
@@ -73,6 +75,7 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                                 <TableCell content={faculty.employeeCode} />
                                 <TableCell content={faculty.email} />
                                 <TableCell content={faculty.mobileNumber} />
+                                <TableCell content={faculty.designation} />
                                 <TableCell content={faculty.institute.name} />
                                 <TableCell content={faculty.department.name} />
                                 <TableCell content={faculty.subjectName} />

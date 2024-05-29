@@ -1,33 +1,27 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
+// icons
+import { MdDelete } from "react-icons/md"
+
 // components
 import InputField from "@/components/shared/inputField"
 import Button from "@/components/shared/button"
 import SideModel from "@/components/models/sideModel"
-
 
 // validator
 import phoneValidator from "@/services/validator/phone"
 import isEmpty from "@/services/validator/isEmpty"
 import emailValidator from "@/services/validator/email"
 import SelectInput from "@/components/shared/selectInput"
+
+// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 import { useEditHodAccount } from "../services/mutation"
-import { MdDelete } from "react-icons/md"
 
 export default function EditHodModel({ data, setData, currentUserData, setHodDeleteModel }) {
     const [isChanged, setIsChanged] = useState(false)
-    const [hod, setHod] = useState({
-        name: '',
-        employeeNumber: '',
-        email: '',
-        phoneNumber: '',
-        designation: '',
-        institute: 'Select Institute',
-        department: 'Select Department'
-    })
-
+    const [hod, setHod] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(hod.institute, hod.institute !== undefined && hod.institute !== 'Select Institute' ? true : false)
     const editHodAccount = useEditHodAccount()
@@ -75,13 +69,15 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
 
             if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
                 const data = {
-                    name: name.trim(),
-                    employeeCode: employeeNumber.trim(),
-                    email,
-                    mobileNumber: phoneNumber,
-                    designation: designation.trim(),
-                    institute,
-                    department,
+                    payload: {
+                        ...(currentUserData.name !== name && { name: name.trim() }),
+                        ...(currentUserData.employeeCode !== employeeNumber && { employeeCode: employeeNumber }),
+                        ...(currentUserData.email !== email && { email }),
+                        ...(currentUserData.mobileNumber !== phoneNumber && { mobileNumber: phoneNumber }),
+                        ...(currentUserData.designation !== designation && { designation }),
+                        ...(currentUserData.institute._id !== institute && { institute }),
+                        ...(currentUserData.department._id !== department) && { department }
+                    },
                     id: currentUserData._id
                 }
                 editHodAccount.mutate(data, {
