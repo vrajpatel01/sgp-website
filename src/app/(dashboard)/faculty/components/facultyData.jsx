@@ -23,6 +23,8 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
 
     if (faculties.isError) return <Error message="Having some problem to fetch data." />
 
+    if (faculties.isSuccess && faculties?.data?.success === false) return <Error message="Currently not exists any account." />
+
     return (
         <>
             <div className="table-container mb-6 overflow-x-auto no-scroll  bg-white rounded-md w-full my-5 border-border border-[.5px]">

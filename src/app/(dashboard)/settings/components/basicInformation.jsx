@@ -23,7 +23,7 @@ export default function BasicInformation() {
         department: '6650c5c0afc056a44068e057'
     })
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(basicInformation.institute, basicInformation.institute !== '' && basicInformation.institute !== 'Select Institute' ? true : false)
+    const departments = useGetDepartments(basicInformation?.institute, basicInformation?.institute !== '' && basicInformation?.institute !== 'Select Institute' ? true : false)
 
     const handleFormSubmit = (e) => {
         e.preventDefault()
@@ -92,7 +92,7 @@ export default function BasicInformation() {
                     value={basicInformation.department}
                     className="w-full truncate">
                     <option value={null} default>Select Department</option>
-                    {basicInformation.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
+                    {basicInformation?.institute != 'undefined' && departments?.isSuccess && departments?.data?.departments?.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
                 </SelectInput>
                 {
                     isChanged &&

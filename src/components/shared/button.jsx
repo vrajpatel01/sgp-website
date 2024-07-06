@@ -24,7 +24,7 @@ export default function Button({ label, disabled, onClick, className, icon, type
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`flex justify-center items-center rounded-md px-4 py-2 cursor-pointer text-subtitle-16 disabled:cursor-not-allowed ${className}`}
+            className={`flex justify-center items-center rounded-md px-4 py-2 cursor-pointer text-subtitle-16 disabled:cursor-not-allowed active:scale-90 transition-all ease-in-out duration-75 ${className}`}
             type={type}
             name={label}
             id={label || buttonId} >

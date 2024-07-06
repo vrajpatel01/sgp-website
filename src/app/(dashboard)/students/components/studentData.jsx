@@ -22,6 +22,8 @@ export default function StudentData({ selectedItem, setSelectedItem }) {
 
     if (students.isError) return <Error message="Having some problem to fetch data." />
 
+    if (students.isSuccess && students?.data?.success === false) return <Error message="Currently not exists any account." />
+
     return (
         <>
             <div className="table-container mb-6 overflow-x-auto no-scroll  bg-white rounded-md w-full my-5 border-border border-[.5px]">

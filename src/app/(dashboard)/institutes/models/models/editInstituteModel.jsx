@@ -45,7 +45,7 @@ export default function EditInstitute({ data, setData, instituteData, refetch, s
                     <h1 className="text-title-24 mb-4">Institute</h1>
                     <InputField onChange={e => setInstitute(e.target.value)}
                         value={institute}
-                        className='min-w-full sm:min-w-[300px]'
+                        className='w-full'
                         title='Name' />
                     <div className="w-full grid grid-cols-2 gap-5">
                         <Button
@@ -60,7 +60,7 @@ export default function EditInstitute({ data, setData, instituteData, refetch, s
                             className='min-w-full bg-primary text-white' />
                     </div>
                 </div>
-                <div className="flex justify-start items-start w-full p-3 sm:max-w-[300px] leading-5 rounded-md border-secondary bg-secondary bg-opacity-5 border-1 border-opacity-50 gap-3">
+                <div className="flex justify-start items-start w-full p-3 leading-5 rounded-md border-secondary bg-secondary bg-opacity-5 border-1 border-opacity-50 gap-3">
                     <div className="flex flex-col gap-4">
                         <h1 className="text-body-14 text-pri text-light-text">Delete whole institute. if you delete this institute all department are also delete related to this institute.</h1>
                         <div className="flex justify-end">

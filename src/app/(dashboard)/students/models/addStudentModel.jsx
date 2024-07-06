@@ -118,7 +118,7 @@ export default function AddStudentModel({ data, setData }) {
                             title='Institute'
                             value={student.institute}
                             onChange={e => setStudent({ ...student, institute: e.target.value })}
-                            className="w-full sm:max-w-[330px] truncate">
+                            className="w-full truncate">
                             <option value={null} default>Select Institute</option>
                             {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
                         </SelectInput>
@@ -129,7 +129,7 @@ export default function AddStudentModel({ data, setData }) {
                             title='Department'
                             value={student.department}
                             onChange={e => setStudent({ ...student, department: e.target.value })}
-                            className="w-full sm:max-w-[330px] truncate">
+                            className="w-full truncate">
                             <option value={null} default>Select Department</option>
                             {student.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
                         </SelectInput>

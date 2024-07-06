@@ -19,7 +19,7 @@ import { useGetAllInstitutes, useGetDepartments } from "../../institutes/service
 import { useAddHod } from "../services/mutation"
 
 export default function AddHodModel({ data, setData }) {
-    const [hod, setHod] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: 'Select Department', institute: 'Select Institute', department: '' })
+    const [hod, setHod] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(hod.institute, hod.institute !== '' && hod.institute !== 'Select Institute' ? true : false)
     const addHod = useAddHod()
@@ -130,7 +130,7 @@ export default function AddHodModel({ data, setData }) {
                             title='Institute'
                             onChange={e => setHod({ ...hod, institute: e.target.value })}
                             value={hod.institute}
-                            className="w-full sm:max-w-[330px] truncate">
+                            className="w-full truncate">
                             <option value={null} default>Select Institute</option>
                             {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
                         </SelectInput>
@@ -141,7 +141,7 @@ export default function AddHodModel({ data, setData }) {
                             title='Department'
                             onChange={e => setHod({ ...hod, department: e.target.value })}
                             value={hod.department}
-                            className="w-full sm:max-w-[330px] truncate">
+                            className="w-full truncate">
                             <option value={null} default>Select Department</option>
                             {hod.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
                         </SelectInput>

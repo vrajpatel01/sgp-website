@@ -40,6 +40,9 @@ export default function Institutes() {
     }
     if (institutes.isError) return <Error message="Having some problem to fetch data." />
 
+    // if (institutes.isSuccess && institutes?.data?.institutes.length === 0) return <Error message="Currently not exists any account." />
+
+
     return (
         <div>
             <div className="header flex justify-between items-center">
@@ -55,6 +58,8 @@ export default function Institutes() {
                         className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />
                 </div>
             </div>
+
+            {institutes.isSuccess && institutes?.data?.institutes.length === 0 && <Error message="Currently not exists any Institute." />}
             <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
                 {institutes.data?.institutes.map((e) => (
                     <InstitutesItem
