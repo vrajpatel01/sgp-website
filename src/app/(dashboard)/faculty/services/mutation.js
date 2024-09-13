@@ -76,7 +76,6 @@ export const useEditFacultyAccount = () => {
     return useMutation({
         mutationFn: (data) => editFacultyAccount(data),
         onError: (error) => {
-            console.log('error: ', error.response);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }

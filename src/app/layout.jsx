@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import QueryProvider from "../components/queryProvider";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import ProgressBarProvider from "@/components/progressBarProvider";
 
 export const metadata = {
   title: "SGP",
@@ -15,9 +16,11 @@ export default function RootLayout({ children }) {
       <AuthProvider>
         <html lang="en">
           <body className="overflow-hidden h-screen w-screen">
-            {children}
-            <Toaster position="top-right" />
-            <ReactQueryDevtools initialIsOpen={false} />
+            <ProgressBarProvider>
+              {children}
+              <Toaster position="top-right" />
+              <ReactQueryDevtools initialIsOpen={false} />
+            </ProgressBarProvider>
           </body>
         </html>
       </AuthProvider>
