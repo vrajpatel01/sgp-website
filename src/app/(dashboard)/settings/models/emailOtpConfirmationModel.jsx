@@ -3,12 +3,22 @@ import { useState } from "react";
 import PopUpModel from "@/components/models/popUpModel";
 import Button from "@/components/shared/button";
 import OTPInput from "react-otp-input";
+import { useVerifyEmailChange } from "../services/mutation";
 
 export default function EmailOtpConfirmationModel({ data, setData }) {
+    const verifyEmail = useVerifyEmailChange();
     const [otp, setOtp] = useState('')
 
     const handleFormSubmit = e => {
         e.preventDefault()
+        verifyEmail.mutate(otp, {
+            onSuccess: (data) => {
+                console.log(data);
+            },
+            onError: (error) => {
+                console.log(error);
+            }
+        })
     }
     return (
         <PopUpModel setToggle={setData} toggle={data}>
@@ -30,12 +40,15 @@ export default function EmailOtpConfirmationModel({ data, setData }) {
                         <Button
                             label='Cancel'
                             onClick={() => {
+                                setOtp('')
                                 setData(false)
                             }}
                             type="button"
                             className='!rounded-full w-full sm:min-w-[130px]'
                         />
                         <Button
+                            isLoading={verifyEmail.isPending}
+                            disabled={verifyEmail.isPending}
                             label='Change Email'
                             className='bg-primary text-white !rounded-full whitespace-nowrap w-full sm:min-w-[130px] disabled:bg-opacity-90'
                         />

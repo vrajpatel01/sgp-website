@@ -12,8 +12,12 @@ import Button from "@/components/shared/button";
 import { MdModeEditOutline } from "react-icons/md";
 import isEmpty from "@/services/validator/isEmpty";
 import phoneValidator from "@/services/validator/phone";
+import { Warper } from "./warper";
+import { IoMdPerson } from "react-icons/io";
+import { useUpdateProfile } from "../services/mutation";
 
 export default function BasicInformation() {
+    const updateProfile = useUpdateProfile();
     const [isChanged, setIsChanged] = useState(false)
     const [basicInformation, setBasicInformation] = useState({
         name: 'Vraj Patel',
@@ -34,7 +38,21 @@ export default function BasicInformation() {
             const employeeCodeValidate = isEmpty(employeeCode)
 
             if (nameValidate && phoneValidate && employeeCodeValidate) {
-                console.log('all done');
+                const data = {
+                    name: basicInformation.name,
+                    employeeCode: basicInformation.employeeCode,
+                    mobileNumber: basicInformation.phoneNumber,
+                    institute: basicInformation.institute,
+                    department: basicInformation.department,
+                }
+                updateProfile.mutate(data, {
+                    onSuccess: (data) => {
+                        console.log(data);
+                    },
+                    onError: (error) => {
+                        console.log(error);
+                    }
+                })
             }
 
         } catch (error) {
@@ -56,28 +74,20 @@ export default function BasicInformation() {
         }
     }, [basicInformation])
     return (
-        <form onSubmit={handleFormSubmit} className="bg-white rounded-md shadow-sm p-4 pt-0 divide-y-1 w-full sm:max-w-[400px]" noValidate>
-            <div className="py-3">Personal information.</div>
-            <div className="py-3 flex flex-col gap-4">
+        <Warper title='Personal Information' description="You can update your personal information from here.">
+            <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
                 <InputField
-                    title='Name'
-                    placeholder='John Doe'
-                    className='w-full truncate'
                     value={basicInformation.name}
-                    onChange={e => setBasicInformation({ ...basicInformation, name: e.target.value })} />
+                    onChange={e => setBasicInformation({ ...basicInformation, name: e.target.value })}
+                    className='text-sm w-full' title='Name' />
                 <InputField
-                    title='Employee Code'
-                    placeholder='EMP49347'
-                    className='w-full truncate'
                     value={basicInformation.employeeCode}
-                    onChange={e => setBasicInformation({ ...basicInformation, employeeCode: e.target.value })} />
+                    onChange={e => setBasicInformation({ ...basicInformation, employeeCode: e.target.value })}
+                    className='text-sm w-full' title='Employee Code' />
                 <InputField
-                    title='Mobile Number'
-                    placeholder='1234567890'
-                    className='w-full truncate'
-                    type='number'
                     value={basicInformation.phoneNumber}
-                    onChange={e => setBasicInformation({ ...basicInformation, phoneNumber: e.target.value })} />
+                    onChange={e => setBasicInformation({ ...basicInformation, phoneNumber: e.target.value })}
+                    className='text-sm w-full' title='Mobile Number' />
                 <SelectInput
                     title='Institute'
                     onChange={e => setBasicInformation({ ...basicInformation, institute: e.target.value })}
@@ -94,16 +104,15 @@ export default function BasicInformation() {
                     <option value={null} default>Select Department</option>
                     {basicInformation?.institute != 'undefined' && departments?.isSuccess && departments?.data?.departments?.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
                 </SelectInput>
-                {
-                    isChanged &&
-                    <div className="flex justify-end items-center">
-                        <Button
-                            icon={<MdModeEditOutline />}
-                            label='Change'
-                            className='bg-primary text-white' />
-                    </div>
-                }
-            </div>
-        </form>
+                <div className="flex justify-end items-center">
+                    <Button
+                        disabled={!isChanged || updateProfile.isPending}
+                        isLoading={updateProfile.isPending}
+                        icon={<IoMdPerson />}
+                        label='Change'
+                        className='bg-primary text-white disabled:bg-gray-600' />
+                </div>
+            </form>
+        </Warper>
     )
 }

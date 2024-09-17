@@ -11,8 +11,8 @@ const queryClient = new QueryClient({
     },
     queryCache: new QueryCache({
         onError: (error) => {
-            const err = error.response
-            if (err.status == 401) {
+            const err = error?.response
+            if (err && err.status == 401) {
                 toast.error('Session expired, please login again')
                 signOut({
                     redirect: true,
@@ -23,8 +23,8 @@ const queryClient = new QueryClient({
     }),
     mutationCache: new MutationCache({
         onError: (error) => {
-            const err = error.response
-            if (err.status == 401) {
+            const err = error?.response
+            if (err && err.status == 401) {
                 toast.error('Session expired, please login again')
                 signOut({
                     redirect: true,
