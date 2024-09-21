@@ -5,7 +5,7 @@ export const editUserInfo = async (data) => {
     const session = await getSession();
     return (await axiosInstance.patch('/admin/edit-admin', data, {
         headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
             "Authorization": `Bearer ${session?.user?.token}`,
         }
     })).data
@@ -31,4 +31,14 @@ export const verifyEmailChange = async (otp) => {
             "Authorization": `Bearer ${session?.user?.token}`,
         }
     }))
+}
+
+export const getMyInfo = async () => {
+    const session = await getSession();
+    return (await axiosInstance.get('/admin/me', {
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${session?.user?.token}`,
+        }
+    })).data
 }

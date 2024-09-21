@@ -1,7 +1,7 @@
 'use client'
 import useNetwork from "@/hooks/useNetwork"
-import Logo from "./shared/logo";
 import { RiWifiOffLine } from "react-icons/ri";
+import Logo from "./shared/logo";
 
 export default function NetworkProvider({ children }) {
     const isOnline = useNetwork();

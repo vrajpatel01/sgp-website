@@ -5,8 +5,15 @@ import PasswordChange from "./components/passwordChange";
 import { Warper } from "./components/warper";
 import Button from "@/components/shared/button";
 import { signOut } from "next-auth/react";
+import { useGetMyInfo } from "./services/query";
+import SettingsSkelton from "./components/settingsSkelton";
 
 export default function Settings() {
+    const myInfo = useGetMyInfo();
+    if (myInfo.isPending) {
+        return <SettingsSkelton />
+    }
+
     return (
         <div className="h-full">
             <div className="header flex justify-between items-center">
@@ -14,8 +21,8 @@ export default function Settings() {
             </div>
 
             <div className="max-w-[900px] mx-auto space-y-5 mt-10">
-                <BasicInformation />
-                <ChangeEmail />
+                <BasicInformation data={myInfo.data.admin} />
+                <ChangeEmail currentEmail={myInfo.data.admin.email} />
                 <PasswordChange />
                 <Warper title='Sign out' className='border-t-[.5px] border-gray-500 pt-5'>
                     <div className="text-sm text-gray-500">

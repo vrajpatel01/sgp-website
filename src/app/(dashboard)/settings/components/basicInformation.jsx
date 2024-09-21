@@ -9,22 +9,21 @@ import SelectInput from "@/components/shared/selectInput";
 // network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query";
 import Button from "@/components/shared/button";
-import { MdModeEditOutline } from "react-icons/md";
 import isEmpty from "@/services/validator/isEmpty";
-import phoneValidator from "@/services/validator/phone";
 import { Warper } from "./warper";
 import { IoMdPerson } from "react-icons/io";
 import { useUpdateProfile } from "../services/mutation";
 
-export default function BasicInformation() {
+import { useQueryClient } from "@tanstack/react-query";
+
+export default function BasicInformation({ data }) {
+    const queryClient = useQueryClient();
     const updateProfile = useUpdateProfile();
     const [isChanged, setIsChanged] = useState(false)
     const [basicInformation, setBasicInformation] = useState({
-        name: 'Vraj Patel',
-        phoneNumber: '6353101020',
-        employeeCode: 'VRAJ157',
-        institute: '664ca80d22ef7a463549dafd',
-        department: '6650c5c0afc056a44068e057'
+        name: data.name,
+        institute: data?.institute?._id,
+        department: data?.department?._id
     })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(basicInformation?.institute, basicInformation?.institute !== '' && basicInformation?.institute !== 'Select Institute' ? true : false)
@@ -32,25 +31,25 @@ export default function BasicInformation() {
     const handleFormSubmit = (e) => {
         e.preventDefault()
         try {
-            const { name, phoneNumber, employeeCode } = basicInformation
+            const { name } = basicInformation
             const nameValidate = isEmpty(name)
-            const phoneValidate = phoneValidator(phoneNumber)
-            const employeeCodeValidate = isEmpty(employeeCode)
 
-            if (nameValidate && phoneValidate && employeeCodeValidate) {
+            if (nameValidate) {
                 const data = {
                     name: basicInformation.name,
-                    employeeCode: basicInformation.employeeCode,
-                    mobileNumber: basicInformation.phoneNumber,
                     institute: basicInformation.institute,
                     department: basicInformation.department,
                 }
                 updateProfile.mutate(data, {
-                    onSuccess: (data) => {
-                        console.log(data);
+                    onSuccess: async (data) => {
+                        if (data.success) {
+                            await queryClient.invalidateQueries(['myInfo'])
+                            return toast.success(data.message)
+                        }
                     },
                     onError: (error) => {
                         console.log(error);
+                        return toast.error(error?.message || 'Having some issue to update profile');
                     }
                 })
             }
@@ -63,16 +62,14 @@ export default function BasicInformation() {
     }
 
     useEffect(() => {
-        if (basicInformation.name !== 'Vraj Patel' ||
-            basicInformation.phoneNumber !== '6353101020' ||
-            basicInformation.employeeCode !== 'VRAJ157' ||
-            basicInformation.institute !== '664ca80d22ef7a463549dafd' ||
-            basicInformation.department !== '6650c5c0afc056a44068e057') {
+        if (basicInformation.name !== data.name ||
+            basicInformation.institute !== data?.institute?._id ||
+            basicInformation.department !== data?.department?._id) {
             setIsChanged(true)
         } else {
             setIsChanged(false)
         }
-    }, [basicInformation])
+    }, [basicInformation, data?.department?._id, data?.institute?._id, data.name])
     return (
         <Warper title='Personal Information' description="You can update your personal information from here.">
             <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
@@ -80,14 +77,6 @@ export default function BasicInformation() {
                     value={basicInformation.name}
                     onChange={e => setBasicInformation({ ...basicInformation, name: e.target.value })}
                     className='text-sm w-full' title='Name' />
-                <InputField
-                    value={basicInformation.employeeCode}
-                    onChange={e => setBasicInformation({ ...basicInformation, employeeCode: e.target.value })}
-                    className='text-sm w-full' title='Employee Code' />
-                <InputField
-                    value={basicInformation.phoneNumber}
-                    onChange={e => setBasicInformation({ ...basicInformation, phoneNumber: e.target.value })}
-                    className='text-sm w-full' title='Mobile Number' />
                 <SelectInput
                     title='Institute'
                     onChange={e => setBasicInformation({ ...basicInformation, institute: e.target.value })}

@@ -11,7 +11,7 @@ import EmailOtpConfirmationModel from "../models/emailOtpConfirmationModel";
 import { Warper } from "./warper";
 import { useUpdateProfile } from "../services/mutation";
 
-export default function ChangeEmail() {
+export default function ChangeEmail({ currentEmail }) {
     const changeEmail = useUpdateProfile();
     const [email, setEmail] = useState('')
     const [isChanged, setIsChanged] = useState(false)
@@ -41,12 +41,12 @@ export default function ChangeEmail() {
     }
 
     useEffect(() => {
-        if (email === 'd23dcs157@charusat.edu.in' || email === '') {
+        if (email === currentEmail || email === '') {
             setIsChanged(false)
         } else {
             setIsChanged(true)
         }
-    }, [email])
+    }, [currentEmail, email])
     return (
         <div>
             <Warper title='Personal Information' description="You can update your personal information from here.">
@@ -57,7 +57,7 @@ export default function ChangeEmail() {
                         className='w-full truncate'
                         type='email'
                         disabled
-                        value='d23dcs157@charusat.edu.in'
+                        value={currentEmail}
                         onChange={e => setEmail(e.target.value)} />
                     <InputField
                         title='New Email'

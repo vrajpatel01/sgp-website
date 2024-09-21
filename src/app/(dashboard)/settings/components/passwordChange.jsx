@@ -79,18 +79,21 @@ export default function PasswordChange() {
                         title='Current Password'
                         placeholder='•••••••••'
                         className='w-full truncate'
+                        type='password'
                         value={password.currentPassword}
                         onChange={e => setPassword({ ...password, currentPassword: e.target.value })} />
                     <InputField
                         title='New Password'
                         placeholder='•••••••••'
                         className='w-full truncate'
+                        type='password'
                         value={password.newPassword}
                         onChange={e => setPassword({ ...password, newPassword: e.target.value })} />
                     <InputField
                         title='Confirm Password'
                         placeholder='•••••••••'
                         className='w-full truncate'
+                        type='password'
                         value={password.confirmPassword}
                         onChange={e => setPassword({ ...password, confirmPassword: e.target.value })} />
                     <div className="flex justify-end items-center">
