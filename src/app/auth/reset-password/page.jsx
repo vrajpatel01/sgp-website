@@ -4,7 +4,7 @@ import toast from "react-hot-toast"
 
 // components
 import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
+import { Button } from "@/components/ui/button"
 
 // validator
 import passwordValidator from "@/services/validator/password";
@@ -30,7 +30,7 @@ export default function ResetPasswordScreen() {
         }
     }
     return (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 w-full sm:min-w-[350px]">
             <h1 className="text-title-28">Reset Password</h1>
             <form onSubmit={onResetPasswordFormSubmit} className="gap-3 flex flex-col">
                 <InputField
@@ -55,10 +55,9 @@ export default function ResetPasswordScreen() {
                         ...userInput,
                         confirmPassword: e.target.value
                     })} />
-                <Button disabled={false}
-                    width={300}
-                    label="Reset"
-                    className='bg-primary-text text-white w-full' />
+                <Button disabled={false}>
+                    Reset
+                </Button>
             </form>
         </div>
     );

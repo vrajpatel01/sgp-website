@@ -1,3 +1,4 @@
+import regex from "@/lib/regex";
 import { z } from "zod";
 
 export default z.object({
@@ -6,8 +7,8 @@ export default z.object({
     }),
     employeeNumber: z.string(),
     email: z.string().email(),
-    phoneNumber: z.string().min(10, {
-        message: 'Phone number must be 10 characters long'
+    phoneNumber: z.string().refine(data => regex.phone.test(data), {
+        message: 'Enter valid phone number'
     }),
     designation: z.string(),
     institute: z.string(),

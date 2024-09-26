@@ -77,7 +77,6 @@ export default function ChangeEmail({ currentEmail }) {
                         <Button
                             disabled={!isChanged || changeEmail.isPending}
                             isLoading={changeEmail.isPending} >
-                            <MdAlternateEmail />
                             Change
                         </Button>
                     </div>

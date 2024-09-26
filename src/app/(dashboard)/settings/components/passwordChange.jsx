@@ -108,7 +108,6 @@ export default function PasswordChange() {
                         <Button
                             disabled={!isChanged || changePassword.isPending}
                             isLoading={changePassword.isPending}>
-                            <IoLockClosed />
                             Change
                         </Button>
                     </div>

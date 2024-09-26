@@ -1,13 +1,16 @@
+import regex from "@/lib/regex";
 import { z } from "zod";
 
 export default z.object({
-    name: z.string().nonempty(),
-    employeeNumber: z.string().nonempty(),
+    name: z.string(),
+    employeeNumber: z.string(),
     email: z.string().email(),
-    phoneNumber: z.string().nonempty(),
-    designation: z.string().nonempty(),
-    institute: z.string().nonempty(),
-    department: z.string().nonempty(),
-    subjectCode: z.string().nonempty(),
-    subjectName: z.string().nonempty(),
+    phoneNumber: z.string().refine(data => regex.phone.test(data), {
+        message: 'Enter valid phone number'
+    }),
+    designation: z.string(),
+    institute: z.string(),
+    department: z.string(),
+    subjectCode: z.string(),
+    subjectName: z.string(),
 })

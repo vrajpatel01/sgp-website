@@ -106,7 +106,6 @@ export default function BasicInformation({ data }) {
                     <Button
                         disabled={!isChanged || updateProfile.isPending}
                         isLoading={updateProfile.isPending} >
-                        <IoMdPerson />
                         Change
                     </Button>
                 </div>
