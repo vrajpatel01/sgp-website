@@ -2,19 +2,18 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-// components
-import InputField from "@/components/shared/inputField";
-import SelectInput from "@/components/shared/selectInput";
-
 // network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query";
-import Button from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import isEmpty from "@/services/validator/isEmpty";
 import { Warper } from "./warper";
 import { IoMdPerson } from "react-icons/io";
 import { useUpdateProfile } from "../services/mutation";
 
 import { useQueryClient } from "@tanstack/react-query";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 export default function BasicInformation({ data }) {
     const queryClient = useQueryClient();
@@ -73,33 +72,43 @@ export default function BasicInformation({ data }) {
     return (
         <Warper title='Personal Information' description="You can update your personal information from here.">
             <form onSubmit={handleFormSubmit} noValidate className="space-y-4">
-                <InputField
-                    value={basicInformation.name}
-                    onChange={e => setBasicInformation({ ...basicInformation, name: e.target.value })}
-                    className='text-sm w-full' title='Name' />
-                <SelectInput
-                    title='Institute'
-                    onChange={e => setBasicInformation({ ...basicInformation, institute: e.target.value })}
-                    value={basicInformation.institute}
-                    className="w-full truncate">
-                    <option value={null} default>Select Institute</option>
-                    {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
-                </SelectInput>
-                <SelectInput
-                    title='Department'
-                    onChange={e => setBasicInformation({ ...basicInformation, department: e.target.value })}
-                    value={basicInformation.department}
-                    className="w-full truncate">
-                    <option value={null} default>Select Department</option>
-                    {basicInformation?.institute != 'undefined' && departments?.isSuccess && departments?.data?.departments?.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
-                </SelectInput>
+                <div>
+                    <Label htmlFor="name">name</Label>
+                    <Input
+                        value={basicInformation.name}
+                        placeholder='name'
+                        id="name"
+                        onChange={e => setBasicInformation({ ...basicInformation, name: e.target.value })} />
+                </div>
+                <div>
+                    <Label htmlFor="institute">institute</Label>
+                    <Select id="institute" value={basicInformation.institute} onValueChange={(value) => setBasicInformation({ ...basicInformation, institute: value })}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="select institute" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {institutes.isSuccess && institutes.data.institutes.map(institute => <SelectItem key={institute._id} value={institute._id} >{institute.name}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div>
+                    <Label htmlFor="department">department</Label>
+                    <Select id="department" value={basicInformation.department} onValueChange={(value) => setBasicInformation({ ...basicInformation, department: value })}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="select department" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {basicInformation?.institute != 'undefined' && departments?.isSuccess && departments?.data?.departments?.map(department => <SelectItem key={department._id} value={department._id} >{department.name}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
+                </div>
                 <div className="flex justify-end items-center">
                     <Button
                         disabled={!isChanged || updateProfile.isPending}
-                        isLoading={updateProfile.isPending}
-                        icon={<IoMdPerson />}
-                        label='Change'
-                        className='bg-primary text-white disabled:bg-gray-600' />
+                        isLoading={updateProfile.isPending} >
+                        <IoMdPerson />
+                        Change
+                    </Button>
                 </div>
             </form>
         </Warper>

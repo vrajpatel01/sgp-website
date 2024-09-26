@@ -13,6 +13,8 @@ import EditFacultyModel from "../models/editFacultyModel"
 
 // network
 import { useGetFaultyWithPagination } from "../services/query"
+import { Sheet } from "@/components/ui/sheet"
+import { Dialog } from "@/components/ui/dialog"
 
 export default function FacultyData({ selectedItem, setSelectedItem }) {
     const [currentPage, setCurrentPage] = useState(1)
@@ -91,8 +93,12 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                 totalPages={faculties?.data?.totalPages}
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
-            <FacultyDeleteConfirmationModel data={facultyDeleteModel} setData={setFacultyDeleteModel} id={selectedFaculty._id} deleteMode="single" />
-            <EditFacultyModel data={editFacultyModel} setData={setEditFacultyModel} currentUserData={selectedFaculty} setFacultyDeleteModel={setFacultyDeleteModel} />
+            <Dialog open={facultyDeleteModel} onOpenChange={setFacultyDeleteModel}>
+                <FacultyDeleteConfirmationModel data={facultyDeleteModel} setData={setFacultyDeleteModel} id={selectedFaculty._id} deleteMode="single" />
+            </Dialog>
+            <Sheet open={editFacultyModel} onOpenChange={setEditFacultyModel}>
+                <EditFacultyModel data={editFacultyModel} setData={setEditFacultyModel} currentUserData={selectedFaculty} setFacultyDeleteModel={setFacultyDeleteModel} />
+            </Sheet>
         </>
     )
 }

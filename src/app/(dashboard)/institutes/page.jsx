@@ -4,9 +4,6 @@ import { useState } from "react";
 // icons
 import { RiSchoolLine } from "react-icons/ri";
 
-// components
-import Button from "@/components/shared/button";
-
 // models
 import AddInstituteModel from "./models/models/addInstituteModel";
 import InstitutesItem from "./models/instituteItem";
@@ -19,6 +16,9 @@ import InstituteCardSkeleton from "./components/instituteCardSkeleton";
 import { useGetAllInstitutes } from "./services/query";
 
 import Error from "@/components/shared/error";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Sheet } from "@/components/ui/sheet";
 
 export default function Institutes() {
     const [addInstituteModel, setAddInstituteModel] = useState(false)
@@ -50,12 +50,18 @@ export default function Institutes() {
                     <h1 className="text-title-28">Institutes</h1>
                 </div>
                 <div className="relative">
-                    <Button
-                        onClick={() => setAddInstituteModel(true)}
-                        icon={<RiSchoolLine className="text-xl" />}
-                        width={null}
-                        label='Add Institute'
-                        className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />
+                    <Dialog open={addInstituteModel} onOpenChange={setAddInstituteModel}>
+                        <DialogTrigger asChild>
+                            <Button
+                                onClick={() => setAddInstituteModel(true)}>
+                                <RiSchoolLine className="text-xl" />
+                                Add institute
+                            </Button>
+                        </DialogTrigger>
+                        <AddInstituteModel
+                            data={addInstituteModel}
+                            setData={setAddInstituteModel} />
+                    </Dialog>
                 </div>
             </div>
 
@@ -81,27 +87,28 @@ export default function Institutes() {
                         title={e.name} />
                 ))}
             </div>
-            <AddInstituteModel
-                data={addInstituteModel}
-                setData={setAddInstituteModel}
-            />
 
-            <ManageDepartmentModel
-                data={departmentsModel}
-                setData={setDepartmentsModel}
-                instituteData={institute} />
+            <Sheet open={departmentsModel} onOpenChange={setDepartmentsModel}>
+                <ManageDepartmentModel
+                    data={departmentsModel}
+                    setData={setDepartmentsModel}
+                    instituteData={institute} />
+            </Sheet>
 
-            <EditInstituteModel
-                data={editInstituteModel}
-                setData={setEditInstituteModel}
-                instituteData={institute}
-                setInstituteDeleteConfirmationModel={setInstituteDeleteConfirmationModel} />
+            <Sheet open={editInstituteModel} onOpenChange={setEditInstituteModel}>
+                <EditInstituteModel
+                    data={editInstituteModel}
+                    setData={setEditInstituteModel}
+                    instituteData={institute}
+                    setInstituteDeleteConfirmationModel={setInstituteDeleteConfirmationModel} />
+            </Sheet>
 
-            <InstituteDeleteConfirmationModel
-                data={instituteDeleteConfirmationModel}
-                setData={setInstituteDeleteConfirmationModel}
-                instituteData={institute}
-            />
+            <Dialog open={instituteDeleteConfirmationModel} onOpenChange={setInstituteDeleteConfirmationModel}>
+                <InstituteDeleteConfirmationModel
+                    data={instituteDeleteConfirmationModel}
+                    setData={setInstituteDeleteConfirmationModel}
+                    instituteData={institute} />
+            </Dialog>
         </div>
     )
 }

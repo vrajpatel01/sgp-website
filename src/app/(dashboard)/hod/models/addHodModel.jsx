@@ -1,166 +1,209 @@
-import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
-import CustomError from "@/services/customError"
+import { useState } from "react"
 
-// components
-import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
-import SideModel from "@/components/models/sideModel"
-
-
-// validator
-import phoneValidator from "@/services/validator/phone"
-import isEmpty from "@/services/validator/isEmpty"
-import emailValidator from "@/services/validator/email"
-import SelectInput from "@/components/shared/selectInput"
-
-// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 import { useAddHod } from "../services/mutation"
+import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import addHodValidator from "@/app/validator/addHod.validator"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 export default function AddHodModel({ data, setData }) {
-    const [hod, setHod] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department' })
+    const [hod, setHod] = useState({ institute: 'Select Institute', department: 'Select Department' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(hod.institute, hod.institute !== '' && hod.institute !== 'Select Institute' ? true : false)
     const addHod = useAddHod()
 
-    const handleStudentAdd = (e) => {
-        e.preventDefault()
-        try {
-            const { name, employeeNumber, email, phoneNumber, designation, institute, department } = hod
-            const nameCheck = isEmpty(name)
-            const employeeNumberCheck = isEmpty(employeeNumber)
-            const emailCheck = emailValidator(email)
-            const phoneCheck = phoneValidator(phoneNumber)
-            const designationCheck = isEmpty(designation)
-            const instituteCheck = isEmpty(institute)
-            const departmentCheck = isEmpty(department)
+    const form = useForm({
+        resolver: zodResolver(addHodValidator),
+        defaultValues: {
+            name: '',
+            employeeNumber: '',
+            email: '',
+            phoneNumber: '',
+            designation: '',
+            institute: '',
+            department: ''
+        }
+    })
 
-            if (hod.institute === 'Select Institute' ||
-                hod.department === 'Select Department') {
-                throw new CustomError('All fields are required.', 'EMPTY')
-            }
-
-
-            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck) {
-                const data = {
-                    ...hod,
-                    name: hod.name.toLowerCase().trim(),
-                    employeeCode: hod.employeeNumber.toLowerCase().trim(),
-                    mobileNumber: hod.phoneNumber.toLowerCase().trim(),
-                    designation: hod.designation.toLowerCase().trim(),
-                    institute,
-                    department,
-                    subjectCode: 'ddfdsf',
-                    subjectName: 'dfdf'
+    const onSubmit = (value) => {
+        const data = {
+            name: value.name.toLowerCase().trim(),
+            employeeCode: value.employeeNumber.toLowerCase().trim(),
+            mobileNumber: value.phoneNumber.toLowerCase().trim(),
+            designation: value.designation.toLowerCase().trim(),
+            email: value.email,
+            institute: value.institute,
+            department: value.department,
+            subjectCode: value.subjectCode,
+            subjectName: value.subjectName
+        }
+        addHod.mutate(data, {
+            onSuccess: (data) => {
+                if (data.success) {
+                    form.reset()
+                    return setData(false)
                 }
-
-                addHod.mutate(data)
             }
-
-
-        } catch (error) {
-            if (error.code == 'EMPTY')
-                return toast.error('All fields are required.')
-            toast.error(error.message)
-        }
+        })
     }
-
-    useEffect(() => {
-        if (addHod.isSuccess) {
-            setHod({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: '', department: '' })
-            setData(false)
-        }
-    }, [addHod.isSuccess, setData])
     return (
-        <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
-                <div>
-                    <h1 className="text-title-24 mb-4">Add Hod</h1>
-                    <div className="flex flex-col gap-3">
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            name: e.target.value
-                        })}
-                            required
-                            value={hod.name}
-                            className='min-w-full'
-                            title='Name' />
+        <SheetContent className="space-y-5 overflow-y-scroll">
+            <SheetHeader>
+                <SheetTitle>Add account</SheetTitle>
+                <SheetDescription>All fields are required so enter all the values to add hod account.</SheetDescription>
+            </SheetHeader>
+            <Separator />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="employeeNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>employee number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>email</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>phone number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="designation"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>designation</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            employeeNumber: e.target.value
-                        })}
-                            required
-                            value={hod.employeeNumber}
-                            className='min-w-full'
-                            title='Employee Number' />
+                    <FormField
+                        control={form.control}
+                        name="institute"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>institute</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={(value) => {
+                                        setHod({ ...hod, institute: value })
+                                        form.setValue('institute', value)
+                                    }} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select institute" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {institutes.isSuccess && institutes.data.institutes.map(institute => (
+                                                <SelectItem key={institute._id} value={institute._id}>{institute.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            email: e.target.value
-                        })}
-                            required
-                            value={hod.email}
-                            className='min-w-full'
-                            title='Email' />
+                    <FormField
+                        control={form.control}
+                        name="department"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>department</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select department" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {departments.isSuccess && departments.data.departments.map(department => (
+                                                <SelectItem key={department._id} value={department._id}>{department.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            phoneNumber: e.target.value
-                        })}
-                            required
-                            value={hod.phoneNumber}
-                            type='tel'
-                            className='min-w-full'
-                            prefix={'+91'}
-                            title='Phone Number' />
+                    <FormField
+                        control={form.control}
+                        name="subjectCode"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>subject code</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setHod({
-                            ...hod,
-                            designation: e.target.value
-                        })}
-                            required
-                            value={hod.designation}
-                            className='min-w-full'
-                            title='Designation' />
-
-                        <SelectInput
-                            required
-                            title='Institute'
-                            onChange={e => setHod({ ...hod, institute: e.target.value })}
-                            value={hod.institute}
-                            className="w-full truncate">
-                            <option value={null} default>Select Institute</option>
-                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
-                        </SelectInput>
-
-                        <SelectInput
-                            required
-                            disabled={hod.institute === ''}
-                            title='Department'
-                            onChange={e => setHod({ ...hod, department: e.target.value })}
-                            value={hod.department}
-                            className="w-full truncate">
-                            <option value={null} default>Select Department</option>
-                            {hod.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
-                        </SelectInput>
-                    </div>
-                </div>
-                <div className="w-full grid grid-cols-2 gap-5 mt-5">
-                    <Button
-                        type="button"
-                        label='Cancel'
-                        className='min-w-full'
-                        onClick={() => setData(false)} />
-
-                    <Button
-                        label='Add Hod'
-                        disabled={addHod.isPending}
-                        isLoading={addHod.isPending}
-                        className='min-w-full bg-primary text-white' />
-                </div>
-            </form>
-        </SideModel>
+                    <FormField
+                        control={form.control}
+                        name="subjectName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>subject name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <SheetFooter>
+                        <Button
+                            type="submit"
+                            disabled={addHod.isPending}
+                            isLoading={addHod.isPending}>
+                            Add account
+                        </Button>
+                    </SheetFooter>
+                </form>
+            </Form>
+        </SheetContent>
     )
 }

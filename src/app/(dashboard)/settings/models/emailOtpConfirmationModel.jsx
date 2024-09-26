@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 import PopUpModel from "@/components/models/popUpModel";
-import Button from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import OTPInput from "react-otp-input";
 import { useVerifyEmailChange } from "../services/mutation";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function EmailOtpConfirmationModel({ data, setData }) {
     const verifyEmail = useVerifyEmailChange();
@@ -21,11 +22,14 @@ export default function EmailOtpConfirmationModel({ data, setData }) {
         })
     }
     return (
-        <PopUpModel setToggle={setData} toggle={data}>
-            <form onSubmit={handleFormSubmit} className="flex flex-col gap-4" noValidate>
-                <h1 className="text-title-24">Change Email</h1>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Change Email</DialogTitle>
+                <DialogDescription>We send OTP to your new email address. please enter that six digit OTP here to change your email address.</DialogDescription>
+            </DialogHeader>
+            <form onSubmit={handleFormSubmit} noValidate>
                 <div className="flex justify-end gap-2 flex-col">
-                    <div className="flex justify-center items-center gap-3">
+                    <div className="flex justify-center items-center gap-3 my-4">
                         <OTPInput
                             value={otp}
                             onChange={setOtp}
@@ -35,26 +39,24 @@ export default function EmailOtpConfirmationModel({ data, setData }) {
                             renderInput={(props) => <input {...props} />}
                         />
                     </div>
-                    <p className="w-full sm:max-w-[330px] text-small-12 leading-4 text-light-text text-center">We send OTP to your new email address. please enter that six digit OTP here to change your email address.</p>
-                    <div className="flex justify-center items-center gap-3">
+                    <DialogFooter className="flex justify-end items-center gap-3">
                         <Button
-                            label='Cancel'
                             onClick={() => {
                                 setOtp('')
                                 setData(false)
                             }}
-                            type="button"
-                            className='!rounded-full w-full sm:min-w-[130px]'
-                        />
+                            variant="ghost"
+                            type="button">
+                            Cancel
+                        </Button>
                         <Button
                             isLoading={verifyEmail.isPending}
-                            disabled={verifyEmail.isPending}
-                            label='Change Email'
-                            className='bg-primary text-white !rounded-full whitespace-nowrap w-full sm:min-w-[130px] disabled:bg-opacity-90'
-                        />
-                    </div>
+                            disabled={verifyEmail.isPending}>
+                            Change
+                        </Button>
+                    </DialogFooter>
                 </div>
             </form>
-        </PopUpModel>
+        </DialogContent>
     )
 }

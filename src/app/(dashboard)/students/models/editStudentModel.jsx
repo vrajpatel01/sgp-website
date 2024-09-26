@@ -1,221 +1,247 @@
 import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
-
-// icons
-import { MdDelete } from "react-icons/md"
-
-// components
-import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
-import SideModel from "@/components/models/sideModel"
-import SelectInput from "@/components/shared/selectInput"
-
-
-// validator
-import phoneValidator from "@/services/validator/phone"
-import isEmpty from "@/services/validator/isEmpty"
-import emailValidator from "@/services/validator/email"
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 
 // network
 import { useEditStudentAccount } from "../services/mutation"
+import { Button } from "@/components/ui/button"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import addStudentValidator from "@/app/validator/addStudent.validator"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Separator } from "@/components/ui/separator"
 
 export default function EditStudentModel({ data, setData, currentUserData, setStudentDeleteModel }) {
-    const [isChanged, setIsChanged] = useState(false)
-    const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: 'Select Institute', department: 'Select Department', semester: '', division: '' })
+    const [institute, setInstitute] = useState(null)
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(student.institute, student.institute !== undefined && student.institute !== 'Select Institute' ? true : false)
+    const departments = useGetDepartments(institute, institute !== undefined && institute !== 'Select Institute' ? true : false)
     const editAccount = useEditStudentAccount()
 
-    useEffect(() => {
-        setStudent({
+    const form = useForm({
+        resolver: zodResolver(addStudentValidator),
+        defaultValues: {
             name: currentUserData?.name,
             rollNumber: currentUserData?.rollNumber,
             email: currentUserData?.email,
             phoneNumber: currentUserData?.phoneNumber,
             institute: currentUserData?.institute?._id,
             department: currentUserData?.department?._id,
-            semester: currentUserData?.semester,
-            division: currentUserData?.division
-        })
-    }, [currentUserData])
+            semester: currentUserData?.semester?.toString(),
+            division: currentUserData?.division,
+            batch: currentUserData?.batch
+        }
+    })
 
     useEffect(() => {
-        if (student.name !== currentUserData?.name ||
-            student.rollNumber !== currentUserData?.rollNumber ||
-            student.email !== currentUserData?.email ||
-            student.phoneNumber !== currentUserData?.phoneNumber ||
-            student.institute !== currentUserData?.institute?._id ||
-            student.department !== currentUserData?.department?._id ||
-            student.semester !== currentUserData?.semester ||
-            student.division !== currentUserData?.division) {
-            setIsChanged(true)
-        } else {
-            setIsChanged(false)
+        setInstitute(currentUserData?.institute?._id)
+        form.setValue('name', currentUserData?.name)
+        form.setValue('rollNumber', currentUserData?.rollNumber)
+        form.setValue('email', currentUserData?.email)
+        form.setValue('phoneNumber', currentUserData?.phoneNumber)
+        form.setValue('institute', currentUserData?.institute?._id)
+        form.setValue('department', currentUserData?.department?._id)
+        form.setValue('semester', currentUserData?.semester?.toString())
+        form.setValue('division', currentUserData?.division)
+        form.setValue('batch', currentUserData?.batch)
+    }, [currentUserData, form, institute])
+
+    const onSubmit = (value) => {
+        const data = {
+            payload: {
+                ...(currentUserData.name !== value.name && { name: value.name.trim() }),
+                ...(currentUserData.rollNumber !== value.rollNumber && { rollNumber: value.rollNumber.trim() }),
+                ...(currentUserData.email !== value.email && { email: value.email }),
+                ...(currentUserData.phoneNumber !== value.phoneNumber && { phoneNumber: value.phoneNumber }),
+                ...(currentUserData.institute._id !== value.institute && { institute: value.institute }),
+                ...(currentUserData.department._id !== value.department && { department: value.department }),
+                ...(currentUserData.semester !== value.semester && { semester: value.semester }),
+                ...(currentUserData.division !== value.division && { division: value.division }),
+                ...(currentUserData.batch !== value.batch && { batch: value.batch }),
+            },
+            id: currentUserData._id
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [student])
-
-
-    const handleFormSubmit = e => {
-        e.preventDefault()
-
-        try {
-            const { name, rollNumber, email, phoneNumber, designation, institute, department, division, semester } = student
-            const nameCheck = isEmpty(name)
-            const rollNumberCheck = isEmpty(rollNumber)
-            const emailCheck = emailValidator(email)
-            const phoneCheck = phoneValidator(phoneNumber)
-            const instituteCheck = isEmpty(institute)
-            const departmentCheck = isEmpty(department)
-            const divisionCheck = isEmpty(division)
-            const semesterCheck = isEmpty(semester)
-
-            if (nameCheck && rollNumberCheck && emailCheck && phoneCheck && instituteCheck && departmentCheck && divisionCheck && semesterCheck) {
-                const data = {
-                    payload: {
-                        ...(currentUserData.name !== name && { name: name.trim() }),
-                        ...(currentUserData.rollNumber !== rollNumber && { rollNumber: rollNumber.trim() }),
-                        ...(currentUserData.email !== email && { email }),
-                        ...(currentUserData.phoneNumber !== phoneNumber && { phoneNumber }),
-                        ...(currentUserData.institute._id !== institute && { institute }),
-                        ...(currentUserData.department._id !== department && { department }),
-                        ...(currentUserData.semester !== semester && { semester }),
-                        ...(currentUserData.division !== division && { division }),
-                    },
-                    id: currentUserData._id
-                }
-                editAccount.mutate(data, {
-                    onSuccess: () => {
-                        setData(false)
-                    }
-                })
+        editAccount.mutate(data, {
+            onSuccess: () => {
+                setData(false)
             }
-
-        } catch (error) {
-            if (error.code === 'EMPTY')
-                return toast.error('All fields are required')
-            return toast.error(error.message)
-        }
+        })
     }
 
+
     return (
-        <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleFormSubmit} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
-                <div>
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-title-24 mb-4">Edit Student</h1>
-                        <div onClick={() => {
-                            setData(false)
-                            setStudentDeleteModel(true)
-                        }} className="p-2 cursor-pointer hover:bg-opacity-10 hover:bg-secondary rounded-md transition-all duration-150">
-                            <MdDelete className="text-2xl !text-secondary" />
-                        </div>
+        <SheetContent className="space-y-5 overflow-y-scroll">
+            <SheetHeader>
+                <SheetTitle>Add account</SheetTitle>
+                <SheetDescription>All fields are required so enter all the values to add student account.</SheetDescription>
+            </SheetHeader>
+            <Separator />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="rollNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>roll number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>email</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>phone number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+
+                    <FormField
+                        control={form.control}
+                        name="institute"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>institute</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={(value) => {
+                                        setStudent({ ...student, institute: value })
+                                        form.setValue('institute', value)
+                                    }} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select institute" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {institutes.isSuccess && institutes.data.institutes.map(institute => (
+                                                <SelectItem key={institute._id} value={institute._id}>{institute.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+
+                    <FormField
+                        control={form.control}
+                        name="department"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>department</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select department" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {departments.isSuccess && departments.data.departments.map(department => (
+                                                <SelectItem key={department._id} value={department._id}>{department.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="batch"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>batch</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="semester"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>semester</FormLabel>
+                                    <FormControl>
+                                        <Select onValueChange={field.onChange} value={field.value}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="select semester" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {Array.from({ length: 8 }).map((_, index) => (
+                                                    <SelectItem key={index} value={(index + 1).toString()}>{index + 1}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+
+                        <FormField
+                            control={form.control}
+                            name="division"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>division</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
                     </div>
-                    <div className="flex flex-col gap-5">
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            name: e.target.value
-                        })}
-                            required
-                            value={student.name}
-                            className='min-w-full'
-                            title='Name' />
-
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            rollNumber: e.target.value
-                        })}
-                            required
-                            value={student.rollNumber}
-                            className='min-w-full'
-                            title='Roll Number' />
-
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            email: e.target.value
-                        })}
-                            required
-                            value={student.email}
-                            className='min-w-full'
-                            title='Email' />
-
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            phoneNumber: e.target.value
-                        })}
-                            required
-                            value={student.phoneNumber}
-                            className='min-w-full'
-                            type='tel'
-                            prefix={'+91'}
-                            title='Phone Number' />
-
-                        <SelectInput
-                            required
-                            title='Institute'
-                            value={student.institute}
-                            onChange={e => setStudent({ ...student, institute: e.target.value })}
-                            className="w-full sm:max-w-[330px] truncate">
-                            <option value={null} default>Select Institute</option>
-                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
-                        </SelectInput>
-
-                        <SelectInput
-                            required
-                            disabled={student.institute === ''}
-                            title='Department'
-                            value={student.department}
-                            onChange={e => setStudent({ ...student, department: e.target.value })}
-                            className="w-full sm:max-w-[330px] truncate">
-                            <option value={null} default>Select Department</option>
-                            {student.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
-                        </SelectInput>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                            <SelectInput
-                                required
-                                title='Semester'
-                                value={student.semester}
-                                onChange={e => setStudent({ ...student, semester: e.target.value })}
-                                className="truncate min-w-full sm:max-w-[150px]">
-                                <option value={undefined} default>Select Semester</option>
-                                <option value='1'>1</option>
-                                <option value='2'>2</option>
-                                <option value='3'>3</option>
-                                <option value='4'>4</option>
-                                <option value='5'>5</option>
-                                <option value='6'>6</option>
-                                <option value='7'>7</option>
-                                <option value='8'>8</option>
-                            </SelectInput>
-
-                            <InputField onChange={e => setStudent({
-                                ...student,
-                                division: e.target.value
-                            })}
-                                required
-                                maxLength={1}
-                                value={student.division}
-                                className='min-w-full sm:max-w-[150px]'
-                                title='Division' />
-                        </div>
-                    </div>
-                </div>
-                <div className="w-full grid grid-cols-2 gap-5 mt-5">
-                    <Button
-                        type="button"
-                        label='Cancel'
-                        className='min-w-full'
-                        onClick={() => setData(false)} />
-
-                    <Button
-                        label='Add Student'
-                        disabled={!isChanged || editAccount.isPending}
-                        isLoading={editAccount.isPending}
-                        className='min-w-full bg-primary text-white' />
-                </div>
-            </form>
-        </SideModel>
+                    <SheetFooter>
+                        {/* <Button
+                            variant="ghost"
+                            type="button"
+                            disabled={editAccount.isPending}
+                            onClick={() => {
+                                form.reset();
+                                return setData(false)
+                            }}>
+                            Cancel
+                        </Button> */}
+                        <Button
+                            type="submit"
+                            disabled={editAccount.isPending}
+                            isLoading={editAccount.isPending}>
+                            Add account
+                        </Button>
+                    </SheetFooter>
+                </form>
+            </Form>
+        </SheetContent>
     )
 }

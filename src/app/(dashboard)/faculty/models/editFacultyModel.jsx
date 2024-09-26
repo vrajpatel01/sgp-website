@@ -1,214 +1,227 @@
 import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
-
-// icons
-import { MdDelete } from "react-icons/md"
-
-// components
-import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
-import SideModel from "@/components/models/sideModel"
-import SelectInput from "@/components/shared/selectInput"
-
-
-// validator
-import phoneValidator from "@/services/validator/phone"
-import isEmpty from "@/services/validator/isEmpty"
-import emailValidator from "@/services/validator/email"
-
-// network
 import { useEditFacultyAccount } from "../services/mutation"
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import addFacultyValidator from "@/app/validator/addFaculty.validator"
+import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator";
 
 export default function EditFacultyModel({ data, setData, currentUserData, setFacultyDeleteModel }) {
-    const [isChanged, setIsChanged] = useState(false)
-    const [faculty, setFaculty] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department', subjectCode: '', subjectName: '' })
+    const [institute, setInstitute] = useState(null)
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(faculty.institute, faculty.institute !== undefined && faculty.institute !== 'Select Institute' ? true : false)
+    const departments = useGetDepartments(institute, institute !== undefined && institute !== 'Select Institute' ? true : false)
     const editAccount = useEditFacultyAccount()
 
-    useEffect(() => {
-        setFaculty({
-            name: currentUserData?.name,
-            employeeNumber: currentUserData?.employeeCode,
-            email: currentUserData?.email,
-            phoneNumber: currentUserData?.mobileNumber,
-            designation: currentUserData?.designation,
+    const form = useForm({
+        resolver: zodResolver(addFacultyValidator),
+        defaultValues: {
+            name: currentUserData.name,
+            employeeNumber: currentUserData.employeeNumber,
+            email: currentUserData.email,
+            phoneNumber: currentUserData.phoneNumber,
+            designation: currentUserData.designation,
             institute: currentUserData?.institute?._id,
             department: currentUserData?.department?._id,
-            subjectCode: currentUserData?.subjectCode,
-            subjectName: currentUserData?.subjectName
-        })
-    }, [currentUserData])
+            subjectCode: currentUserData.subjectCode,
+            subjectName: currentUserData.subjectName
+        }
+    })
+
+    console.log(currentUserData);
 
     useEffect(() => {
-        if (faculty.name !== currentUserData?.name ||
-            faculty.employeeNumber !== currentUserData?.employeeCode ||
-            faculty.email !== currentUserData?.email ||
-            faculty.phoneNumber !== currentUserData?.mobileNumber ||
-            faculty.designation !== currentUserData?.designation ||
-            faculty.institute !== currentUserData?.institute?._id ||
-            faculty.department !== currentUserData?.department?._id ||
-            faculty.subjectCode !== currentUserData?.subjectCode ||
-            faculty.subjectName !== currentUserData?.subjectName) {
-            setIsChanged(true)
-        } else {
-            setIsChanged(false)
+        setInstitute(currentUserData?.institute?._id)
+        form.setValue('name', currentUserData.name)
+        form.setValue('employeeNumber', currentUserData.employeeCode)
+        form.setValue('email', currentUserData.email)
+        form.setValue('phoneNumber', currentUserData.mobileNumber)
+        form.setValue('designation', currentUserData.designation)
+        form.setValue('institute', currentUserData?.institute?._id)
+        form.setValue('department', currentUserData?.department?._id)
+        form.setValue('subjectCode', currentUserData.subjectCode)
+        form.setValue('subjectName', currentUserData.subjectName)
+    }, [currentUserData, institute, form])
+
+
+    const onSubmit = value => {
+        const data = {
+            payload: {
+                ...(currentUserData.name !== value.name && { name: value.name.trim() }),
+                ...(currentUserData.employeeCode !== value.employeeNumber && { employeeCode: value.employeeNumber.trim() }),
+                ...(currentUserData.email !== value.email && { email: value.email }),
+                ...(currentUserData.mobileNumber !== value.phoneNumber && { mobileNumber: value.phoneNumber }),
+                ...(currentUserData.designation !== value.designation && { designation: value.designation.trim() }),
+                ...(currentUserData.institute._id !== value.institute && { institute: value.institute }),
+                ...(currentUserData.department._id !== value.department) && { department: value.department },
+                ...(currentUserData.subjectCode !== value.subjectCode && { subjectCode: value.subjectCode.trim() }),
+                ...(currentUserData.subjectName !== value.subjectName && { subjectName: value.subjectName.trim() })
+            },
+            id: currentUserData._id
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [faculty])
-
-
-    const handleFormSubmit = e => {
-        e.preventDefault()
-
-        try {
-            const { name, employeeNumber, email, phoneNumber, designation, institute, department, subjectCode, subjectName } = faculty
-            const nameCheck = isEmpty(name)
-            const employeeNumberCheck = isEmpty(employeeNumber)
-            const emailCheck = emailValidator(email)
-            const phoneCheck = phoneValidator(phoneNumber)
-            const designationCheck = isEmpty(designation)
-            const instituteCheck = isEmpty(institute)
-            const departmentCheck = isEmpty(department)
-            const subjectCodeCheck = isEmpty(subjectCode)
-            const subjectNameCheck = isEmpty(subjectName)
-
-            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
-                const data = {
-                    payload: {
-                        ...(currentUserData.name !== name && { name: name.trim() }),
-                        ...(currentUserData.employeeCode !== employeeNumber && { employeeCode: employeeNumber.trim() }),
-                        ...(currentUserData.email !== email && { email }),
-                        ...(currentUserData.mobileNumber !== phoneNumber && { mobileNumber: phoneNumber }),
-                        ...(currentUserData.designation !== designation && { designation: designation.trim() }),
-                        ...(currentUserData.institute._id !== institute && { institute }),
-                        ...(currentUserData.department._id !== department) && { department },
-                        ...(currentUserData.subjectCode !== subjectCode && { subjectCode: subjectCode.trim() }),
-                        ...(currentUserData.subjectName !== subjectName && { subjectName: subjectName.trim() })
-                    },
-                    id: currentUserData._id
-                }
-                editAccount.mutate(data, {
-                    onSuccess: () => {
-                        setData(false)
-                    }
-                })
+        editAccount.mutate(data, {
+            onSuccess: () => {
+                setData(false)
             }
-
-        } catch (error) {
-            if (error.code === 'EMPTY')
-                return toast.error('All fields are required')
-            return toast.error(error.message)
-        }
+        })
     }
 
     return (
-        <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleFormSubmit} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
-                <div>
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-title-24 mb-4">Edit Faculty</h1>
-                        <div onClick={() => {
-                            setData(false)
-                            setFacultyDeleteModel(true)
-                        }} className="p-2 cursor-pointer hover:bg-opacity-10 hover:bg-secondary rounded-md transition-all duration-150">
-                            <MdDelete className="text-2xl !text-secondary" />
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-5">
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            name: e.target.value
-                        })}
-                            value={faculty.name}
-                            className='min-w-full'
-                            title='Name' />
+        <SheetContent className="space-y-5 overflow-y-scroll">
+            <SheetHeader>
+                <SheetTitle>Add account</SheetTitle>
+                <SheetDescription>All fields are required so enter all the values to add faculty account.</SheetDescription>
+            </SheetHeader>
+            <Separator />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="employeeNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>employee number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>email</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>phone number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="designation"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>designation</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            employeeNumber: e.target.value
-                        })}
-                            value={faculty.employeeNumber}
-                            className='min-w-full'
-                            title='Employee Number' />
+                    <FormField
+                        control={form.control}
+                        name="institute"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>institute</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={(value) => {
+                                        setFaculty({ ...faculty, institute: value })
+                                        form.setValue('institute', value)
+                                    }} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select institute" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {institutes.isSuccess && institutes.data.institutes.map(institute => (
+                                                <SelectItem key={institute._id} value={institute._id}>{institute.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            email: e.target.value
-                        })}
-                            value={faculty.email}
-                            className='min-w-full'
-                            title='Email' />
+                    <FormField
+                        control={form.control}
+                        name="department"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>department</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select department" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {departments.isSuccess && departments.data.departments.map(department => (
+                                                <SelectItem key={department._id} value={department._id}>{department.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            phoneNumber: e.target.value
-                        })}
-                            value={faculty.phoneNumber}
-                            type='tel'
-                            className='min-w-full'
-                            prefix={'+91'}
-                            title='Phone Number' />
+                    <FormField
+                        control={form.control}
+                        name="subjectCode"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>subject code</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            designation: e.target.value
-                        })}
-                            value={faculty.designation}
-                            className='min-w-full'
-                            title='Designation' />
-
-                        <SelectInput
-                            title='Institute'
-                            value={faculty.institute}
-                            onChange={e => setFaculty({ ...faculty, institute: e.target.value })}
-                            className="w-full sm:max-w-[330px] truncate">
-                            <option value={null} default>Select Institute</option>
-                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
-                        </SelectInput>
-
-                        <SelectInput
-                            disabled={faculty.institute === ''}
-                            title='Department'
-                            value={faculty.department}
-                            onChange={e => setFaculty({ ...faculty, department: e.target.value })}
-                            className="w-full sm:max-w-[330px] truncate">
-                            <option value={null} default>Select Department</option>
-                            {faculty.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
-                        </SelectInput>
-
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            subjectCode: e.target.value
-                        })}
-                            value={faculty.subjectCode}
-                            className='min-w-full'
-                            title='Subject Code' />
-
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            subjectName: e.target.value
-                        })}
-                            value={faculty.subjectName}
-                            className='min-w-full'
-                            title='Subject Name' />
-                    </div>
-                </div>
-                <div className="w-full grid grid-cols-2 gap-5 mt-5">
-                    <Button
-                        type="button"
-                        label='Cancel'
-                        className='min-w-full'
-                        onClick={() => setData(false)} />
-
-                    <Button
-                        label='Edit'
-                        disabled={editAccount.isPending || !isChanged}
-                        isLoading={editAccount.isPending}
-                        className='min-w-full bg-primary text-white' />
-                </div>
-            </form>
-        </SideModel>
+                    <FormField
+                        control={form.control}
+                        name="subjectName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>subject name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <SheetFooter>
+                        <Button
+                            type="submit"
+                            disabled={editAccount.isPending}
+                            isLoading={editAccount.isPending}>
+                            change
+                        </Button>
+                    </SheetFooter>
+                </form>
+            </Form>
+        </SheetContent>
     )
 }

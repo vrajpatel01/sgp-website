@@ -1,66 +1,59 @@
+'use client'
 import { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-
-// services
-import CustomError from "@/services/customError"
-
-// components
-import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
-import SideModel from "@/components/models/sideModel"
-import SelectInput from "@/components/shared/selectInput"
-
-
-// validator
-import phoneValidator from "@/services/validator/phone"
-import isEmpty from "@/services/validator/isEmpty"
-import emailValidator from "@/services/validator/email"
-import numberValidator from "@/services/validator/number"
-
-// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 import { useAddStudent } from "../services/mutation"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import addStudentValidator from "@/app/validator/addStudent.validator"
+import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 export default function AddStudentModel({ data, setData }) {
-    const [student, setStudent] = useState({ name: '', rollNumber: '', email: '', phoneNumber: '', institute: '', department: '', semester: '', division: '' })
+    const [student, setStudent] = useState({ institute: '', department: '' })
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(student.institute, student.institute !== '' && student.institute !== 'Select Institute' ? true : false)
     const addStudent = useAddStudent()
 
-    const handleStudentAdd = (e) => {
-        e.preventDefault()
-        try {
-            const name = isEmpty(student.name)
-            const rollNum = isEmpty(student.rollNumber)
-            const email = emailValidator(student.email)
-            const phone = phoneValidator(student.phoneNumber)
-            const institute = isEmpty(student.institute)
-            const department = isEmpty(student.department)
-            const semester = numberValidator(student.semester, 'semester')
-            const division = isEmpty(student.division)
-
-            if (student.institute === 'Select Institute' ||
-                student.department === 'Select Department' ||
-                student.semester === 'Select Semester') {
-                throw new CustomError('All fields are required.', 'EMPTY')
-            }
-
-            if (name && rollNum && email && phone && institute && department && semester && division) {
-                const data = {
-                    ...student,
-                    division: student.division.toLowerCase(),
-                    semester: parseInt(student.semester),
-                    name: student.name.toLowerCase().trim(),
-                    rollNumber: student.rollNumber.toLowerCase().trim()
-                }
-
-                addStudent.mutate(data)
-            }
-        } catch (error) {
-            if (error.code == 'EMPTY')
-                return toast.error('All fields are required.')
-            toast.error(error.message)
+    const form = useForm({
+        resolver: zodResolver(addStudentValidator),
+        defaultValues: {
+            name: '',
+            rollNumber: '',
+            email: '',
+            phoneNumber: '',
+            institute: '',
+            department: '',
+            semester: '',
+            division: ''
         }
+    })
+
+    const onSubmit = (value) => {
+
+        const data = {
+            name: value.name.toLowerCase().trim(),
+            rollNumber: value.rollNumber.toLowerCase().trim(),
+            email: value.email,
+            phoneNumber: value.phoneNumber,
+            institute: value.institute,
+            department: value.department,
+            batch: value.batch,
+            division: value.division.toLowerCase(),
+            semester: parseInt(value.semester),
+        }
+
+        addStudent.mutate(data, {
+            onSuccess: (data) => {
+                if (data.success) {
+                    form.reset()
+                    return setData(false)
+                }
+            }
+        })
     }
 
     useEffect(() => {
@@ -70,112 +63,177 @@ export default function AddStudentModel({ data, setData }) {
         }
     }, [addStudent.isSuccess, setData]);
     return (
-        <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleStudentAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
-                <div>
-                    <h1 className="text-title-24 mb-4">Add Student</h1>
-                    <div className="flex flex-col gap-5">
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            name: e.target.value
-                        })}
-                            required
-                            value={student.name}
-                            className='min-w-full'
-                            title='Name' />
+        <SheetContent className="space-y-5 overflow-y-scroll">
+            <SheetHeader>
+                <SheetTitle>Add account</SheetTitle>
+                <SheetDescription>All fields are required so enter all the values to add student account.</SheetDescription>
+            </SheetHeader>
+            <Separator />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="rollNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>roll number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>email</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>phone number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            rollNumber: e.target.value
-                        })}
-                            required
-                            value={student.rollNumber}
-                            className='min-w-full'
-                            title='Roll Number' />
+                    <FormField
+                        control={form.control}
+                        name="institute"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>institute</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={(value) => {
+                                        setStudent({ ...student, institute: value })
+                                        form.setValue('institute', value)
+                                    }} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select institute" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {institutes.isSuccess && institutes.data.institutes.map(institute => (
+                                                <SelectItem key={institute._id} value={institute._id}>{institute.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            email: e.target.value
-                        })}
-                            required
-                            value={student.email}
-                            className='min-w-full'
-                            title='Email' />
+                    <FormField
+                        control={form.control}
+                        name="department"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>department</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select department" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {departments.isSuccess && departments.data.departments.map(department => (
+                                                <SelectItem key={department._id} value={department._id}>{department.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="batch"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>batch</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <div className="grid grid-cols-2 gap-4">
+                        <FormField
+                            control={form.control}
+                            name="semester"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>semester</FormLabel>
+                                    <FormControl>
+                                        <Select onValueChange={field.onChange} value={field.value}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="select semester" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {Array.from({ length: 8 }).map((_, index) => (
+                                                    <SelectItem key={index} value={(index + 1).toString()}>{index + 1}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
 
-                        <InputField onChange={e => setStudent({
-                            ...student,
-                            phoneNumber: e.target.value
-                        })}
-                            required
-                            value={student.phoneNumber}
-                            className='min-w-full'
-                            type='number'
-                            prefix={'+91'}
-                            title='Phone Number' />
-
-                        <SelectInput
-                            required
-                            title='Institute'
-                            value={student.institute}
-                            onChange={e => setStudent({ ...student, institute: e.target.value })}
-                            className="w-full truncate">
-                            <option value={null} default>Select Institute</option>
-                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
-                        </SelectInput>
-
-                        <SelectInput
-                            required
-                            disabled={student.institute === ''}
-                            title='Department'
-                            value={student.department}
-                            onChange={e => setStudent({ ...student, department: e.target.value })}
-                            className="w-full truncate">
-                            <option value={null} default>Select Department</option>
-                            {student.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
-                        </SelectInput>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                            <SelectInput
-                                required
-                                title='Semester'
-                                value={student.semester}
-                                onChange={e => setStudent({ ...student, semester: e.target.value })}
-                                className="truncate min-w-full sm:max-w-[150px]">
-                                <option value={undefined} default>Select Semester</option>
-                                <option value='1'>1</option>
-                                <option value='2'>2</option>
-                                <option value='3'>3</option>
-                                <option value='4'>4</option>
-                                <option value='5'>5</option>
-                                <option value='6'>6</option>
-                                <option value='7'>7</option>
-                                <option value='8'>8</option>
-                            </SelectInput>
-
-                            <InputField onChange={e => setStudent({
-                                ...student,
-                                division: e.target.value
-                            })}
-                                required
-                                maxLength={1}
-                                value={student.division}
-                                className='min-w-full sm:max-w-[150px]'
-                                title='Division' />
-                        </div>
+                        <FormField
+                            control={form.control}
+                            name="division"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>division</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
                     </div>
-                </div>
-                <div className="w-full grid grid-cols-2 gap-5 mt-5">
-                    <Button
-                        type="button"
-                        label='Cancel'
-                        className='min-w-full'
-                        onClick={() => setData(false)} />
-
-                    <Button
-                        label='Add Student'
-                        className='min-w-full bg-primary text-white' />
-                </div>
-            </form>
-        </SideModel >
+                    <SheetFooter>
+                        {/* <Button
+                            variant="ghost"
+                            type="button"
+                            disabled={addStudent.isPending}
+                            onClick={() => {
+                                form.reset();
+                                return setData(false)
+                            }}>
+                            Cancel
+                        </Button> */}
+                        <Button
+                            type="submit"
+                            disabled={addStudent.isPending}
+                            isLoading={addStudent.isPending}>
+                            Add account
+                        </Button>
+                    </SheetFooter>
+                </form>
+            </Form>
+        </SheetContent>
     )
 }

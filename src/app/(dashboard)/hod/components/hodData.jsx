@@ -8,6 +8,8 @@ import Pagination from "@/components/shared/pagination"
 import Error from "@/components/shared/error"
 import HodDeleteConfirmationModel from "../models/hodDeleteConfirmationModel"
 import EditHodModel from "../models/editHodModel"
+import { Sheet } from "@/components/ui/sheet"
+import { Dialog } from "@/components/ui/dialog"
 
 
 export default function HodData({ selectedItem, setSelectedItem }) {
@@ -84,8 +86,12 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                 totalPages={hods?.data?.totalPages}
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
-            <HodDeleteConfirmationModel data={hodDeleteModel} setData={setHodDeleteModel} id={selectedHod._id} deleteMode='single' />
-            <EditHodModel data={editHodModel} setData={setEditHodModel} currentUserData={selectedHod} setHodDeleteModel={setHodDeleteModel} />
+            <Dialog open={hodDeleteModel} onOpenChange={setHodDeleteModel}>
+                <HodDeleteConfirmationModel data={hodDeleteModel} setData={setHodDeleteModel} id={selectedHod._id} deleteMode='single' />
+            </Dialog>
+            <Sheet open={editHodModel} onOpenChange={setEditHodModel}>
+                <EditHodModel data={editHodModel} setData={setEditHodModel} currentUserData={selectedHod} setHodDeleteModel={setHodDeleteModel} />
+            </Sheet>
         </>
     )
 }

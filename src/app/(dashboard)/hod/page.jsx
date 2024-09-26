@@ -6,7 +6,6 @@ import { TbUser } from "react-icons/tb";
 import { SiMicrosoftexcel } from "react-icons/si";
 
 // components
-import Button from "@/components/shared/button";
 import SubMenuItem from "@/components/submenu/subMenuItem";
 
 // models
@@ -15,6 +14,11 @@ import HodData from "./components/hodData";
 import { MdDelete } from "react-icons/md";
 import HodDeleteConfirmationModel from "./models/hodDeleteConfirmationModel";
 import AddHodModel from "./models/addHodModel";
+import { Sheet } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { IoPeopleOutline } from "react-icons/io5";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 export default function Hod() {
 
@@ -30,19 +34,36 @@ export default function Hod() {
                 <h1 className="text-title-28">Hod</h1>
                 <div className="relative">
                     {selectedItem.length > 0 ?
-                        <Button
-                            onClick={() => setDeleteHodModel(true)}
-                            icon={<MdDelete className="text-xl" />}
-                            width={null}
-                            label='Delete Accounts'
-                            className="bg-secondary bg-opacity-10 text-secondary px-4 py-2 rounded-md hover:border-1 hover:border-secondary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" /> :
-                        <Button
-                            onClick={() => setAddHodButton(!addHodButton)}
-                            icon={<TbUser className="text-xl" />}
-                            width={null}
-                            label='Add Hod'
-                            className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />}
+                        <Dialog open={deleteHodModel} onOpenChange={setDeleteHodModel}>
+                            <DialogTrigger asChild>
+                                <Button variant="destructive" className="flex gap-3 items-center" onClick={() => setDeleteHodModel(true)} >
+                                    <MdDelete className="text-xl" />
+                                    <span>Delete Account</span>
+                                </Button>
+                            </DialogTrigger>
+                            <HodDeleteConfirmationModel data={deleteHodModel} setData={setDeleteHodModel} id={selectedItem} deleteMode='multiple' setSelectedItem={setSelectedItem} />
+                        </Dialog> :
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="flex gap-3 items-center" >
+                                    <IoPeopleOutline className="text-xl" />
+                                    <span>Add Account</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="mr-4">
+                                <DropdownMenuLabel>Choose a method to add Account</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => {
+                                    setAddHodModel(true)
+                                }} className="space-x-3"><IoPeopleOutline /><span>Create One</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => {
+                                    setAddHodByExcelModel(true)
+                                }} className="space-x-3"><SiMicrosoftexcel /><span>Insert Excel</span></DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>}
 
+
+                    {/* 
                     <div className={`bg-white rounded-md shadow-sm top-full mt-2 right-0 sm:w-[400px] ${addHodButton ? 'absolute' : 'hidden'}`}>
                         <SubMenuItem
                             onClick={() => {
@@ -60,13 +81,16 @@ export default function Hod() {
                             icon={<SiMicrosoftexcel />}
                             label="Excel Sheet"
                             description='Upload Excel Sheet to add multiple hod quickly.' />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <HodData selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            <AddHodModel data={addHodModel} setData={setAddHodModel} />
-            <AddHodByExcelModel data={addHodByExcelModel} setData={setAddHodByExcelModel} />
-            <HodDeleteConfirmationModel data={deleteHodModel} setData={setDeleteHodModel} id={selectedItem} deleteMode='multiple' setSelectedItem={setSelectedItem} />
+            <Sheet open={addHodModel} onOpenChange={setAddHodModel}>
+                <AddHodModel data={addHodModel} setData={setAddHodModel} />
+            </Sheet>
+            <Sheet open={addHodByExcelModel} onOpenChange={setAddHodByExcelModel}>
+                <AddHodByExcelModel data={addHodByExcelModel} setData={setAddHodByExcelModel} />
+            </Sheet>
         </div>
     )
 }

@@ -2,13 +2,15 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import Button from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import InputField from "@/components/shared/inputField";
 import { MdModeEditOutline } from "react-icons/md";
 import { IoLockClosed } from "react-icons/io5";
 import { Warper } from "./warper";
 import { useChangePassword } from "../services/mutation";
 import passwordValidator from "@/services/validator/password";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Label } from "@/components/ui/label";
 
 export default function PasswordChange() {
     const changePassword = useChangePassword();
@@ -75,34 +77,40 @@ export default function PasswordChange() {
         <Warper title='Personal Information' description="You can update your personal information from here.">
             <form onSubmit={handleFormSubmit} className="space-y-4" noValidate>
                 <div className="py-3 flex flex-col gap-4">
-                    <InputField
-                        title='Current Password'
-                        placeholder='•••••••••'
-                        className='w-full truncate'
-                        type='password'
-                        value={password.currentPassword}
-                        onChange={e => setPassword({ ...password, currentPassword: e.target.value })} />
-                    <InputField
-                        title='New Password'
-                        placeholder='•••••••••'
-                        className='w-full truncate'
-                        type='password'
-                        value={password.newPassword}
-                        onChange={e => setPassword({ ...password, newPassword: e.target.value })} />
-                    <InputField
-                        title='Confirm Password'
-                        placeholder='•••••••••'
-                        className='w-full truncate'
-                        type='password'
-                        value={password.confirmPassword}
-                        onChange={e => setPassword({ ...password, confirmPassword: e.target.value })} />
+                    <div>
+                        <Label htmlFor="currentPassword">current password</Label>
+                        <PasswordInput
+                            placeholder='•••••••••'
+                            id="currentPassword"
+                            type='password'
+                            value={password.currentPassword}
+                            onChange={e => setPassword({ ...password, currentPassword: e.target.value })} />
+                    </div>
+                    <div>
+                        <Label htmlFor="newPassword"> new password</Label>
+                        <PasswordInput
+                            id="newPassword"
+                            placeholder='•••••••••'
+                            type='password'
+                            value={password.newPassword}
+                            onChange={e => setPassword({ ...password, newPassword: e.target.value })} />
+                    </div>
+                    <div>
+                        <Label htmlFor="confirmPassword"> confirm password</Label>
+                        <PasswordInput
+                            placeholder='•••••••••'
+                            id="confirmPassword"
+                            type='password'
+                            value={password.confirmPassword}
+                            onChange={e => setPassword({ ...password, confirmPassword: e.target.value })} />
+                    </div>
                     <div className="flex justify-end items-center">
                         <Button
                             disabled={!isChanged || changePassword.isPending}
-                            icon={<IoLockClosed />}
-                            isLoading={changePassword.isPending}
-                            label='Change'
-                            className='bg-primary text-white disabled:bg-gray-600' />
+                            isLoading={changePassword.isPending}>
+                            <IoLockClosed />
+                            Change
+                        </Button>
                     </div>
                 </div>
             </form>

@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 // components
 import InputField from "@/components/shared/inputField";
-import Button from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 
 // models
 import SideModel from "@/components/models/sideModel";
@@ -16,6 +16,10 @@ import isEmpty from "@/services/validator/isEmpty";
 
 // network
 import { useUpdateInstitute } from "../../services/mutation";
+import { SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 
 export default function EditInstitute({ data, setData, instituteData, refetch, setInstituteDeleteConfirmationModel }) {
@@ -39,43 +43,46 @@ export default function EditInstitute({ data, setData, instituteData, refetch, s
         }
     }
     return (
-        <SideModel toggle={data} setToggle={() => setData(!data)}>
-            <form onSubmit={handleFormSubmit} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between gap-5 flex-col" noValidate>
+        <SheetContent className="space-y-5 overflow-y-scroll">
+            <SheetHeader>
+                <SheetTitle>Institute</SheetTitle>
+            </SheetHeader>
+
+            <Separator />
+            <form onSubmit={handleFormSubmit} className="space-y-4" noValidate>
                 <div className="flex flex-col gap-5">
-                    <h1 className="text-title-24 mb-4">Institute</h1>
-                    <InputField onChange={e => setInstitute(e.target.value)}
+                    <Input onChange={e => setInstitute(e.target.value)}
                         value={institute}
                         className='w-full'
-                        title='Name' />
-                    <div className="w-full grid grid-cols-2 gap-5">
-                        <Button
-                            type="button"
-                            label='Cancel'
-                            className='min-w-full'
-                            onClick={() => setData(false)} />
-
+                        placeholder='institute' />
+                    <div className="w-full flex justify-end">
                         <Button
                             label='Edit'
-                            isLoading={updateInstitute.isPending}
-                            className='min-w-full bg-primary text-white' />
+                            disabled={institute == instituteData.name || updateInstitute.isPending}
+                            isLoading={updateInstitute.isPending} >
+                            Change
+                        </Button>
                     </div>
                 </div>
-                <div className="flex justify-start items-start w-full p-3 leading-5 rounded-md border-secondary bg-secondary bg-opacity-5 border-1 border-opacity-50 gap-3">
-                    <div className="flex flex-col gap-4">
-                        <h1 className="text-body-14 text-pri text-light-text">Delete whole institute. if you delete this institute all department are also delete related to this institute.</h1>
-                        <div className="flex justify-end">
-                            <Button
-                                onClick={() => {
-                                    setData(false)
-                                    setInstituteDeleteConfirmationModel(true)
-                                }}
-                                label='Delete'
-                                type="button"
-                                className='bg-secondary bg-opacity-20 text-secondary' />
-                        </div>
-                    </div>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardDescription>
+                            Delete whole institute. if you delete this institute all department are also delete related to this institute.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex justify-end">
+                        <Button
+                            onClick={() => {
+                                setData(false)
+                                setInstituteDeleteConfirmationModel(true)
+                            }}
+                            variant="destructive"
+                            type="button" >
+                            Delete
+                        </Button>
+                    </CardContent>
+                </Card>
             </form>
-        </SideModel>
+        </SheetContent>
     )
 }

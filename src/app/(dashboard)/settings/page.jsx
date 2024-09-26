@@ -3,15 +3,24 @@ import BasicInformation from "./components/basicInformation";
 import ChangeEmail from "./components/changeEmail";
 import PasswordChange from "./components/passwordChange";
 import { Warper } from "./components/warper";
-import Button from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 import { useGetMyInfo } from "./services/query";
 import SettingsSkelton from "./components/settingsSkelton";
+import Error from "@/components/shared/error";
 
 export default function Settings() {
     const myInfo = useGetMyInfo();
     if (myInfo.isPending) {
         return <SettingsSkelton />
+    }
+
+    if (myInfo.isError) {
+        return (
+            <div className="h-screen">
+                <Error message='Having some problem please try again later.' />
+            </div>
+        )
     }
 
     return (
@@ -29,7 +38,9 @@ export default function Settings() {
                         End your session and securely sign out of your account. Make sure to save any changes before signing out to avoid losing your progress.
                     </div>
                     <div onClick={() => signOut()} className="flex justify-end">
-                        <Button className='bg-red-500 text-white text-sm' label="Sign out" />
+                        <Button type="submit" variant="destructive">
+                            Sign out
+                        </Button>
                     </div>
                 </Warper>
             </div>

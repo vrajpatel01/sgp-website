@@ -9,10 +9,12 @@ import { MdDelete } from "react-icons/md";
 
 // components
 import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
+import { Button } from "@/components/ui/button"
 
 // network
 import { useDeleteInstitute } from "../../services/mutation";
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export default function InstituteDeleteConfirmationModel({ data, setData, refetch, instituteData }) {
     const [institute, setInstitute] = useState('')
@@ -38,47 +40,40 @@ export default function InstituteDeleteConfirmationModel({ data, setData, refetc
         deleteInstitute.mutate(instituteData.id)
     }
     return (
-        <PopUpModel
-            toggle={data}
-            setToggle={setData}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Confirmation</DialogTitle>
+                <DialogDescription>Enter the institute name <b>{instituteData.name}</b> to continue.</DialogDescription>
+            </DialogHeader>
             <form onSubmit={handleDeleteConfirmation} className="flex flex-col gap-5">
-                <div className="flex justify-start items-center gap-2">
-                    <MdDelete className="text-2xl" />
-                    <h1 className="text-title-24">Confirmation</h1>
-                </div>
                 <div className="flex flex-col gap-2">
-                    <div className="min-w-full sm:w-[350px] text-body-16 leading-5">Enter the institute name <b>{instituteData.name}</b> to continue.</div>
-                    <InputField
+                    <Input
                         type='text'
                         placeholder='Institute Name'
                         value={institute}
                         disabled={deleteInstitute.isPending}
-                        className='min-w-full sm:min-w-[350px]'
-                        onChange={(e) => setInstitute(e.target.value)}
-                    />
-                    <div className="w-full sm:w-[350px] text-sm sm:text-center leading-5">
-                        Delete whole institute. if you delete this institute all department are also delete related to this institute.
-                    </div>
+                        onChange={(e) => setInstitute(e.target.value)} />
                 </div>
-                <div className="flex justify-end gap-2">
+                <DialogDescription>Delete whole institute. if you delete this institute all department are also delete related to this institute.</DialogDescription>
+                <DialogFooter className="flex justify-end items-center gap-4">
                     <Button
-                        label='Cancel'
                         onClick={() => {
                             setInstitute('')
                             setData(false)
                         }}
+                        variant="ghost"
                         disabled={deleteInstitute.isPending}
-                        type="button"
-                        className='!rounded-full w-full sm:min-w-[130px]'
-                    />
+                        type="button">
+                        Cancel
+                    </Button>
                     <Button
                         label='Delete'
                         disabled={deleteInstitute.isPending}
-                        isLoading={deleteInstitute.isPending}
-                        className='bg-secondary text-white !rounded-full whitespace-nowrap w-full sm:min-w-[130px] disabled:bg-opacity-90'
-                    />
-                </div>
+                        isLoading={deleteInstitute.isPending}>
+                        Delete
+                    </Button>
+                </DialogFooter>
             </form>
-        </PopUpModel>
+        </DialogContent >
     )
 }

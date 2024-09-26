@@ -4,17 +4,15 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast"
 
 // components
-import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
-
-// models
-import PopUpModel from "@/components/models/popUpModel"
+import { Button } from "@/components/ui/button"
 
 // validator
 import isEmpty from "@/services/validator/isEmpty";
 
 // network
 import { useAddInstitute } from "../../services/mutation";
+import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 export default function AddInstituteModel({ data, setData }) {
     const [institute, setInstitute] = useState('')
@@ -48,36 +46,34 @@ export default function AddInstituteModel({ data, setData }) {
     if (loading) return null
 
     return (
-        <PopUpModel toggle={data} setToggle={() => setData(!data)}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Add institute</DialogTitle>
+            </DialogHeader>
             <form onSubmit={handleStudentAdd} className="flex flex-col gap-4" noValidate>
-                <h1 className="text-title-24">Add Institute</h1>
-                <InputField
+                <Input
                     value={institute}
                     onChange={e => setInstitute(e.target.value)}
-                    label='Name'
                     disabled={addInstitute.isPending}
-                    placeholder='Institute Name'
-                    className='min-w-full sm:min-w-[300px]'
-                />
+                    placeholder='Institute Name' />
                 <div className="flex justify-end gap-2">
                     <Button
-                        label='Cancel'
                         onClick={() => {
                             setInstitute('')
                             setData(false)
                         }}
+                        variant="ghost"
                         disabled={addInstitute.isPending}
-                        type="button"
-                        className='!rounded-full w-full sm:min-w-[130px]'
-                    />
+                        type="button">
+                        Cancel
+                    </Button>
                     <Button
-                        label='Add Institute'
                         disabled={addInstitute.isPending}
-                        isLoading={addInstitute.isPending}
-                        className='bg-primary text-white !rounded-full whitespace-nowrap w-full sm:min-w-[130px] disabled:bg-opacity-90'
-                    />
+                        isLoading={addInstitute.isPending}>
+                        Add
+                    </Button>
                 </div>
             </form>
-        </PopUpModel>
+        </DialogContent>
     )
 }

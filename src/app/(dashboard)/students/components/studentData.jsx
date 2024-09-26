@@ -12,6 +12,8 @@ import { useGetStudentWithPagination } from "../services/query"
 import Error from "@/components/shared/error"
 import StudentDeleteConfirmationModel from "../models/studentDeleteConfirmationModel"
 import EditStudentModel from "../models/editStudentModel"
+import { Sheet } from "@/components/ui/sheet"
+import { Dialog } from "@/components/ui/dialog"
 
 export default function StudentData({ selectedItem, setSelectedItem }) {
     const [currentPage, setCurrentPage] = useState(1)
@@ -87,8 +89,12 @@ export default function StudentData({ selectedItem, setSelectedItem }) {
                 totalPages={students?.data?.totalPages}
                 setCurrentPage={e => setCurrentPage(e.selected + 1)}
                 currentPage={currentPage} />}
-            <StudentDeleteConfirmationModel data={studentDeleteModel} setData={setStudentDeleteModel} id={selectedStudent._id} deleteMode='single' />
-            <EditStudentModel data={editStudentModel} setData={setEditStudentModel} currentUserData={selectedStudent} setStudentDeleteModel={setStudentDeleteModel} />
+            <Dialog open={studentDeleteModel} onOpenChange={setStudentDeleteModel}>
+                <StudentDeleteConfirmationModel data={studentDeleteModel} setData={setStudentDeleteModel} id={selectedStudent._id} deleteMode='single' />
+            </Dialog>
+            <Sheet open={editStudentModel} onOpenChange={setEditStudentModel}>
+                <EditStudentModel data={editStudentModel} setData={setEditStudentModel} currentUserData={selectedStudent} setStudentDeleteModel={setStudentDeleteModel} />
+            </Sheet>
         </>
     )
 }

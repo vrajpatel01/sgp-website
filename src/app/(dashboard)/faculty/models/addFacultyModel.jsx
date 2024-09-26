@@ -1,187 +1,213 @@
-import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
-import CustomError from "@/services/customError"
+'use client';
+import { useState } from "react"
 
-// components
-import InputField from "@/components/shared/inputField"
-import Button from "@/components/shared/button"
-import SideModel from "@/components/models/sideModel"
-
-
-// validator
-import phoneValidator from "@/services/validator/phone"
-import isEmpty from "@/services/validator/isEmpty"
-import emailValidator from "@/services/validator/email"
-import SelectInput from "@/components/shared/selectInput"
-
-// network
 import { useGetAllInstitutes, useGetDepartments } from "../../institutes/services/query"
 import { useAddFaulty } from "../services/mutation"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import addFacultyValidator from "@/app/validator/addFaculty.validator"
+import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator";
 
 export default function AddFacultyModel({ data, setData }) {
-    const [faculty, setFaculty] = useState({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department', subjectCode: '', subjectName: '' })
+    const [faculty, setFaculty] = useState({ designation: '', institute: 'Select Institute', department: 'Select Department' })
+
+    const form = useForm({
+        resolver: zodResolver(addFacultyValidator),
+        defaultValues: {
+            name: '',
+            employeeNumber: '',
+            email: '',
+            phoneNumber: '',
+            designation: '',
+            institute: 'Select Institute',
+            department: 'Select Department',
+            subjectCode: '',
+            subjectName: ''
+        }
+    })
 
     const institutes = useGetAllInstitutes()
     const departments = useGetDepartments(faculty.institute, faculty.institute !== '' && faculty.institute !== 'Select Institute' ? true : false)
     const addFaulty = useAddFaulty()
 
-    const handleFacultyAdd = (e) => {
-        e.preventDefault()
-        try {
-
-            const { name, employeeNumber, email, phoneNumber, designation, institute, department, subjectCode, subjectName } = faculty
-
-            const nameCheck = isEmpty(name)
-            const employeeNumberCheck = isEmpty(employeeNumber)
-            const emailCheck = emailValidator(email)
-            const phoneCheck = phoneValidator(phoneNumber)
-            const designationCheck = isEmpty(designation)
-            const instituteCheck = isEmpty(institute)
-            const departmentCheck = isEmpty(department)
-            const subjectCodeCheck = isEmpty(subjectCode)
-            const subjectNameCheck = isEmpty(subjectName)
-
-            if (faculty.institute === 'Select Institute' ||
-                faculty.department === 'Select Department') {
-                throw new CustomError('All fields are required.', 'EMPTY')
-            }
-
-
-            if (nameCheck && employeeNumberCheck && emailCheck && phoneCheck && designationCheck && instituteCheck && departmentCheck && subjectCodeCheck && subjectNameCheck) {
-                const data = {
-                    ...faculty,
-                    name: faculty.name.toLowerCase().trim(),
-                    employeeCode: faculty.employeeNumber.toLowerCase().trim(),
-                    email: faculty.email.toLowerCase().trim(),
-                    mobileNumber: faculty.phoneNumber.toLowerCase().trim(),
-                    designation: faculty.designation.toLowerCase().trim(),
-                    subjectCode: faculty.subjectCode.toLowerCase().trim(),
-                    subjectName: faculty.subjectName.toLowerCase().trim()
+    const onSubmit = (value) => {
+        const data = {
+            name: value.name.toLowerCase().trim(),
+            employeeCode: value.employeeNumber.toLowerCase().trim(),
+            email: value.email.toLowerCase().trim(),
+            mobileNumber: value.phoneNumber.toLowerCase().trim(),
+            designation: value.designation.toLowerCase().trim(),
+            institute: value.institute,
+            department: value.department,
+            subjectCode: value.subjectCode.toLowerCase().trim(),
+            subjectName: value.subjectName.toLowerCase().trim()
+        }
+        addFaulty.mutate(data, {
+            onSuccess: (data) => {
+                if (data.success) {
+                    form.reset()
+                    return setData(false)
                 }
-                addFaulty.mutate(data)
             }
-
-
-        } catch (error) {
-            if (error.code == 'EMPTY')
-                return toast.error('All fields are required.')
-            toast.error(error.message)
-        }
+        })
     }
-
-    useEffect(() => {
-        if (addFaulty.isSuccess) {
-            setFaculty({ name: '', employeeNumber: '', email: '', phoneNumber: '', designation: '', institute: 'Select Institute', department: 'Select Department', subjectCode: '', subjectName: '' })
-            setData(false)
-        }
-    }, [addFaulty.isSuccess, setData])
     return (
-        <SideModel toggle={data} setToggle={() => setData(!data)} >
-            <form onSubmit={handleFacultyAdd} className="px-5 py-7 sm:p-6 overflow-x-scroll h-full flex justify-between flex-col" noValidate>
-                <div>
-                    <h1 className="text-title-24 mb-4">Add Faculty</h1>
-                    <div className="flex flex-col gap-5">
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            name: e.target.value
-                        })}
-                            required
-                            value={faculty.name}
-                            className='min-w-full'
-                            title='Name' />
+        <SheetContent className="space-y-5 overflow-y-scroll">
+            <SheetHeader>
+                <SheetTitle>Add account</SheetTitle>
+                <SheetDescription>All fields are required so enter all the values to add faculty account.</SheetDescription>
+            </SheetHeader>
+            <Separator />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="employeeNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>employee number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>email</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="phoneNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>phone number</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="designation"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>designation</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            employeeNumber: e.target.value
-                        })}
-                            required
-                            value={faculty.employeeNumber}
-                            className='min-w-full'
-                            title='Employee Number' />
+                    <FormField
+                        control={form.control}
+                        name="institute"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>institute</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={(value) => {
+                                        setFaculty({ ...faculty, institute: value })
+                                        form.setValue('institute', value)
+                                    }} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select institute" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {institutes.isSuccess && institutes.data.institutes.map(institute => (
+                                                <SelectItem key={institute._id} value={institute._id}>{institute.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            email: e.target.value
-                        })}
-                            required
-                            value={faculty.email}
-                            className='min-w-full'
-                            title='Email' />
+                    <FormField
+                        control={form.control}
+                        name="department"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>department</FormLabel>
+                                <FormControl>
+                                    <Select onValueChange={field.onChange} value={field.value}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="select department" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {departments.isSuccess && departments.data.departments.map(department => (
+                                                <SelectItem key={department._id} value={department._id}>{department.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            phoneNumber: e.target.value
-                        })}
-                            required
-                            value={faculty.phoneNumber}
-                            type='tel'
-                            className='min-w-full'
-                            prefix={'+91'}
-                            title='Phone Number' />
+                    <FormField
+                        control={form.control}
+                        name="subjectCode"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>subject code</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
 
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            designation: e.target.value
-                        })}
-                            required
-                            value={faculty.designation}
-                            className='min-w-full'
-                            title='Designation' />
-
-                        <SelectInput
-                            required
-                            title='Institute'
-                            value={faculty.institute}
-                            onChange={e => setFaculty({ ...faculty, institute: e.target.value })}
-                            className="w-full truncate">
-                            <option value={null} default>Select Institute</option>
-                            {institutes.isSuccess && institutes.data.institutes.map(institute => (<option key={institute._id} value={institute._id}>{institute.name}</option>))}
-                        </SelectInput>
-
-                        <SelectInput
-                            required
-                            disabled={faculty.institute === ''}
-                            title='Department'
-                            value={faculty.department}
-                            onChange={e => setFaculty({ ...faculty, department: e.target.value })}
-                            className="w-full truncate">
-                            <option value={null} default>Select Department</option>
-                            {faculty.institute != 'undefined' && departments.isSuccess && departments.data.departments.map(department => (<option key={department._id} value={department._id}>{department.name}</option>))}
-                        </SelectInput>
-
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            subjectCode: e.target.value
-                        })}
-                            required
-                            value={faculty.subjectCode}
-                            className='min-w-full'
-                            title='Subject Code' />
-
-                        <InputField onChange={e => setFaculty({
-                            ...faculty,
-                            subjectName: e.target.value
-                        })}
-                            required
-                            value={faculty.subjectName}
-                            className='min-w-full'
-                            title='Subject Name' />
-                    </div>
-                </div>
-                <div className="w-full grid grid-cols-2 gap-5 mt-5">
-                    <Button
-                        type="button"
-                        label='Cancel'
-                        className='min-w-full'
-                        onClick={() => setData(false)} />
-
-                    <Button
-                        label='Add Faculty'
-                        disabled={addFaulty.isPending}
-                        isLoading={addFaulty.isPending}
-                        className='min-w-full bg-primary text-white' />
-                </div>
-            </form>
-        </SideModel>
+                    <FormField
+                        control={form.control}
+                        name="subjectName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>subject name</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )} />
+                    <SheetFooter>
+                        <Button
+                            type="submit"
+                            disabled={addFaulty.isPending}
+                            isLoading={addFaulty.isPending}>
+                            Add account
+                        </Button>
+                    </SheetFooter>
+                </form>
+            </Form>
+        </SheetContent>
     )
 }

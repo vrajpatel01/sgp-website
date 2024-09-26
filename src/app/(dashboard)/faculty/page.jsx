@@ -13,9 +13,13 @@ import AddFacultyByExcelModel from "@/app/(dashboard)/faculty/models/addFacultyB
 
 // components
 import SubMenuItem from "@/components/submenu/subMenuItem";
-import Button from "@/components/shared/button";
 import FacultyData from "./components/facultyData";
 import FacultyDeleteConfirmationModel from "./models/facultyDeleteConfirmationModel";
+import { Sheet } from "@/components/ui/sheet";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 
 export default function Faculty() {
     const [addFacultyButton, setAddFacultyButton] = useState(false)
@@ -30,43 +34,42 @@ export default function Faculty() {
                 <h1 className="text-title-28">Faculty</h1>
                 <div className="relative">
                     {selectedItem.length > 0 ?
-                        <Button
-                            onClick={() => setDeleteFacultyModel(true)}
-                            icon={<MdDelete className="text-xl" />}
-                            width={null}
-                            label='Delete Accounts'
-                            className="bg-secondary bg-opacity-10 text-secondary px-4 py-2 rounded-md hover:border-1 hover:border-secondary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" /> :
-                        <Button
-                            onClick={() => setAddFacultyButton(!addFacultyButton)}
-                            icon={<IoPeopleOutline className="text-xl" />}
-                            width={null}
-                            label='Add Faculty'
-                            className="bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-md hover:border-1 hover:border-primary hover:bg-opacity-20 border-transparent border-1 transition-color duration-150 ease-in-out" />}
-
-                    <div className={`bg-white rounded-md shadow-sm top-full mt-2 right-0 sm:w-[400px] z-20 ${addFacultyButton ? 'absolute' : 'hidden'}`}>
-                        <SubMenuItem
-                            onClick={() => {
-                                setAddFacultyModel(true)
-                                setAddFacultyButton(false)
-                            }}
-                            icon={<IoPeopleOutline />}
-                            label="Manuel Entry"
-                            description='Enter One faculty at a time and add every details manually.' />
-                        <SubMenuItem
-                            onClick={() => {
-                                setAddFacultyByExcelModel(true)
-                                setAddFacultyButton(false)
-                            }}
-                            icon={<SiMicrosoftexcel />}
-                            label="Excel Sheet"
-                            description='Upload Excel Sheet to add multiple faculty quickly.' />
-                    </div>
+                        <Dialog open={deleteFacultyModel} onOpenChange={setDeleteFacultyModel}>
+                            <DialogTrigger asChild>
+                                <Button variant="destructive" className="flex gap-3 items-center" onClick={() => setDeleteFacultyModel(true)} >
+                                    <MdDelete className="text-xl" />
+                                    <span>Delete Account</span>
+                                </Button>
+                            </DialogTrigger>
+                            <FacultyDeleteConfirmationModel data={deleteFacultyModel} setData={setDeleteFacultyModel} deleteMode='multiple' id={selectedItem} setSelectedItem={setSelectedItem} />
+                        </Dialog> :
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button className="flex gap-3 items-center" >
+                                    <IoPeopleOutline className="text-xl" />
+                                    <span>Add Account</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="mr-4">
+                                <DropdownMenuLabel>Choose a method to add Account</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => {
+                                    setAddFacultyModel(true)
+                                }} className="space-x-3"><IoPeopleOutline /><span>Create One</span></DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => {
+                                    setAddFacultyByExcelModel(true)
+                                }} className="space-x-3"><SiMicrosoftexcel /><span>Insert Excel</span></DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>}
                 </div>
             </div>
             <FacultyData selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
-            <AddFacultyModel data={addFacultyModel} setData={setAddFacultyModel} />
-            <AddFacultyByExcelModel data={addFacultyByExcelModel} setData={setAddFacultyByExcelModel} />
-            <FacultyDeleteConfirmationModel data={deleteFacultyModel} setData={setDeleteFacultyModel} deleteMode='multiple' id={selectedItem} setSelectedItem={setSelectedItem} />
+            <Sheet open={addFacultyModel} onOpenChange={setAddFacultyModel}>
+                <AddFacultyModel data={addFacultyModel} setData={setAddFacultyModel} />
+            </Sheet>
+            <Sheet open={addFacultyByExcelModel} onOpenChange={setAddFacultyByExcelModel}>
+                <AddFacultyByExcelModel data={addFacultyByExcelModel} setData={setAddFacultyByExcelModel} />
+            </Sheet>
         </div>
     )
 }

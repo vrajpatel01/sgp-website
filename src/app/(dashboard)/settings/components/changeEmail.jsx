@@ -5,11 +5,14 @@ import toast from "react-hot-toast";
 import InputField from "@/components/shared/inputField";
 import emailValidator from "@/services/validator/email";
 import CustomError from "@/services/customError";
-import Button from "@/components/shared/button";
+import { Button } from "@/components/ui/button";
 import { MdAlternateEmail, MdModeEditOutline } from "react-icons/md";
 import EmailOtpConfirmationModel from "../models/emailOtpConfirmationModel";
 import { Warper } from "./warper";
 import { useUpdateProfile } from "../services/mutation";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog } from "@/components/ui/dialog";
 
 export default function ChangeEmail({ currentEmail }) {
     const changeEmail = useUpdateProfile();
@@ -51,32 +54,38 @@ export default function ChangeEmail({ currentEmail }) {
         <div>
             <Warper title='Personal Information' description="You can update your personal information from here.">
                 <form onSubmit={handleFormSubmit} className="space-y-4" noValidate>
-                    <InputField
-                        title='Current Email'
-                        placeholder='example@example.com'
-                        className='w-full truncate'
-                        type='email'
-                        disabled
-                        value={currentEmail}
-                        onChange={e => setEmail(e.target.value)} />
-                    <InputField
-                        title='New Email'
-                        placeholder='example@example.com'
-                        className='w-full truncate'
-                        type='email'
-                        value={email}
-                        onChange={e => setEmail(e.target.value)} />
+                    <div>
+                        <Label htmlFor="currentEmail">curren email</Label>
+                        <Input
+                            placeholder='example@example.com'
+                            id="currentEmail"
+                            type='email'
+                            disabled
+                            value={currentEmail}
+                            onChange={e => setEmail(e.target.value)} />
+                    </div>
+                    <div>
+                        <Label htmlFor="newEmail">new email</Label>
+                        <Input
+                            placeholder='example@example.com'
+                            id="newEmail"
+                            type='email'
+                            value={email}
+                            onChange={e => setEmail(e.target.value)} />
+                    </div>
                     <div className="flex justify-end items-center">
                         <Button
                             disabled={!isChanged || changeEmail.isPending}
-                            icon={<MdAlternateEmail />}
-                            label='Change'
-                            isLoading={changeEmail.isPending}
-                            className='bg-primary text-white disabled:bg-gray-600' />
+                            isLoading={changeEmail.isPending} >
+                            <MdAlternateEmail />
+                            Change
+                        </Button>
                     </div>
                 </form>
             </Warper>
-            <EmailOtpConfirmationModel data={confirmOtpModel} setData={setConfirmOtpModel} />
+            <Dialog open={confirmOtpModel} onOpenChange={setConfirmOtpModel}>
+                <EmailOtpConfirmationModel data={confirmOtpModel} setData={setConfirmOtpModel} />
+            </Dialog>
         </div>
     )
 }
