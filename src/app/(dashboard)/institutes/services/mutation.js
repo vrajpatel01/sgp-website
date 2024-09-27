@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addInstitute, deleteInstitute, addDepartment, deleteDepartment, updateInstitute } from "./api";
+import { addInstitute, deleteInstitute, addDepartment, deleteDepartment, updateInstitute, updateDepartment } from "./api";
 import toast from "react-hot-toast";
 import { AxiosError } from "@/axios.config";
 
@@ -129,6 +129,34 @@ export const useUpdateInstitute = () => {
             }
             if (data.success === true) {
                 await queryClient.invalidateQueries({ queryKey: ['institutes'] })
+                return toast.success('Institute update successfully')
+            }
+        }
+    })
+}
+
+export const useUpdateDepartment = () => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: ({ departmentId, instituteId, departmentName }) => updateDepartment(departmentId, instituteId, departmentName),
+        onError: (error) => {
+            if (error instanceof AxiosError) {
+                return toast.error(error.response.data?.message)
+            }
+            return toast.error(error.message)
+        },
+        onSettled: async (data, error, variables) => {
+            if (error) {
+                if (error instanceof AxiosError) {
+                    return toast.error(error.response.data?.message)
+                }
+                return toast.error(error.message)
+            }
+            if (data.success === false) {
+                return toast.error(data.message)
+            }
+            if (data.success === true) {
+                await queryClient.invalidateQueries({ queryKey: ['departments'] })
                 return toast.success('Institute update successfully')
             }
         }

@@ -41,9 +41,15 @@ export default function VerifyOtpScreen(props) {
         }
         const email = props.searchParams.email
         otpVerification.mutate({ email, otp: value.otp }, {
-            onSuccess: (e) => {
-                toast.success('Password is Send to your email. Please check your email.')
-                return router.push(`/auth/login`)
+            onSuccess: (data) => {
+                if (data.success) {
+                    toast.success('Password is Send to your email. Please check your email.')
+                    return router.push(`/auth/login`)
+                }
+
+                return form.setError('root', {
+                    message: 'something went wrong'
+                })
             },
             onError: (error) => {
                 if (error instanceof AxiosError) {

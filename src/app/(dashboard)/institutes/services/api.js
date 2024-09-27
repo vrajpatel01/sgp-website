@@ -55,6 +55,18 @@ export const updateInstitute = async (instituteId, name) => {
     })).data
 }
 
+export const updateDepartment = async (departmentId, instituteId, departmentName) => {
+    const session = await getSession()
+    return (await axiosInstance.patch(`/admin/edit-department/${instituteId}/${departmentId}`, {
+        "newName": departmentName
+    }, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session?.user?.token}`,
+        }
+    })).data
+}
+
 export const deleteDepartment = async (departmentId, instituteId) => {
     const session = await getSession()
     return (await axiosInstance.delete(`/admin/remove-department/${instituteId}/${departmentId}`, {

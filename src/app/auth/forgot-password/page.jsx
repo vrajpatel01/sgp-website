@@ -1,15 +1,10 @@
 "use client";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { useState } from "react";
 import { useRouter } from 'next/navigation'
 
-// components
-import InputField from "@/components/shared/inputField";
-import { Button } from "@/components/ui/button";
 
-// validator
-import emailValidator from "@/services/validator/email";
+import { Button } from "@/components/ui/button";
 
 // network
 import { useForgotPassword } from "../services/mutation";
@@ -37,8 +32,10 @@ export default function ForgotPasswordScreen() {
         forgotPassword.mutate(value.email, {
             onSuccess: (data) => {
                 if (data.success) {
+                    toast.success('OTP sent successfully. Check your email.');
                     return router.push(`/auth/verify-otp?email=${value.email}`);
                 }
+                return form.setError('root', data?.message || 'something went wrong')
             },
             onError: (error) => {
                 if (error instanceof AxiosError) {

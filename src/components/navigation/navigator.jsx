@@ -23,7 +23,6 @@ export default function Navigator() {
     return (
         <div className="flex flex-col gap-5">
             <div>
-                <div className="mb-3 text-light-text capitalize text-body-16">section</div>
                 <div className="flex flex-col gap-5">
                     <NavigationItem
                         href="/"
@@ -35,7 +34,7 @@ export default function Navigator() {
                 </div>
             </div>
             <div>
-                <div className="mb-3 text-light-text capitalize text-body-16">Users</div>
+                <div className="mb-3 text-light-text capitalize text-body-16 border-border border-b-1"></div>
                 <div className="flex flex-col gap-5">
                     <NavigationItem
                         href="/hod"
@@ -61,7 +60,7 @@ export default function Navigator() {
                 </div>
             </div>
             <div>
-                <div className="mb-3 text-light-text capitalize text-body-16">Section</div>
+                <div className="mb-3 text-light-text capitalize text-body-16 border-border border-b-1"></div>
                 <div className="flex flex-col gap-5">
                     <NavigationItem
                         href="/institutes"
@@ -70,11 +69,6 @@ export default function Navigator() {
                         activeIcon={<RiSchoolFill />}
                         active={pathname == '/institutes' ? true : false}
                     />
-                </div>
-            </div>
-            <div>
-                <div className="mb-3 text-light-text capitalize text-body-16 border-border border-b-1"></div>
-                <div className="flex flex-col gap-5">
                     <NavigationItem
                         href="/settings"
                         title="Settings"

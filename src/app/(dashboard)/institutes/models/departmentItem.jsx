@@ -10,7 +10,9 @@ import { MdOutlineDone } from "react-icons/md";
 import isEmpty from "@/services/validator/isEmpty";
 
 // network
-import { useDeleteDepartment } from "../services/mutation";
+import { useDeleteDepartment, useUpdateDepartment } from "../services/mutation";
+import { Loader2 } from "lucide-react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
 export default function DepartmentItem({ onClick, title, isNew = false, instituteId, departmentData }) {
@@ -24,6 +26,7 @@ export default function DepartmentItem({ onClick, title, isNew = false, institut
     }, [isEditable])
 
     const deleteDepartment = useDeleteDepartment()
+    const updateDepartment = useUpdateDepartment()
 
     const handleSubmitByEnter = (e) => {
         if (e.key === 'Enter') {
@@ -35,6 +38,11 @@ export default function DepartmentItem({ onClick, title, isNew = false, institut
         try {
             if (isEmpty(departmentTitle)) {
                 setIsEditable(false)
+                updateDepartment.mutate({
+                    departmentId: departmentData._id,
+                    instituteId: instituteId,
+                    departmentName: departmentTitle
+                })
             }
         } catch (error) {
             if (error.code === 'EMPTY')
@@ -55,8 +63,9 @@ export default function DepartmentItem({ onClick, title, isNew = false, institut
                 id={departmentItemId} />
             <div className="flex gap-3">
                 <div className="text-lg cursor-pointer" >
-                    {isEditable ? <MdOutlineDone onClick={handleDepartmentSubmit} /> :
-                        <MdModeEditOutline onClick={() => setIsEditable(true)} />}
+                    {updateDepartment.isPending ? <AiOutlineLoading3Quarters size={16} className="animate-spin" /> :
+                        isEditable ? <MdOutlineDone onClick={handleDepartmentSubmit} /> :
+                            <MdModeEditOutline onClick={() => setIsEditable(true)} />}
                 </div>
                 <MdDelete onClick={() => deleteDepartment.mutate({
                     departmentId: departmentData._id,
