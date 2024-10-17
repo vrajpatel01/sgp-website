@@ -17,6 +17,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { IoPeopleOutline } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import Link from "next/link";
+import { Search } from "lucide-react";
 
 export default function Students() {
 
@@ -48,24 +50,28 @@ export default function Students() {
                                 setSelectedItem={setSelectedItem} />
                         </Dialog>
                         :
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button className="flex gap-3 items-center" >
-                                    <IoPeopleOutline className="text-xl" />
-                                    <span>Add Account</span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="mr-4">
-                                <DropdownMenuLabel>Choose a method to add Account</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => {
-                                    setAddStudentModel(true)
-                                }} className="space-x-3"><IoPeopleOutline /><span>Create One</span></DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => {
-                                    setAddStudentByExcelModel(true)
-                                }} className="space-x-3"><SiMicrosoftexcel /><span>Insert Excel</span></DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>}
+                        <div className="flex justify-center items-center gap-5">
+                            <Link href='/search?role=student' className="bg-gray-200 p-3 rounded-md cursor-pointer">
+                                <Search size={17} />
+                            </Link>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button className="flex gap-3 items-center" >
+                                        <IoPeopleOutline className="text-xl" />
+                                        <span>Add Account</span>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="mr-4">
+                                    <DropdownMenuLabel>Choose a method to add Account</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={() => {
+                                        setAddStudentModel(true)
+                                    }} className="space-x-3"><IoPeopleOutline /><span>Create One</span></DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => {
+                                        setAddStudentByExcelModel(true)
+                                    }} className="space-x-3"><SiMicrosoftexcel /><span>Insert Excel</span></DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu> </div>}
 
                 </div>
             </div>

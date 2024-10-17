@@ -63,3 +63,19 @@ export const editHodAccount = async (data) => {
         }
     })).data
 }
+
+export const createAccountWithCSV = async (data) => {
+    const session = await getSession();
+    const formData = new FormData();
+    formData.append('file', data.file);
+    formData.append('role', data.role);
+    formData.append('department', data.department);
+    formData.append('institute', data.institute);
+
+    return (await axiosInstance.post(`/admin/upload-csv`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${session?.user?.token}`
+        }
+    })).data;
+}

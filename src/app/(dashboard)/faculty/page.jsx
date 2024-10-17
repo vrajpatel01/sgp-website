@@ -19,6 +19,8 @@ import { Sheet } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import Link from "next/link";
+import { Search } from "lucide-react";
 
 
 export default function Faculty() {
@@ -42,25 +44,28 @@ export default function Faculty() {
                                 </Button>
                             </DialogTrigger>
                             <FacultyDeleteConfirmationModel data={deleteFacultyModel} setData={setDeleteFacultyModel} deleteMode='multiple' id={selectedItem} setSelectedItem={setSelectedItem} />
-                        </Dialog> :
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button className="flex gap-3 items-center" >
-                                    <IoPeopleOutline className="text-xl" />
-                                    <span>Add Account</span>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="mr-4">
-                                <DropdownMenuLabel>Choose a method to add Account</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={() => {
-                                    setAddFacultyModel(true)
-                                }} className="space-x-3"><IoPeopleOutline /><span>Create One</span></DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => {
-                                    setAddFacultyByExcelModel(true)
-                                }} className="space-x-3"><SiMicrosoftexcel /><span>Insert Excel</span></DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>}
+                        </Dialog> : <div className="flex justify-center items-center gap-5">
+                            <Link href='/search?role=faculty' className="bg-gray-200 p-3 rounded-md cursor-pointer">
+                                <Search size={17} />
+                            </Link>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button className="flex gap-3 items-center" >
+                                        <IoPeopleOutline className="text-xl" />
+                                        <span>Add Account</span>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="mr-4">
+                                    <DropdownMenuLabel>Choose a method to add Account</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={() => {
+                                        setAddFacultyModel(true)
+                                    }} className="space-x-3"><IoPeopleOutline /><span>Create One</span></DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => {
+                                        setAddFacultyByExcelModel(true)
+                                    }} className="space-x-3"><SiMicrosoftexcel /><span>Insert Excel</span></DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu></div>}
                 </div>
             </div>
             <FacultyData selectedItem={selectedItem} setSelectedItem={setSelectedItem} />

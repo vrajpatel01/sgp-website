@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addHod, deleteHodAccount, deleteMultipleHodsAccount, editHodAccount } from "./api";
+import { addHod, createAccountWithCSV, deleteHodAccount, deleteMultipleHodsAccount, editHodAccount } from "./api";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 
@@ -91,3 +91,15 @@ export const useEditHodAccount = () => {
     })
 }
 
+export const useCreateAccountByCSV = () => {
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: (data) => createAccountWithCSV(data),
+        mutationKey: ['createAccountByCSV'],
+        onSuccess: async (data) => {
+            if (data.success) {
+                await queryClient.invalidateQueries({ queryKey: ['hod', 'student', 'faculty'] })
+            }
+        }
+    })
+}

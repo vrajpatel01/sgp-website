@@ -44,7 +44,7 @@ export default function LoginScreen() {
         if (!status.ok && status.error !== null) {
             setIsLoading(false)
             return form.setError('root', {
-                message: status.error
+                message: "Invalid email or password."
             })
         }
         // window.location.href = "/";
