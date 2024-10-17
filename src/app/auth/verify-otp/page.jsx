@@ -1,14 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // components
 import { Button } from "@/components/ui/button"
 
 // validator
-import OtpInput from "react-otp-input";
-import numberValidator from "@/services/validator/number";
 import { useOtpValidation } from "../services/mutation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -18,9 +16,9 @@ import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/comp
 
 export default function VerifyOtpScreen(props) {
     const router = useRouter()
+    const searchParams = useSearchParams();
 
     const otpVerification = useOtpValidation()
-    // router.push(`/auth/login`)
 
     const form = useForm({
         resolver: zodResolver(z.object({
@@ -39,7 +37,7 @@ export default function VerifyOtpScreen(props) {
                 message: 'OTP must be 6 digits long.'
             })
         }
-        const email = props.searchParams.email
+        const email = searchParams.get('email');
         otpVerification.mutate({ email, otp: value.otp }, {
             onSuccess: (data) => {
                 if (data.success) {
