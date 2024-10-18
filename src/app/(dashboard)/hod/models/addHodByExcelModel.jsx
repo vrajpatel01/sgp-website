@@ -76,7 +76,7 @@ export default function AddHodByExcelModel({ data, setData }) {
                                 <p className="text-detail-14 text-light-text leading-4">Download sample excel sheet to <br /> upload proper formate.</p>
                             </div>
                         </div>
-                        <input onChange={handleFileChange} ref={uploader} type="file" name="file" id="file" accept=".xlsx, .xls, .csv" hidden />
+                        <input onChange={handleFileChange} ref={uploader} type="file" name="file" id="file" accept=".csv" hidden />
                         <div onClick={() => { if (uploader.current) uploader.current.click(); }} className="flex justify-center items-center flex-col w-full p-10 min-w-[300px] border-1 rounded-md border-border cursor-pointer ">
                             <IoAddCircleOutline className="text-3xl" />
                             <p className="text-detail-14 text-light-text">{!file
