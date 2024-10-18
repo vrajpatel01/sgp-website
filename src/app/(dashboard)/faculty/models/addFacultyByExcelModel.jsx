@@ -33,7 +33,7 @@ export default function AddFacultyByExcelModel({ data, setData }) {
 
     const onSubmit = (value) => {
         const data = {
-            file: value.file.target.files[0],
+            file: value.file,
             institute: value.institute,
             department: value.department,
             role: 'student'
