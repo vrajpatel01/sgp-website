@@ -32,9 +32,9 @@ export function TotalSubmissions({ data }) {
             groups: item.totalSubmissions
         })
     })
+    const isValueAvailable = data?.error?.response?.data?.success;
 
-    if (data?.error?.response?.data?.success == false) {
-        console.log(data?.error?.response?.data?.success);
+    if (isValueAvailable == false) {
         chartData = [];
     }
 
@@ -94,14 +94,11 @@ export function TotalSubmissions({ data }) {
                     </AreaChart>
                 </ChartContainer>
             </CardContent>
-            {/* <CardFooter className="flex-col items-start gap-2 text-sm">
+            <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                    {isValueAvailable == false && "No data available for this selected values"}
                 </div>
-                <div className="leading-none text-muted-foreground">
-                    Showing total visitors for the last 6 months
-                </div>
-            </CardFooter> */}
+            </CardFooter>
         </Card>
     )
 }
@@ -133,8 +130,8 @@ export function PendingAndSuccessfulSubmissions({ data }) {
         })
     })
 
-    if (data?.error?.response?.data?.success == false) {
-        console.log(data?.error?.response?.data?.success);
+    const isValueAvailable = data?.error?.response?.data?.success;
+    if (isValueAvailable == false) {
         chartData = [];
     }
     return (
@@ -195,14 +192,11 @@ export function PendingAndSuccessfulSubmissions({ data }) {
                     </AreaChart>
                 </ChartContainer>
             </CardContent>
-            {/* <CardFooter className="flex-col items-start gap-2 text-sm">
+            <CardFooter className="flex-col items-start gap-2 text-sm">
                 <div className="flex gap-2 font-medium leading-none">
-                    Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                    {isValueAvailable == false && "No data available for this selected values"}
                 </div>
-                <div className="leading-none text-muted-foreground">
-                    Showing total visitors for the last 6 months
-                </div>
-            </CardFooter> */}
+            </CardFooter>
         </Card>
     )
 }

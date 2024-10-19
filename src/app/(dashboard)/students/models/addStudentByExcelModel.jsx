@@ -44,6 +44,11 @@ export default function AddStudentByExcelModel({ data, setData }) {
                     form.reset()
                     return setData(false)
                 }
+            },
+            onError: (error) => {
+                if (!error.response.data.success) {
+                    toast.error(error.response.data.message)
+                }
             }
         })
     }

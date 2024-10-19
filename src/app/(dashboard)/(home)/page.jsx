@@ -4,6 +4,7 @@ import { PendingAndSuccessfulSubmissions, TotalSubmissions } from "./components/
 import { useGetChartData } from "./services/query";
 import { useGetAllInstitutes, useGetDepartments } from "../institutes/services/query";
 import { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 
 export default function DashboardPage() {
     const institutes = useGetAllInstitutes()
@@ -21,7 +22,15 @@ export default function DashboardPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.institute, values.department])
 
-    if (institutes.isLoading) return <div>Loading...</div>
+    if (institutes.isLoading) {
+        return (
+            <div className="space-y-10">
+                <h1 className="text-title-28 mb-5">Dashboard</h1>
+                <Skeleton height={300} className="mb-6" />
+                <Skeleton height={300} />
+            </div>
+        )
+    }
     return (
         <div className="h-full">
             <h1 className="text-title-28 mb-5">Dashboard</h1>
@@ -42,6 +51,7 @@ export default function DashboardPage() {
                     </Select>
 
                     <Select
+                        disabled={values.institute === null}
                         value={values.department}
                         onValueChange={e => setValues({ ...values, department: e })} >
                         <SelectTrigger className="w-[180px]">
