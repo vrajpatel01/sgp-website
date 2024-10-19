@@ -26,6 +26,7 @@ export default function SearchPage() {
             searchData.refetch();
         }, 1000);
         return () => clearTimeout(debounce);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search]);
 
     useEffect(() => {
@@ -33,6 +34,7 @@ export default function SearchPage() {
         if (role && typeof role === 'string') {
             router.replace(`/search?role=${role}`);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [role]);
 
     const faculties = (role === 'hod') || (role === 'faculty')

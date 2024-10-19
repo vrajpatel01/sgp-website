@@ -37,7 +37,7 @@ export default function VerifyOtpScreen(props) {
                 message: 'OTP must be 6 digits long.'
             })
         }
-        const email = searchParams.get('email');
+        let email = searchParams.get('email');
         email = email.replace(/ /g, '+');
         otpVerification.mutate({ email, otp: value.otp }, {
             onSuccess: (data) => {
@@ -64,7 +64,7 @@ export default function VerifyOtpScreen(props) {
     }
 
     useEffect(() => {
-        const email = searchParams.get('email');
+        let email = searchParams.get('email');
         email = email.replace(/ /g, '+');
         if (!email) router.push(`/auth/forgot-password`)
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -98,7 +98,7 @@ export const useCreateAccountByCSV = () => {
         mutationKey: ['createAccountByCSV'],
         onSuccess: async (data) => {
             if (data.success) {
-                await queryClient.invalidateQueries({ queryKey: ['hod', 'student', 'faculty'] })
+                await queryClient.invalidateQueries(['hod', 'student', 'faculty'])
             }
         }
     })

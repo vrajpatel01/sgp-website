@@ -24,7 +24,6 @@ import Link from "next/link";
 
 export default function Hod() {
 
-    const [addHodButton, setAddHodButton] = useState(false)
     const [addHodModel, setAddHodModel] = useState(false)
     const [addHodByExcelModel, setAddHodByExcelModel] = useState(false)
     const [deleteHodModel, setDeleteHodModel] = useState(false)
