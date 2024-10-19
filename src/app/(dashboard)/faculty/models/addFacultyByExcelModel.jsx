@@ -36,7 +36,7 @@ export default function AddFacultyByExcelModel({ data, setData }) {
             file: value.file,
             institute: value.institute,
             department: value.department,
-            role: 'student'
+            role: 'faculty'
         }
         createAccount.mutate(data, {
             onSuccess: (data) => {
