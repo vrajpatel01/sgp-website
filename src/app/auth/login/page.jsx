@@ -53,8 +53,11 @@ export default function LoginScreen() {
         setIsLoading(false)
     }
     return (
-        <div className="flex flex-col gap-8 w-full sm:min-w-[350px]">
-            <h1 className="text-title-28">Login</h1>
+        <div className="flex flex-col gap-8 w-full">
+            <div className="mx-auto flex justify-center flex-col gap-3">
+                <h1 className="text-4xl mt-10 font-bold text-center">Welcome</h1>
+                <p className="text-base text-muted-foreground text-center">Please login to your account</p>
+            </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="gap-3 flex flex-col" noValidate>
                     <FormField
@@ -62,9 +65,13 @@ export default function LoginScreen() {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email</FormLabel>
+                                <FormLabel className="text-lg">Email</FormLabel>
                                 <FormControl>
-                                    <Input {...field} disabled={isLoading} placeholder="example@example.com" />
+                                    <Input
+                                        className="w-full h-14 text-xl"
+                                        {...field}
+                                        disabled={isLoading}
+                                        placeholder="example@example.com" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -74,18 +81,23 @@ export default function LoginScreen() {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>password</FormLabel>
+                                <FormLabel className="text-lg">Password</FormLabel>
                                 <FormControl>
-                                    <PasswordInput {...field} disabled={isLoading} placeholder="•••••••••" />
+                                    <PasswordInput
+                                        className="w-full h-14 text-xl"
+                                        {...field}
+                                        disabled={isLoading}
+                                        placeholder="•••••••••" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                     <p className="flex justify-end text-detail-14">
-                        <Link href="/auth/forgot-password" className="text-title-18 underline">Forgot Password?</Link>
+                        <Link href="/auth/forgot-password" className="text-title-18 underline text-base">Forgot Password?</Link>
                     </p>
                     {form.formState.errors.root && <FormMessage>{form.formState.errors.root.message}</FormMessage>}
                     <Button
+                        className="text-xl h-12"
                         disabled={isLoading}
                         isLoading={isLoading}>
                         Log in

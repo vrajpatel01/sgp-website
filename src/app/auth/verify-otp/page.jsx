@@ -65,16 +65,19 @@ export default function VerifyOtpScreen(props) {
 
     useEffect(() => {
         let email = searchParams.get('email');
-        email = email.replace(/ /g, '+');
+        email = email?.replace(/ /g, '+');
         if (!email) router.push(`/auth/forgot-password`)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.searchParams.email, router])
 
     return (
         <div className="flex flex-col gap-8">
-            <h1 className="text-title-28">Enter OTP</h1>
+            <div className="mx-auto flex justify-center flex-col gap-3">
+                <h1 className="text-4xl mt-10 font-bold text-center">Enter OTP</h1>
+                <p className="text-base text-muted-foreground text-center">OTP is send to your email please enter OTP to reset your password so new password is send to your email.</p>
+            </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="gap-3 flex flex-col">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="gap-3 flex flex-col justify-center items-center">
                     <FormField
                         control={form.control}
                         name="otp"
@@ -83,24 +86,25 @@ export default function VerifyOtpScreen(props) {
                                 <FormControl className="flex justify-center">
                                     <InputOTP {...field} disabled={otpVerification.isPending} maxLength={6}>
                                         <InputOTPGroup>
-                                            <InputOTPSlot className="text-2xl sm:w-12 sm:h-12" index={0} />
-                                            <InputOTPSlot className="text-2xl sm:w-12 sm:h-12" index={1} />
-                                            <InputOTPSlot className="text-2xl sm:w-12 sm:h-12" index={2} />
+                                            <InputOTPSlot className="text-2xl w-12 h-12 sm:w-16 sm:h-16" index={0} />
+                                            <InputOTPSlot className="text-2xl w-12 h-12 sm:w-16 sm:h-16" index={1} />
+                                            <InputOTPSlot className="text-2xl w-12 h-12 sm:w-16 sm:h-16" index={2} />
                                         </InputOTPGroup>
                                         <InputOTPSeparator />
                                         <InputOTPGroup>
-                                            <InputOTPSlot className="text-2xl sm:w-12 sm:h-12" index={3} />
-                                            <InputOTPSlot className="text-2xl sm:w-12 sm:h-12" index={4} />
-                                            <InputOTPSlot className="text-2xl sm:w-12 sm:h-12" index={5} />
+                                            <InputOTPSlot className="text-2xl w-12 h-12 sm:w-16 sm:h-16" index={3} />
+                                            <InputOTPSlot className="text-2xl w-12 h-12 sm:w-16 sm:h-16" index={4} />
+                                            <InputOTPSlot className="text-2xl w-12 h-12 sm:w-16 sm:h-16" index={5} />
                                         </InputOTPGroup>
                                     </InputOTP>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
-                    <p className="w-full sm:max-w-[330px] text-small-12 leading-4 text-light-text">Enter your OTP received on your registered email address. If the email is valid, we will send the password to your registered email address.</p>
+                    <p className="w-full text-base leading-4 text-light-text text-center">Enter your OTP received on your registered email address. If the email is valid, we will send the password to your registered email address.</p>
                     {form.formState.errors.root && <FormMessage type="error">{form.formState.errors.root.message}</FormMessage>}
                     <Button
+                        className="text-xl h-12 w-full"
                         isLoading={otpVerification.isPending}
                         disabled={otpVerification.isPending}>
                         Reset

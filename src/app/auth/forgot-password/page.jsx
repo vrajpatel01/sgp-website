@@ -53,7 +53,10 @@ export default function ForgotPasswordScreen() {
 
     return (
         <div className="flex flex-col gap-8 w-full sm:min-w-[350px]">
-            <h1 className="text-title-28">Forgot Password</h1>
+            <div className="mx-auto flex justify-center flex-col gap-3">
+                <h1 className="text-4xl mt-10 font-bold text-center">Forgot Password</h1>
+                <p className="text-base text-muted-foreground text-center">Enter your email to forgot password.</p>
+            </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="gap-3 flex flex-col" noValidate>
                     <FormField
@@ -61,18 +64,23 @@ export default function ForgotPasswordScreen() {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email</FormLabel>
+                                <FormLabel className="text-lg">email</FormLabel>
                                 <FormControl>
-                                    <Input {...field} disabled={forgotPassword.isPending} placeholder="example@example.com" />
+                                    <Input
+                                        className="w-full h-14 text-xl"
+                                        {...field}
+                                        disabled={forgotPassword.isPending}
+                                        placeholder="example@example.com" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )} />
                     <p className="flex justify-end text-detail-14 underline">
-                        <Link href="/auth/login">Back to Login?</Link>
+                        <Link href="/auth/login" className="text-title-18 underline text-base">Back to Login?</Link>
                     </p>
                     {form.formState.errors.root && <FormMessage>{form.formState.errors.root.message}</FormMessage>}
                     <Button
+                        className="text-xl h-12"
                         disabled={forgotPassword.isPending}
                         isLoading={forgotPassword.isPending}>
                         Send OTP

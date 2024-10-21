@@ -82,3 +82,13 @@ input[type=number] {
     @apply bg-background text-foreground;
   }
 }
+
+@media (max-height: 700px) {
+  .auth {
+    display: none;
+  }
+
+  .auth-form {
+    margin-bottom: 50px;
+  }
+}
