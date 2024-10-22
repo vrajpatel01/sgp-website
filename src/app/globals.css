@@ -83,12 +83,29 @@ input[type=number] {
   }
 }
 
-@media (max-height: 700px) {
+@media (max-width: 600px) and (max-height: 600px) {
   .auth {
     display: none;
   }
 
+  .img {
+    display: none;
+  }
+}
+
+@media (max-height: 650px) {
+  .img {
+    display: none !important;
+  }
+}
+
+@media (max-height: 800px) {
   .auth-form {
     margin-bottom: 50px;
+  }
+
+  .img {
+    height: 400px !important;
+    /* height: 10px !important; */
   }
 }
