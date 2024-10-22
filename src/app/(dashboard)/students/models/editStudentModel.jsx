@@ -14,9 +14,9 @@ import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } 
 import { Separator } from "@/components/ui/separator"
 
 export default function EditStudentModel({ data, setData, currentUserData, setStudentDeleteModel }) {
-    const [institute, setInstitute] = useState(null)
+    const [student, setStudent] = useState({ institute: 'Select Institute', department: 'Select Department' })
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(institute, institute !== undefined && institute !== 'Select Institute' ? true : false)
+    const departments = useGetDepartments(student.institute, student.institute !== undefined && student.institute !== 'Select Institute' ? true : false)
     const editAccount = useEditStudentAccount()
 
     const form = useForm({
@@ -35,7 +35,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
     })
 
     useEffect(() => {
-        setInstitute(currentUserData?.institute?._id)
+        setStudent({ institute: currentUserData?.institute?._id, department: currentUserData?.department?._id })
         form.setValue('name', currentUserData?.name)
         form.setValue('rollNumber', currentUserData?.rollNumber)
         form.setValue('email', currentUserData?.email)
@@ -45,7 +45,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
         form.setValue('semester', currentUserData?.semester?.toString())
         form.setValue('division', currentUserData?.division)
         form.setValue('batch', currentUserData?.batch)
-    }, [currentUserData, form, institute])
+    }, [currentUserData, form])
 
     const onSubmit = (value) => {
         const data = {
@@ -73,8 +73,8 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
     return (
         <SheetContent className="space-y-5 overflow-y-scroll">
             <SheetHeader>
-                <SheetTitle>Add account</SheetTitle>
-                <SheetDescription>All fields are required so enter all the values to add student account.</SheetDescription>
+                <SheetTitle>Edit account</SheetTitle>
+                <SheetDescription>Edit student account information</SheetDescription>
             </SheetHeader>
             <Separator />
             <Form {...form}>

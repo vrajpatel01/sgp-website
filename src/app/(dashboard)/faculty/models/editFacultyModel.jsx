@@ -12,9 +12,9 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator";
 
 export default function EditFacultyModel({ data, setData, currentUserData, setFacultyDeleteModel }) {
-    const [institute, setInstitute] = useState(null)
+    const [faculty, setFaculty] = useState({ institute: 'Select Institute', department: 'Select Department' })
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(institute, institute !== undefined && institute !== 'Select Institute' ? true : false)
+    const departments = useGetDepartments(faculty.institute, faculty.institute !== '' && faculty.institute !== 'Select Institute' ? true : false)
     const editAccount = useEditFacultyAccount()
 
     const form = useForm({
@@ -35,7 +35,7 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
     console.log(currentUserData);
 
     useEffect(() => {
-        setInstitute(currentUserData?.institute?._id)
+        setFaculty({ institute: currentUserData?.institute?._id, department: currentUserData?.department?._id })
         form.setValue('name', currentUserData.name)
         form.setValue('employeeNumber', currentUserData.employeeCode)
         form.setValue('email', currentUserData.email)
@@ -45,7 +45,7 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
         form.setValue('department', currentUserData?.department?._id)
         form.setValue('subjectCode', currentUserData.subjectCode)
         form.setValue('subjectName', currentUserData.subjectName)
-    }, [currentUserData, institute, form])
+    }, [currentUserData, form])
 
 
     const onSubmit = value => {
@@ -73,8 +73,8 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
     return (
         <SheetContent className="space-y-5 overflow-y-scroll">
             <SheetHeader>
-                <SheetTitle>Add account</SheetTitle>
-                <SheetDescription>All fields are required so enter all the values to add faculty account.</SheetDescription>
+                <SheetTitle>Edit account</SheetTitle>
+                <SheetDescription>Edit faculty account information</SheetDescription>
             </SheetHeader>
             <Separator />
             <Form {...form}>

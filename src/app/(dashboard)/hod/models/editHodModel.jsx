@@ -11,9 +11,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 export default function EditHodModel({ data, setData, currentUserData, setHodDeleteModel }) {
-    const [institute, setInstitute] = useState(null);
+    const [hod, setHod] = useState({ institute: 'Select Institute', department: 'Select Department' })
     const institutes = useGetAllInstitutes()
-    const departments = useGetDepartments(institute, institute !== undefined && institute !== 'Select Institute' ? true : false)
+    const departments = useGetDepartments(hod.institute, hod.institute !== '' && hod.institute !== 'Select Institute' ? true : false)
     const editHodAccount = useEditHodAccount()
     const form = useForm({
         resolver: zodResolver(addHodValidator),
@@ -30,7 +30,7 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
         }
     })
     useEffect(() => {
-        setInstitute(currentUserData?.institute?._id);
+        setHod({ institute: currentUserData?.institute?._id, department: currentUserData?.department?._id });
         form.setValue('name', currentUserData.name);
         form.setValue('employeeNumber', currentUserData.employeeCode);
         form.setValue('email', currentUserData.email);
@@ -40,7 +40,7 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
         form.setValue('department', currentUserData?.department?._id);
         form.setValue('subjectCode', currentUserData.subjectCode);
         form.setValue('subjectName', currentUserData.subjectName);
-    }, [currentUserData, form, currentUserData?.department, currentUserData.designation, currentUserData.email, currentUserData.employeeNumber, currentUserData?.institute, currentUserData.name, currentUserData.phoneNumber, currentUserData.subjectCode, currentUserData.subjectName, institute])
+    }, [currentUserData, form, currentUserData?.department, currentUserData.designation, currentUserData.email, currentUserData.employeeNumber, currentUserData?.institute, currentUserData.name, currentUserData.phoneNumber, currentUserData.subjectCode, currentUserData.subjectName])
 
     const onSubmit = (value) => {
         const data = {
@@ -69,7 +69,7 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
         <SheetContent className="space-y-5 overflow-y-scroll">
             <SheetHeader>
                 <SheetTitle>Edit account</SheetTitle>
-                <SheetDescription>edit faculty account information</SheetDescription>
+                <SheetDescription>Edit hod account information</SheetDescription>
             </SheetHeader>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" noValidate>
@@ -142,7 +142,7 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
                                 <FormLabel>institute</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={(value) => {
-                                        setInstitute(value);
+                                        setHod({ ...hod, institute: value })
                                         form.setValue('institute', value)
                                     }} value={field.value}>
                                         <SelectTrigger>
