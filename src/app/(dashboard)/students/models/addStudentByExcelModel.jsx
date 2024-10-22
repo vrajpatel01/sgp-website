@@ -71,7 +71,7 @@ export default function AddStudentByExcelModel({ data, setData }) {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <div className="flex flex-col gap-5">
-                        <div className="flex justify-start items-start w-full p-3 min-w-[300px] border-1 border-dashed rounded-md border-border cursor-pointer gap-3">
+                        <a href="/csv/student.csv" target="_blank" download className="flex justify-start items-start w-full p-3 min-w-[300px] border-1 border-dashed rounded-md border-border cursor-pointer gap-3">
                             <div className="p-5 bg-secondary-background rounded-full">
                                 <MdSimCardDownload className="text-3xl" />
                             </div>
@@ -79,7 +79,7 @@ export default function AddStudentByExcelModel({ data, setData }) {
                                 <h1 className="text-body-16 text-primary-text">Download Excel</h1>
                                 <p className="text-detail-14 text-light-text leading-4">Download sample excel sheet to <br /> upload proper formate.</p>
                             </div>
-                        </div>
+                        </a>
                         <input onChange={handleFileChange} ref={uploader} type="file" name="file" id="file" accept=".csv" hidden />
                         <div onClick={() => { if (uploader.current) uploader.current.click(); }} className="flex justify-center items-center flex-col w-full p-10 min-w-[300px] border-1 rounded-md border-border cursor-pointer ">
                             <IoAddCircleOutline className="text-3xl" />

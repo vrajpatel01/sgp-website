@@ -1,0 +1,3 @@
+name,email,employeeCode,mobileNumber,designation,subjectCode,subjectName
+Dr. Robert Brown,robertbrown@example.com,HOD001,9876543219,HOD,CS105,Artificial Intelligence
+Dr. Olivia Davis,oliviadavis@example.com,HOD002,9876543220,HOD,CS106,Machine Learning

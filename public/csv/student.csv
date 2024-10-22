@@ -1,0 +1,6 @@
+name,email,rollNumber,phoneNumber,semester,division,batch
+John Doe,johndoe@example.com,2021001,9876543210,6,A,2021
+Jane Smith,janesmith@example.com,2021002,9876543211,6,A,2021
+David Johnson,davidjohnson@example.com,2021003,9876543212,6,B,2021
+Alice Brown,alicebrown@example.com,2021004,9876543213,6,B,2021
+Michael Lee,michaellee@example.com,2021005,9876543214,6,A,2021
