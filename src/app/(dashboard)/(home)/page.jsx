@@ -1,24 +1,35 @@
 "use client"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PendingAndSuccessfulSubmissions, TotalSubmissions } from "./components/charts";
-import { useGetChartData } from "./services/query";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CategoryChart, ProjectSubmissionChart, TechnologyChart } from "./components/charts";
+import { useGetCategoryInfo, useGetProjectSubmissionInfo, useGetTechnologyInfo } from "./services/query";
 import { useGetAllInstitutes, useGetDepartments } from "../institutes/services/query";
 import { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 
 export default function DashboardPage() {
     const institutes = useGetAllInstitutes()
-    // const chartData = useGetChartData();
     const [values, setValues] = useState({ institute: null, department: null })
     const departments = useGetDepartments(values.institute, values.institute !== '' && values.institute !== 'Select Institute' ? true : false)
 
-    const chartData = useGetChartData({
+    const projectSubmission = useGetProjectSubmissionInfo({
+        institute: values?.institute,
+        department: values?.department
+    })
+
+    const technologyChart = useGetTechnologyInfo({
+        institute: values?.institute,
+        department: values?.department
+    })
+
+    const categoryChart = useGetCategoryInfo({
         institute: values?.institute,
         department: values?.department
     })
 
     useEffect(() => {
-        chartData.refetch()
+        projectSubmission.refetch()
+        technologyChart.refetch()
+        categoryChart.refetch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.institute, values.department])
 
@@ -64,8 +75,11 @@ export default function DashboardPage() {
                         </SelectContent>
                     </Select>
                 </div>
-                <TotalSubmissions data={chartData} />
-                <PendingAndSuccessfulSubmissions data={chartData} />
+                <ProjectSubmissionChart data={projectSubmission} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <TechnologyChart data={technologyChart} />
+                    <CategoryChart data={categoryChart} />
+                </div>
             </div>
         </div>
     )
