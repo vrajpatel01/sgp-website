@@ -237,7 +237,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                             type="submit"
                             disabled={editAccount.isPending}
                             isLoading={editAccount.isPending}>
-                            Add account
+                            Change
                         </Button>
                     </SheetFooter>
                 </form>
