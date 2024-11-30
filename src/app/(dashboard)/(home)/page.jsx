@@ -49,7 +49,7 @@ export default function DashboardPage() {
 
                 <div className="flex justify-end items-center gap-4">
                     <Select
-                        value={values.institute}
+                        // value={values.institute}
                         onValueChange={e => setValues({ ...values, institute: e })} >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="select institute" />
@@ -63,7 +63,7 @@ export default function DashboardPage() {
 
                     <Select
                         disabled={values.institute === null}
-                        value={values.department}
+                        // value={values.department}
                         onValueChange={e => setValues({ ...values, department: e })} >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="select department" />

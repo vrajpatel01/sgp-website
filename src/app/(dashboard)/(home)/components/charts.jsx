@@ -1,5 +1,4 @@
 "use client"
-import { TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
     Card,
@@ -155,9 +154,9 @@ export function TechnologyChart({ data }) {
         },
     }
     let chartData = []
-    if (data.isPending) {
-        return <div>Loading...</div>
-    }
+    // if (data.isPending) {
+    //     return <div>Loading...</div>
+    // }
 
     const randomNumber = () => {
         return Math.floor(Math.random() * 5);
@@ -224,9 +223,9 @@ export function CategoryChart({ data }) {
         },
     }
     let chartData = []
-    if (data.isPending) {
-        return <div>Loading...</div>
-    }
+    // if (data.isPending) {
+    //     return null
+    // }
 
     const randomNumber = () => {
         return Math.floor(Math.random() * 5);
