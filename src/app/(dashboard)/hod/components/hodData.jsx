@@ -34,10 +34,10 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                         <TableRow header>
                             {hods.isSuccess && <TableCell content="" />}
                             <TableCell content="Name" />
-                            <TableCell content="Enrollment Number" />
-                            <TableCell content="Designation" />
+                            <TableCell content="Employee Number" />
                             <TableCell content="Email" />
                             <TableCell content="Phone Number" />
+                            <TableCell content="Designation" />
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
                         </TableRow>
@@ -72,9 +72,9 @@ export default function HodData({ selectedItem, setSelectedItem }) {
                                 key={hod._id}>
                                 <TableCell content={hod.name} />
                                 <TableCell content={hod.employeeCode} />
-                                <TableCell content={hod.designation} />
                                 <TableCell content={hod.email} />
                                 <TableCell content={hod.mobileNumber} />
+                                <TableCell content={hod.designation} />
                                 <TableCell content={hod.institute.name} />
                                 <TableCell content={hod.department.name} />
                             </TableRow>

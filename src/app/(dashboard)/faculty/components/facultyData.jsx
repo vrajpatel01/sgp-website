@@ -41,8 +41,8 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                             <TableCell content="Designation" />
                             <TableCell content="Institute" />
                             <TableCell content="Department" />
-                            <TableCell content="Subject Name" />
-                            <TableCell content="Subject Code" />
+                            {/* <TableCell content="Subject Name" />
+                            <TableCell content="Subject Code" /> */}
                         </TableRow>
                     </thead>
                     <tbody className="divide-y">
@@ -55,8 +55,8 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
                                 <TableCell content={<Skeleton height={30} width={300} />} />
-                                <TableCell content={<Skeleton height={30} width={300} />} />
-                                <TableCell content={<Skeleton height={30} width={300} />} />
+                                {/* <TableCell content={<Skeleton height={30} width={300} />} />
+                                <TableCell content={<Skeleton height={30} width={300} />} /> */}
                             </TableRow>
                         ))}
                         {faculties.isSuccess && faculties.isSuccess && faculties?.data?.faculties?.map((faculty) => (
@@ -82,8 +82,8 @@ export default function FacultyData({ selectedItem, setSelectedItem }) {
                                 <TableCell content={faculty.designation} />
                                 <TableCell content={faculty.institute.name} />
                                 <TableCell content={faculty.department.name} />
-                                <TableCell content={faculty.subjectName} />
-                                <TableCell content={faculty.subjectCode} />
+                                {/* <TableCell content={faculty.subjectName} />
+                                <TableCell content={faculty.subjectCode} /> */}
                             </TableRow>
                         ))}
                     </tbody>

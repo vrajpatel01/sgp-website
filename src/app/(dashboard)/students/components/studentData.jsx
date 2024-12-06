@@ -34,7 +34,7 @@ export default function StudentData({ selectedItem, setSelectedItem }) {
                         <TableRow header>
                             {students.isSuccess && <TableCell content="" />}
                             <TableCell content="Name" />
-                            <TableCell content="Enrollment" />
+                            <TableCell content="Enrollment Number" />
                             <TableCell content="Email" />
                             <TableCell content="Phone Number" />
                             <TableCell content="Institute" />

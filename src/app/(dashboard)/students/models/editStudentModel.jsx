@@ -84,7 +84,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>name</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -96,7 +96,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="rollNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>roll number</FormLabel>
+                                <FormLabel>Roll Number</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -108,7 +108,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email</FormLabel>
+                                <FormLabel>Email</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -120,7 +120,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="phoneNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>phone number</FormLabel>
+                                <FormLabel>Phone Number</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -133,7 +133,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="institute"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>institute</FormLabel>
+                                <FormLabel>Institute</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={(value) => {
                                         setStudent({ ...student, institute: value })
@@ -158,7 +158,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="department"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>department</FormLabel>
+                                <FormLabel>Department</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <SelectTrigger>
@@ -179,7 +179,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                         name="batch"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>batch</FormLabel>
+                                <FormLabel>Batch</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -192,7 +192,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                             name="semester"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>semester</FormLabel>
+                                    <FormLabel>Semester</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} value={field.value}>
                                             <SelectTrigger>
@@ -214,7 +214,7 @@ export default function EditStudentModel({ data, setData, currentUserData, setSt
                             name="division"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>division</FormLabel>
+                                    <FormLabel>Division</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>

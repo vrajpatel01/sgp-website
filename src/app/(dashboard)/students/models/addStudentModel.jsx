@@ -76,7 +76,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>name</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -88,7 +88,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="rollNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>roll number</FormLabel>
+                                <FormLabel>Roll Number</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -100,7 +100,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email</FormLabel>
+                                <FormLabel>Email</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -112,7 +112,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="phoneNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>phone number</FormLabel>
+                                <FormLabel>Phone Number</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -125,7 +125,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="institute"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>institute</FormLabel>
+                                <FormLabel>Institute</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={(value) => {
                                         setStudent({ ...student, institute: value })
@@ -150,7 +150,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="department"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>department</FormLabel>
+                                <FormLabel>Department</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <SelectTrigger>
@@ -171,7 +171,7 @@ export default function AddStudentModel({ data, setData }) {
                         name="batch"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>batch</FormLabel>
+                                <FormLabel>Batch</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -184,7 +184,7 @@ export default function AddStudentModel({ data, setData }) {
                             name="semester"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>semester</FormLabel>
+                                    <FormLabel>Semester</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} value={field.value}>
                                             <SelectTrigger>
@@ -206,7 +206,7 @@ export default function AddStudentModel({ data, setData }) {
                             name="division"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>division</FormLabel>
+                                    <FormLabel>Division</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
@@ -226,7 +226,7 @@ export default function AddStudentModel({ data, setData }) {
                             Cancel
                         </Button> */}
                         <Button
-                            type="submit"
+                            type="Submit"
                             disabled={addStudent.isPending}
                             isLoading={addStudent.isPending}>
                             Add account

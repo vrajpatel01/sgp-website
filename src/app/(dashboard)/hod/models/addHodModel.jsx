@@ -66,7 +66,7 @@ export default function AddHodModel({ data, setData }) {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>name</FormLabel>
+                                <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -78,7 +78,7 @@ export default function AddHodModel({ data, setData }) {
                         name="employeeNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>employee number</FormLabel>
+                                <FormLabel>Employee Number</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -90,7 +90,7 @@ export default function AddHodModel({ data, setData }) {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>email</FormLabel>
+                                <FormLabel>Email</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -102,7 +102,7 @@ export default function AddHodModel({ data, setData }) {
                         name="phoneNumber"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>phone number</FormLabel>
+                                <FormLabel>Phone Number</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -114,7 +114,7 @@ export default function AddHodModel({ data, setData }) {
                         name="designation"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>designation</FormLabel>
+                                <FormLabel>Designation</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -127,7 +127,7 @@ export default function AddHodModel({ data, setData }) {
                         name="institute"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>institute</FormLabel>
+                                <FormLabel>Institute</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={(value) => {
                                         setHod({ ...hod, institute: value })
@@ -152,7 +152,7 @@ export default function AddHodModel({ data, setData }) {
                         name="department"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>department</FormLabel>
+                                <FormLabel>Department</FormLabel>
                                 <FormControl>
                                     <Select onValueChange={field.onChange} value={field.value}>
                                         <SelectTrigger>
@@ -169,12 +169,12 @@ export default function AddHodModel({ data, setData }) {
                             </FormItem>
                         )} />
 
-                    <FormField
+                    {/* <FormField
                         control={form.control}
                         name="subjectCode"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>subject code</FormLabel>
+                                <FormLabel>Subject Code</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -187,13 +187,13 @@ export default function AddHodModel({ data, setData }) {
                         name="subjectName"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>subject name</FormLabel>
+                                <FormLabel>Subject Name</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
-                        )} />
+                        )} /> */}
                     <SheetFooter>
                         <Button
                             type="submit"
