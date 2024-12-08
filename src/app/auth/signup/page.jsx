@@ -22,7 +22,8 @@ export default function SignUpScreen() {
         resolver: zodResolver(registerValidator),
         defaultValues: {
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         }
     })
     const onSubmit = (value) => {
@@ -51,6 +52,17 @@ export default function SignUpScreen() {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>password</FormLabel>
+                                <FormDescription>
+                                    <Input {...field} placeholder="•••••••••" />
+                                </FormDescription>
+                            </FormItem>
+                        )} />
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
                                 <FormDescription>
                                     <Input {...field} placeholder="•••••••••" />
                                 </FormDescription>

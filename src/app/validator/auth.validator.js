@@ -15,7 +15,14 @@ export const registerValidator = z.object({
         message: 'Password must be at least 6 characters long'
     }).refine(data => regex.password.test(data), {
         message: 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'
-    })
+    }),
+    confirmPassword: z.string()
+}).superRefine((data, ctx) => {
+    if (data.password !== data.confirmPassword) {
+        return ctx.addIssue({
+            message: 'password and confirm password is not match',
+        })
+    }
 })
 
 export const forgotPasswordValidator = z.object({

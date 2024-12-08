@@ -39,7 +39,7 @@ export default function Settings() {
                     </div>
                     <div onClick={() => signOut()} className="flex justify-end">
                         <Button type="submit" variant="destructive">
-                            Sign out
+                            Logout
                         </Button>
                     </div>
                 </Warper>

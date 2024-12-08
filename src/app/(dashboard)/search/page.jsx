@@ -76,8 +76,8 @@ export default function SearchPage() {
                             {faculties ? <TableCell content='phone number' /> : null}
                             {faculties ? <TableCell content='Employee Code' /> : null}
                             {faculties ? <TableCell content='Designation' /> : null}
-                            {faculties ? <TableCell content='Subject Code' /> : null}
-                            {faculties ? <TableCell content='Subject Name' /> : null}
+                            {/* {faculties ? <TableCell content='Subject Code' /> : null} */}
+                            {/* {faculties ? <TableCell content='Subject Name' /> : null} */}
                         </TableRow>
                     </thead>
                     <tbody>
@@ -95,8 +95,8 @@ export default function SearchPage() {
                                 {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null}
                                 {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null}
                                 {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null}
-                                {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null}
-                                {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null}
+                                {/* {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null} */}
+                                {/* {faculties ? <TableCell content={<Skeleton height={30} width={300} />} /> : null} */}
                             </TableRow>
                         ))}
                         {searchData.isSuccess && searchData.data.data.map(user => (
@@ -113,8 +113,8 @@ export default function SearchPage() {
                                 {faculties ? <TableCell content={user?.mobileNumber} /> : null}
                                 {faculties ? <TableCell content={user?.employeeCode} /> : null}
                                 {faculties ? <TableCell content={user?.designation} /> : null}
-                                {faculties ? <TableCell content={user?.subjectCode} /> : null}
-                                {faculties ? <TableCell content={user?.subjectName} /> : null}
+                                {/* {faculties ? <TableCell content={user?.subjectCode} /> : null} */}
+                                {/* {faculties ? <TableCell content={user?.subjectName} /> : null} */}
                             </TableRow>
                         ))}
                     </tbody>
