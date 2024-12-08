@@ -33,7 +33,7 @@ export default function Settings() {
                 <BasicInformation data={myInfo.data.admin} />
                 <ChangeEmail currentEmail={myInfo.data.admin.email} />
                 <PasswordChange />
-                <Warper title='Sign out' className='border-t-[.5px] border-gray-500 pt-5'>
+                <Warper title='Logout' className='border-t-[.5px] border-gray-500 pt-5'>
                     <div className="text-sm text-gray-500">
                         End your session and securely sign out of your account. Make sure to save any changes before signing out to avoid losing your progress.
                     </div>
