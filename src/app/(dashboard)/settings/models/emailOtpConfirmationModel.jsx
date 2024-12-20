@@ -12,14 +12,7 @@ export default function EmailOtpConfirmationModel({ data, setData }) {
 
     const handleFormSubmit = e => {
         e.preventDefault()
-        verifyEmail.mutate(otp, {
-            onSuccess: (data) => {
-                console.log(data);
-            },
-            onError: (error) => {
-                console.log(error);
-            }
-        })
+        verifyEmail.mutate(otp)
     }
     return (
         <DialogContent>

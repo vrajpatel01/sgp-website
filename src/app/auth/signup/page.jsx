@@ -26,9 +26,6 @@ export default function SignUpScreen() {
             confirmPassword: ''
         }
     })
-    const onSubmit = (value) => {
-        console.log('all done.' + value.email);
-    }
 
     return (
         <div className="flex flex-col gap-8">

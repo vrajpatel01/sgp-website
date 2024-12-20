@@ -13,8 +13,6 @@ export const editUserInfo = async (data) => {
 
 export const changePassword = async (data) => {
     const session = await getSession();
-    console.log(session);
-
     return (await axiosInstance.patch('/admin/change-password', data, {
         headers: {
             'Content-Type': 'application/json',

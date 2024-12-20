@@ -2,7 +2,6 @@ import axiosInstance from "@/axios.config"
 import { getSession } from "next-auth/react"
 
 export const search = async ({ role, name, email }) => {
-    console.log(name);
 
     const session = await getSession();
     let url = `/admin/search-users?role=${role}`

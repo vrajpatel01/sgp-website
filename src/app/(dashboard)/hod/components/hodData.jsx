@@ -20,7 +20,6 @@ export default function HodData({ selectedItem, setSelectedItem }) {
     const [editHodModel, setEditHodModel] = useState(false)
     const hods = useGetHodWithPagination(currentPage, 15)
 
-    // console.log(selectedHod);
 
     if (hods.isError) return <Error message="Having some problem to fetch data." />
 

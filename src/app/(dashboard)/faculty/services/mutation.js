@@ -9,7 +9,6 @@ export const useAddFaulty = () => {
         mutationFn: (data) => addFaulty(data),
         onError: (error) => {
             if (error instanceof AxiosError) {
-                console.log(error);
                 return toast.error(error.response.data.message)
             }
             return toast.error(error.message)
@@ -33,7 +32,6 @@ export const useDeleteFacultyAccount = () => {
     return useMutation({
         mutationFn: (id) => deleteFacultyAccount(id),
         onError: (error) => {
-            console.log('error: ', error);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
@@ -55,7 +53,6 @@ export const useDeleteMultipleFacultyAccount = () => {
     return useMutation({
         mutationFn: (ids) => deleteMultipleFacultiesAccount(ids),
         onError: (error) => {
-            console.log('error: ', error.response);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }

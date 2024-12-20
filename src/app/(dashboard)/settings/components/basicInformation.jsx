@@ -47,7 +47,6 @@ export default function BasicInformation({ data }) {
                         }
                     },
                     onError: (error) => {
-                        console.log(error);
                         return toast.error(error?.message || 'Having some issue to update profile');
                     }
                 })

@@ -32,8 +32,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
         }
     })
 
-    console.log(currentUserData);
-
     useEffect(() => {
         setFaculty({ institute: currentUserData?.institute?._id, department: currentUserData?.department?._id })
         form.setValue('name', currentUserData.name)

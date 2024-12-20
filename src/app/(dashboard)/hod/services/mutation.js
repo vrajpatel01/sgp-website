@@ -33,7 +33,6 @@ export const useDeleteHodAccount = () => {
     return useMutation({
         mutationFn: (id) => deleteHodAccount(id),
         onError: (error) => {
-            console.log('error: ', error);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
@@ -55,7 +54,6 @@ export const useDeleteMultipleHodAccount = () => {
     return useMutation({
         mutationFn: (ids) => deleteMultipleHodsAccount(ids),
         onError: (error) => {
-            console.log('error: ', error.response);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
@@ -76,7 +74,6 @@ export const useEditHodAccount = () => {
     return useMutation({
         mutationFn: (data) => editHodAccount(data),
         onError: (error) => {
-            console.log('error: ', error.response);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }

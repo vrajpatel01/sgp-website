@@ -19,10 +19,6 @@ export default function ResetPasswordScreen() {
         e.preventDefault()
         try {
             let validatePassword = passwordValidator(userInput.password, userInput.confirmPassword)
-
-            if (validatePassword) {
-                console.log('all done.');
-            }
         } catch (error) {
             if (error.code === 'EMPTY')
                 return toast.error('All fields are required.')

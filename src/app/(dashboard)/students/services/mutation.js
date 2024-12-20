@@ -33,7 +33,6 @@ export const useDeleteStudentAccount = () => {
     return useMutation({
         mutationFn: (id) => deleteStudentAccount(id),
         onError: (error) => {
-            console.log('error: ', error);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
@@ -55,7 +54,6 @@ export const useDeleteMultipleStudentsAccount = () => {
     return useMutation({
         mutationFn: (ids) => deleteMultipleStudentsAccount(ids),
         onError: (error) => {
-            console.log('error: ', error.response);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }
@@ -76,7 +74,6 @@ export const useEditStudentAccount = () => {
     return useMutation({
         mutationFn: (data) => editStudentAccount(data),
         onError: (error) => {
-            console.log('error: ', error.response);
             if (error instanceof AxiosError) {
                 return toast.error(error.response.data?.message)
             }

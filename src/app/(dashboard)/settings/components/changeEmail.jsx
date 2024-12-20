@@ -28,11 +28,7 @@ export default function ChangeEmail({ currentEmail }) {
             if (emailValidate) {
                 changeEmail.mutate({ email }, {
                     onSuccess: (data) => {
-                        console.log(data);
                         setConfirmOtpModel(true)
-                    },
-                    onError: (error) => {
-                        console.log(error);
                     }
                 })
             }
