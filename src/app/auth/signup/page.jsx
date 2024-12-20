@@ -31,7 +31,7 @@ export default function SignUpScreen() {
         <div className="flex flex-col gap-8">
             <h1 className="text-title-28">Sign Up</h1>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="gap-3 flex flex-col" noValidate>
+                <form className="gap-3 flex flex-col" noValidate>
                     <FormField
                         control={form.control}
                         name="email"
