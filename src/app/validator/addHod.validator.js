@@ -12,7 +12,5 @@ export default z.object({
     }),
     designation: z.string(),
     institute: z.string(),
-    department: z.string(),
-    subjectCode: z.string(),
-    subjectName: z.string(),
+    department: z.string()
 })
