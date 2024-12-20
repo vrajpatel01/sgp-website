@@ -40,8 +40,6 @@ export default function AddHodModel({ data, setData }) {
             email: value.email,
             institute: value.institute,
             department: value.department,
-            subjectCode: value.subjectCode,
-            subjectName: value.subjectName
         }
         addHod.mutate(data, {
             onSuccess: (data) => {

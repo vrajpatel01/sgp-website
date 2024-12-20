@@ -25,8 +25,6 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
             designation: currentUserData.designation,
             institute: currentUserData?.institute?._id,
             department: currentUserData?.department?._id,
-            subjectCode: currentUserData.subjectCode,
-            subjectName: currentUserData.subjectName
         }
     })
     useEffect(() => {
@@ -38,8 +36,6 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
         form.setValue('designation', currentUserData.designation);
         form.setValue('institute', currentUserData?.institute?._id);
         form.setValue('department', currentUserData?.department?._id);
-        form.setValue('subjectCode', currentUserData.subjectCode);
-        form.setValue('subjectName', currentUserData.subjectName);
     }, [currentUserData, form, currentUserData?.department, currentUserData.designation, currentUserData.email, currentUserData.employeeNumber, currentUserData?.institute, currentUserData.name, currentUserData.phoneNumber, currentUserData.subjectCode, currentUserData.subjectName])
 
     const onSubmit = (value) => {
@@ -52,8 +48,6 @@ export default function EditHodModel({ data, setData, currentUserData, setHodDel
                 ...(currentUserData.designation !== value.designation && { designation: value.designation }),
                 ...(currentUserData.institute._id !== value.institute && { institute: value.institute }),
                 ...(currentUserData.department._id !== value.department) && { department: value.department },
-                ...(currentUserData.subjectCode !== value.subjectCode && { subjectCode: value.subjectCode }),
-                ...(currentUserData.subjectName !== value.subjectName && { subjectName: value.subjectName })
             },
             id: currentUserData._id
         }

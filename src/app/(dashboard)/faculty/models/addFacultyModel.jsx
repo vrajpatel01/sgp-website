@@ -26,8 +26,6 @@ export default function AddFacultyModel({ data, setData }) {
             designation: '',
             institute: 'Select Institute',
             department: 'Select Department',
-            subjectCode: '',
-            subjectName: ''
         }
     })
 
@@ -44,8 +42,6 @@ export default function AddFacultyModel({ data, setData }) {
             designation: value.designation.toLowerCase().trim(),
             institute: value.institute,
             department: value.department,
-            subjectCode: value.subjectCode.toLowerCase().trim(),
-            subjectName: value.subjectName.toLowerCase().trim()
         }
         addFaulty.mutate(data, {
             onSuccess: (data) => {

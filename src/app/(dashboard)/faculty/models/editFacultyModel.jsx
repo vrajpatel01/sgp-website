@@ -27,8 +27,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
             designation: currentUserData.designation,
             institute: currentUserData?.institute?._id,
             department: currentUserData?.department?._id,
-            subjectCode: currentUserData.subjectCode,
-            subjectName: currentUserData.subjectName
         }
     })
 
@@ -41,8 +39,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
         form.setValue('designation', currentUserData.designation)
         form.setValue('institute', currentUserData?.institute?._id)
         form.setValue('department', currentUserData?.department?._id)
-        form.setValue('subjectCode', currentUserData.subjectCode)
-        form.setValue('subjectName', currentUserData.subjectName)
     }, [currentUserData, form])
 
 
@@ -56,8 +52,6 @@ export default function EditFacultyModel({ data, setData, currentUserData, setFa
                 ...(currentUserData.designation !== value.designation && { designation: value.designation.trim() }),
                 ...(currentUserData.institute._id !== value.institute && { institute: value.institute }),
                 ...(currentUserData.department._id !== value.department) && { department: value.department },
-                ...(currentUserData.subjectCode !== value.subjectCode && { subjectCode: value.subjectCode.trim() }),
-                ...(currentUserData.subjectName !== value.subjectName && { subjectName: value.subjectName.trim() })
             },
             id: currentUserData._id
         }
