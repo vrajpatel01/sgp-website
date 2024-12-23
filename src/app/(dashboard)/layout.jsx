@@ -10,10 +10,14 @@ import { LuMenu } from "react-icons/lu";
 import Logo from "@/components/shared/logo";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
+import NavigationItem from "@/components/navigation/navigationItem";
+import { IoMdContact } from "react-icons/io";
+import { usePathname } from "next/navigation";
+
 
 export default function DashboardLayout({ children }) {
     const [sidebar, setSidebar] = useState(false)
-
+    const pathname = usePathname();
     return (
         <div className="md:flex justify-start items-start">
             {/* sidebar + navbar */}
@@ -27,9 +31,17 @@ export default function DashboardLayout({ children }) {
                 <Logo className='hidden sm:block' />
                 <div className="left-full bg-white w-full sm:w-auto pt-3 h-full flex flex-col justify-between">
                     <Navigator />
-                    <Button variant="destructive" onClick={() => signOut()}>
-                        Logout
-                    </Button>
+                    <div className="w-full space-y-3">
+                        <NavigationItem
+                            href="/contact-us"
+                            title="Contact us"
+                            icon={<IoMdContact />}
+                            activeIcon={<IoMdContact />}
+                            active={pathname == '/contact-us' ? true : false} />
+                        <Button className="w-full" variant="destructive" onClick={() => signOut()}>
+                            Logout
+                        </Button>
+                    </div>
                 </div>
             </div>
             <div className="px-6 py-8 sm:ml-[17.4rem] pt-28 sm:mb-0 sm:py-8 w-full h-screen bg-secondary-background overflow-y-scroll">
