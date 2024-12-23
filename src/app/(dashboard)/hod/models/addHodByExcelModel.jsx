@@ -138,7 +138,7 @@ export default function AddHodByExcelModel({ data, setData }) {
                         <SheetFooter>
                             <Button
                                 type="submit"
-                                disabled={createAccount.isPending}
+                                disabled={file == null || createAccount.isPending}
                                 isLoading={createAccount.isPending}>
                                 Add accounts
                             </Button>

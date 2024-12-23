@@ -1,5 +1,5 @@
-name,email,employeeCode,mobileNumber,designation,subjectCode,subjectName
-Dr. Emily White,emilywhite@example.com,EMP001,9876543215,Professor,CS101,Computer Science
-Prof. Sarah Green,sarahgreen@example.com,EMP002,9876543216,Associate Professor,CS102,Algorithms
-Dr. William Black,williamblack@example.com,EMP003,9876543217,Assistant Professor,CS103,Data Structures
-Prof. Laura Blue,laurablue@example.com,EMP004,9876543218,Lecturer,CS104,Operating Systems
+name,email,employeeCode,mobileNumber,designation
+Dr. Emily White,emilywhite@example.com,EMP001,9876543215,Professor
+Prof. Sarah Green,sarahgreen@example.com,EMP002,9876543216,Associate Professor
+Dr. William Black,williamblack@example.com,EMP003,9876543217,Assistant Professor
+Prof. Laura Blue,laurablue@example.com,EMP004,9876543218,Lecturer

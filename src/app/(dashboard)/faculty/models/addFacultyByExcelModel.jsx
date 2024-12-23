@@ -137,7 +137,7 @@ export default function AddFacultyByExcelModel({ data, setData }) {
                         <SheetFooter>
                             <Button
                                 type="submit"
-                                disabled={createAccount.isPending}
+                                disabled={file == null || createAccount.isPending}
                                 isLoading={createAccount.isPending}>
                                 Add accounts
                             </Button>
